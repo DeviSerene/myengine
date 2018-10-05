@@ -15,7 +15,7 @@ Component::~Component()
 
 std::shared_ptr<Entity> Component::GetEntity()
 {
-	return (std::shared_ptr<Entity>)m_entity;
+	return m_entity.lock();
 }
 
 std::shared_ptr<Core> Component::GetCore()

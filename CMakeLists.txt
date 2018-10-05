@@ -3,7 +3,16 @@ project(MYENGINE)
 
 include_directories(
 	src
+    contrib/msvc-windows-x86/glew/include
+    contrib/msvc-windows-x86/SDL2/include
 )
+
+  link_directories(
+    ${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/SDL2/lib
+    ${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/glew/lib
+  )
+  
+  add_definitions(-DSDL_MAIN_HANDLED)
 
 add_library(engine
 	src/myengine/Core.cpp
@@ -26,4 +35,18 @@ add_executable(game
 
 target_link_libraries(game
 	engine
+	
+    SDL2 glew32 opengl32
 )
+
+ add_custom_command(TARGET game POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/SDL2/bin/SDL2.dll"
+      "$<TARGET_FILE_DIR:game>"
+  )
+
+  add_custom_command(TARGET game POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/glew/bin/glew32.dll"
+      "$<TARGET_FILE_DIR:game>"
+  )
