@@ -10,8 +10,15 @@ VertexBuffer::VertexBuffer()
 
 void VertexBuffer::Add(glm::vec3 value)
 {
-	m_components = 3;
-
+	if (m_components == 0)
+	{
+		m_components = 3;
+	}
+	else if (m_components != 3)
+	{
+		return;
+	}
+	
 	m_data.push_back(value.x);
 	m_data.push_back(value.y);
 	m_data.push_back(value.z);
@@ -20,7 +27,14 @@ void VertexBuffer::Add(glm::vec3 value)
 
 void VertexBuffer::Add(glm::vec4 value)
 {
-	m_components = 4;
+	if (m_components == 0)
+	{
+		m_components = 4;
+	}
+	else if (m_components != 4)
+	{
+		return; //componenets must be kept the same number, else it could try to read data that isn't there and things could go weird
+	}
 
 	m_data.push_back(value.x);
 	m_data.push_back(value.y);
