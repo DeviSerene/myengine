@@ -3,6 +3,7 @@ project(MYENGINE)
 
 include_directories(
 	src
+	contrib
     contrib/msvc-windows-x86/glew/include
     contrib/msvc-windows-x86/SDL2/include
 )
@@ -25,6 +26,14 @@ add_library(engine
 	src/myengine/Environment.cpp
 	src/myengine/Keyboard.h
 	src/myengine/Keyboard.cpp
+	src/myengine/MeshRenderer.h
+	src/myengine/MeshRenderer.cpp
+	src/myengine/ShaderProgram.h
+	src/myengine/ShaderProgram.cpp
+	src/myengine/VertexArray.h
+	src/myengine/VertexArray.cpp
+	src/myengine/VertexBuffer.h
+	src/myengine/VertexBuffer.cpp
 )
 
 add_executable(game
@@ -36,7 +45,7 @@ add_executable(game
 target_link_libraries(game
 	engine
 	
-    SDL2 glew32 opengl32
+    SDL2 glew32 opengl32 
 )
 
  add_custom_command(TARGET game POST_BUILD
