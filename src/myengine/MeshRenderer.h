@@ -1,5 +1,7 @@
+#pragma once
 #include "Component.h" //inherits from component (as it is something that can be slot into an entity)
 #include <memory>
+#include <iostream>
 
 //this component is for displaying a 3D object on screen
 //to do that, we need a VAO (organised information about the 3D object, like where the vertex positions, normals, texture coords...)
@@ -12,12 +14,12 @@ class ShaderProgram;
 class MeshRenderer : public Component
 {
 public:
-	void onInit(); //this will override the Components
+	void OnInit(); //this will override the Components
+	void OnDisplay();
 
 private:
-	void onDisplay();
 
-	std::shared_ptr<VertexArray> shape;
-	std::shared_ptr<ShaderProgram> shader;
+	std::shared_ptr<VertexArray> m_shape;
+	std::shared_ptr<ShaderProgram> m_shader;
 
 };

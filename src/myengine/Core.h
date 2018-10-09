@@ -1,3 +1,4 @@
+#pragma once
 #include <memory>
 #include <vector>
 #include <SDL2/SDL.h>
@@ -20,7 +21,7 @@ private:
 
 	void StartSDL();
 
-	bool running;
+	bool m_running;
 	std::vector<std::shared_ptr<Entity>> m_entities;
 	SDL_Window* m_window;
 };

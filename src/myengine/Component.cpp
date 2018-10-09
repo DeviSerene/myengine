@@ -7,6 +7,7 @@
 
 Component::Component()
 {
+	m_began = false;
 }
 
 Component::~Component()
@@ -20,7 +21,7 @@ std::shared_ptr<Entity> Component::GetEntity()
 
 std::shared_ptr<Core> Component::GetCore()
 {
-	return nullptr;
+	return m_entity.lock()->GetCore();
 }
 
 std::shared_ptr<Keyboard> Component::GetKeyboard()

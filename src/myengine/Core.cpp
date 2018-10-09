@@ -50,3 +50,39 @@ void Core::StartSDL()
 	}
 
 }
+
+void Core::Start()
+{
+	m_running = true;
+
+	while (m_running)
+	{
+		SDL_Event event = { 0 };
+
+		while (SDL_PollEvent(&event))
+		{
+			if (event.type == SDL_QUIT)
+			{
+				m_running = false;
+			}
+		}
+
+
+		for (std::vector<std::shared_ptr<Entity> >::iterator it = m_entities.begin();
+			it != m_entities.end(); it++)
+		{
+			(*it)->Tick();
+		}
+
+		glClearColor(0.0f, 0.0f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		for (std::vector<std::shared_ptr<Entity> >::iterator it = m_entities.begin();
+			it != m_entities.end(); it++)
+		{
+			(*it)->Display();
+		}
+
+		SDL_GL_SwapWindow(m_window);
+	}
+}

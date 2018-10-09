@@ -1,3 +1,4 @@
+#pragma once
 #include <memory>
 #include <vector>
 
@@ -57,11 +58,11 @@ public:
 		ADDCOMPONENT
 	}
 
+	void Tick();
+	void Display();
 
 private:
 	std::vector<std::shared_ptr<Component>> m_components;
 	std::weak_ptr<Core> m_core;
-	void Tick() {};
-	void Display() {};
 
 };

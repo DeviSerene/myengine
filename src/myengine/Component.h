@@ -1,3 +1,4 @@
+#pragma once
 #include <memory>
 
 class Entity;
@@ -20,11 +21,14 @@ public:
 
 	virtual void OnInit();
 
-private:
 	virtual void OnBegin();
 	virtual void OnTick();
 	virtual void OnDisplay();
 
+	void HasBegun() { if (m_began == false) { OnBegin(); m_began = true; } }
+private:
+
+	bool m_began;
 
 	std::weak_ptr<Entity> m_entity;
 };

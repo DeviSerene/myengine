@@ -1,18 +1,25 @@
 #include "ShaderProgram.h"
 #include "VertexArray.h"
 
-
 ShaderProgram::ShaderProgram(std::string vert, std::string frag)
 {
-	//pgg code#
 
-
-	std::ifstream file(vert.c_str());
+	std::ifstream file("simplevert.txt");
 	std::string vertSrc;
 
-	if (!file.is_open())
+	if (!file)
 	{
 		throw std::exception();
+	}
+
+	std::streampos current = file.tellg();
+	std::streampos end = -1;
+	for (int i = 0; current != end; i++) //keep going until we reach the end
+	{
+		std::string line;
+		std::getline(file, line);
+		vertSrc += line + "\n";
+		current = file.tellg();
 	}
 
 	while (!file.eof())
@@ -116,16 +123,19 @@ void ShaderProgram::SetUniform(std::string uniform, float value)
 
 void ShaderProgram::SetUniform(std::string uniform, glm::mat4 value)
 {
-	GLint uniformId = glGetUniformLocation(m_id, uniform.c_str());
-
-	if (uniformId == -1)
+	if (m_id)
 	{
-		throw std::exception();
-	}
+		GLint uniformId = glGetUniformLocation(m_id, uniform.c_str());
 
-	glUseProgram(m_id);
-	glUniformMatrix4fv(uniformId, 1, GL_FALSE, glm::value_ptr(value));
-	glUseProgram(0);
+		if (uniformId == -1)
+		{
+			throw std::exception();
+		}
+
+		glUseProgram(m_id);
+		glUniformMatrix4fv(uniformId, 1, GL_FALSE, glm::value_ptr(value));
+		glUseProgram(0);
+	}
 }
 
 void ShaderProgram::Draw(VertexArray& vertexArray)

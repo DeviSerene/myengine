@@ -1,3 +1,4 @@
+#pragma once
 //a vertexArray organises the data stored on the vertex buffer in a way for the gpu
 //this way, we can name buffers like "_inPosition" and give the location, same with _inColours or _texCoords etc
 //this makes it easy to use in the shaders!
