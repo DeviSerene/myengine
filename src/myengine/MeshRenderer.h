@@ -2,14 +2,18 @@
 #include "Component.h" //inherits from component (as it is something that can be slot into an entity)
 #include <memory>
 #include <iostream>
+#include <GLM/glm.hpp>
+#include <GL/glew.h>
+#include <GLM/gtc/matrix_transform.hpp>
 
 //this component is for displaying a 3D object on screen
 //to do that, we need a VAO (organised information about the 3D object, like where the vertex positions, normals, texture coords...)
 //Upload positions of triangle to GPU (VBO)
 //Organise that data on the GPU(VAO)
 //we also neeed to know what shader(s) to use when we want to display them
-class VertexArray; //forward declaration, #include them in the .cpp
-class ShaderProgram;
+class Mesh; //forward declaration, #include them in the .cpp
+class Material;
+//class ShaderProgram;
 
 class MeshRenderer : public Component
 {
@@ -19,7 +23,16 @@ public:
 
 private:
 
-	std::shared_ptr<VertexArray> m_shape;
-	std::shared_ptr<ShaderProgram> m_shader;
+	// The actual model geometry
+	std::shared_ptr<Mesh> m_mesh;
+	// The material contains the shader
+	std::shared_ptr<Material> m_mat;
+	std::shared_ptr<glm::vec3> m_cam;
+
+	// Matrix for the position and orientation of the game object
+	glm::mat4 m_modelMatrix;
+	glm::mat4 m_invModelMatrix;
+
+//	std::shared_ptr<ShaderProgram> m_shader;
 
 };

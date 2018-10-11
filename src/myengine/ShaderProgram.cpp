@@ -1,17 +1,18 @@
 #include "ShaderProgram.h"
-#include "VertexArray.h"
+#include "Mesh.h"
 
 ShaderProgram::ShaderProgram(std::string vert, std::string frag)
 {
-
-	std::ifstream file("simplevert.txt");
-	std::string vertSrc;
-
-	if (!file)
+	//Open the VertShader file
+	std::ifstream file(vert);
+	if (!file.is_open())
 	{
+		std::cout << "Could not open vertshader file!" << '\n'; //something has gone wrong!
 		throw std::exception();
 	}
 
+	//Go through the file, line by line, copying it into a string 
+	std::string vertSrc;
 	std::streampos current = file.tellg();
 	std::streampos end = -1;
 	for (int i = 0; current != end; i++) //keep going until we reach the end
@@ -22,28 +23,26 @@ ShaderProgram::ShaderProgram(std::string vert, std::string frag)
 		current = file.tellg();
 	}
 
-	while (!file.eof())
-	{
-		std::string line;
-		std::getline(file, line);
-		vertSrc += line + "\n";
-	}
-
-	file.close();
-	file.open(frag.c_str());
+	file.close(); //we need to close the file before we open another one
+	file.open(frag); //open the fragshader and copy that into another string
 	std::string fragSrc;
 
 	if (!file.is_open())
 	{
+		std::cout << "Could not open frag file!" << '\n'; //something has gone wrong!
 		throw std::exception();
 	}
-
-	while (!file.eof())
+	current = file.tellg();
+	end = -1;
+	for (int i = 0; current != end; i++) //keep going until we reach the end
 	{
 		std::string line;
 		std::getline(file, line);
 		fragSrc += line + "\n";
+		current = file.tellg();
 	}
+	file.close();
+	//now we have the shaders in strings, we can use the PGG code to get it working
 
 	const GLchar *vs = vertSrc.c_str();
 	GLuint vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
@@ -138,12 +137,12 @@ void ShaderProgram::SetUniform(std::string uniform, glm::mat4 value)
 	}
 }
 
-void ShaderProgram::Draw(VertexArray& vertexArray)
+void ShaderProgram::Draw(std::shared_ptr<Mesh> _mesh)
 {
 	glUseProgram(m_id);
-	glBindVertexArray(vertexArray.GetId());
+//	glBindVertexArray(_mesh->GetVAO());
 
-	glDrawArrays(GL_TRIANGLES, 0, vertexArray.GetVertexCount());
+//	glDrawArrays(GL_TRIANGLES, 0, _mesh->GetVertices());
 
 	glBindVertexArray(0);
 	glUseProgram(0);

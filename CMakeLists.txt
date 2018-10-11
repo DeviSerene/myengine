@@ -6,10 +6,12 @@ include_directories(
 	contrib
     contrib/msvc-windows-x86/glew/include
     contrib/msvc-windows-x86/SDL2/include
+    contrib/msvc-windows-x86/SDL2_image/include
 )
 
   link_directories(
     ${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/SDL2/lib
+    ${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/SDL2_image/lib
     ${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/glew/lib
   )
   
@@ -34,6 +36,10 @@ add_library(engine
 	src/myengine/VertexArray.cpp
 	src/myengine/VertexBuffer.h
 	src/myengine/VertexBuffer.cpp
+	src/myengine/Material.h
+	src/myengine/Material.cpp
+	src/myengine/Mesh.h
+	src/myengine/Mesh.cpp
 )
 
 add_executable(game
@@ -45,12 +51,24 @@ add_executable(game
 target_link_libraries(game
 	engine
 	
-    SDL2 glew32 opengl32 
+    SDL2 SDL2_image glew32 opengl32 
 )
 
  add_custom_command(TARGET game POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
       "${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/SDL2/bin/SDL2.dll"
+      "$<TARGET_FILE_DIR:game>"
+  )
+
+   add_custom_command(TARGET game POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/SDL2_image/bin/SDL2_image.dll"
+      "$<TARGET_FILE_DIR:game>"
+  )
+
+     add_custom_command(TARGET game POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/SDL2_image/bin/libpng16-16.dll"
       "$<TARGET_FILE_DIR:game>"
   )
 

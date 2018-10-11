@@ -6,13 +6,13 @@
 #include <iostream>
 #include <string>
 
-class VertexArray;
+class Mesh;
 
 class ShaderProgram
 {
 public:
 	ShaderProgram(std::string vert, std::string frag);
-	void Draw(VertexArray& vertexArray);
+	void Draw(std::shared_ptr<Mesh> _mesh);
 	void SetUniform(std::string uniform, glm::vec4 value);
 	void SetUniform(std::string uniform, float value);
 	void SetUniform(std::string uniform, glm::mat4 value);

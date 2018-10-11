@@ -6,6 +6,18 @@
 
 Core::Core()
 {
+	_cameraAngleX = 89.49f, _cameraAngleY = 0.0f;
+	_cameraPanX = 0.0f, _cameraPanY = 0.0f, _cameraPanZ = -5.5f;
+	// This represents the camera's orientation and position
+	_cameraPosition = { 0, -0.09, -3.2f };
+	_viewMatrix = glm::translate(glm::mat4(1.0f), _cameraPosition);
+
+
+	// Set up a projection matrix
+	_projMatrix = glm::perspective(45.0f, 1.0f, 0.1f, 100.0f);
+	// Position of the light, in world-space
+	_lightPosition = glm::vec3(10, 10, 0);
+
 }
 
 Core::~Core()
@@ -74,8 +86,11 @@ void Core::Start()
 			(*it)->Tick();
 		}
 
+
+		_viewMatrix = glm::translate(glm::mat4(1.0f), _cameraPosition);
 		glClearColor(0.0f, 0.0f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+		glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 		for (std::vector<std::shared_ptr<Entity> >::iterator it = m_entities.begin();
 			it != m_entities.end(); it++)

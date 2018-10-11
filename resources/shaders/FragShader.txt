@@ -1,0 +1,79 @@
+#version 430 core
+
+float facing(vec3 _normal, vec3 _lightDir);
+
+// Input per-fragment data
+// These must correspond to the varying outputs from the vertex shader
+in vec3 vNormalV;
+in vec3 eyeSpaceLightPosV;
+in vec3 eyeSpaceVertPosV;
+in vec3 tanSpaceLightPosV;
+in vec3 tanSpaceVertPosV;
+in vec3 tangentSpaceLightDirectionV;
+in vec2 texCoord;
+
+// Input uniform data - these have values that will be the same for every fragment
+uniform vec3 lightColour = {0.8,0.8,0.8};
+uniform vec3 emissiveColour = {0,0,0};
+uniform vec3 ambientColour  = {0.1f,0.1f,0.2f};
+uniform vec3 diffuseColour  = {1.0f,1.0f,1.0f};
+uniform vec3 specularColour = {1.0f,1.0f,1.0f};
+uniform float shininess     = 50.0f;
+uniform float alpha         = 1.0f;
+
+// The output of the fragment shader is the fragment's colour
+out vec4 fragColour;
+layout(location = 0) out vec3 color;
+
+// This is another input to allow us to access a texture
+uniform sampler2D tex1;
+uniform sampler2D normalMap;
+uniform sampler2D heightMap;
+
+void main()
+{
+	// Calculate the direction from the sample position to the light
+//	vec3 lightDir = normalize( eyeSpaceLightPosV - eyeSpaceVertPosV);
+	vec3 lightDir = normalize(tanSpaceLightPosV);
+	//vec3 lightDir = vec3(-1,5,0);
+
+	////-~ PARRALEX MAPPING ~-////
+	vec3 biasedHeight = normalize(eyeSpaceVertPosV);
+	float heightmap = texture2D(heightMap, vec2(texCoord.x, -texCoord.y)).r;
+	vec2 myCoords = texCoord.xy + (biasedHeight.xy * (heightmap * 0.125 * 0.25));
+	//myCoords = texCoord;
+
+	////-~ NORMAL MAPPING ~-////
+	//vec2 myCoords; myCoords.x = texCoord.x; myCoords.y = -texCoord.y;
+	vec3 normal = normalize( vNormalV );
+	vec3 normalmap = normalize(texture(normalMap, myCoords).rgb * 2.0 - 1.0); 
+
+	normal += normalmap;
+	normal = normalize(normal);
+
+	////-~ TEXTURE ~-////
+	vec3 texColour = vec3(texture(tex1,myCoords));
+
+	////-~ DIFFUSE ~-////
+	vec3 diffuse = diffuseColour * lightColour * max( clamp(dot( normal, lightDir ),0,1), 0);
+	diffuse = vec3(0,0,0);
+
+	////-~ SPECULAR ~-////
+	vec3 eyeDir = normalize( -eyeSpaceVertPosV );
+	vec3 H = normalize(lightDir + eyeDir);
+	vec3 specular = specularColour * lightColour * facing(normal, lightDir) * pow(max(dot(normal,H),0),shininess);
+	specular = vec3(0,0,0);
+
+	////-~ FINAL COLOUR ~-////
+	fragColour = vec4( emissiveColour + texColour*(ambientColour + diffuse + specular), alpha) ;
+	color = vec3(fragColour);
+	//fragColour = normalize(vec4(normalmap,alpha));
+	//fragColour = vec4(lightDir,1);
+
+	//ythythythy - Karsten
+}
+
+float facing(vec3 _normal, vec3 _lightDir)
+{
+	return float(dot(_normal,_lightDir) > 0);
+}

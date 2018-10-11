@@ -58,6 +58,22 @@ public:
 		ADDCOMPONENT
 	}
 
+	template <typename T>
+	std::shared_ptr<T> GetComponent()
+	{
+		std::shared_ptr<T> rtn;
+		if (!m_components.empty())
+		{
+			for (int i = 0; i < m_components.size(); i++)
+			{
+				rtn = std::static_pointer_cast<T>(m_components[i]);
+				if (rtn)
+					return rtn;
+			}
+		}
+		return rtn;
+	}
+
 	void Tick();
 	void Display();
 
