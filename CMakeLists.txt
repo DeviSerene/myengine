@@ -7,12 +7,18 @@ include_directories(
     contrib/msvc-windows-x86/glew/include
     contrib/msvc-windows-x86/SDL2/include
     contrib/msvc-windows-x86/SDL2_image/include
+    contrib/msvc-windows-x86/openal-soft/include
+    contrib/msvc-windows-x86/ogg/include
+    contrib/msvc-windows-x86/vorbis/include
 )
 
   link_directories(
     ${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/SDL2/lib
     ${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/SDL2_image/lib
     ${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/glew/lib
+    ${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/openal-soft/lib
+    ${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/ogg/lib
+    ${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/vorbis/lib
   )
   
   add_definitions(-DSDL_MAIN_HANDLED)
@@ -40,6 +46,14 @@ add_library(engine
 	src/myengine/Material.cpp
 	src/myengine/Mesh.h
 	src/myengine/Mesh.cpp
+	src/myengine/TestResource.h
+	src/myengine/TestResource.cpp
+	src/myengine/Resource.h
+	src/myengine/Resource.cpp
+	src/myengine/Resources.h
+	src/myengine/Resources.cpp
+	src/myengine/Sound.h
+	src/myengine/Sound.cpp
 )
 
 add_executable(game
@@ -51,7 +65,7 @@ add_executable(game
 target_link_libraries(game
 	engine
 	
-    SDL2 SDL2_image glew32 opengl32 
+    SDL2 SDL2_image glew32 opengl32 OpenAL32 ogg vorbis vorbisfile
 )
 
  add_custom_command(TARGET game POST_BUILD
@@ -75,5 +89,11 @@ target_link_libraries(game
   add_custom_command(TARGET game POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
       "${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/glew/bin/glew32.dll"
+      "$<TARGET_FILE_DIR:game>"
+  )
+
+  add_custom_command(TARGET game POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/openal-soft/bin/OpenAL32.dll"
       "$<TARGET_FILE_DIR:game>"
   )

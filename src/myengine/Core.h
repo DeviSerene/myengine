@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <memory>
 #include <vector>
 #include <SDL2/SDL.h>
@@ -7,6 +8,7 @@
 #include <GLM/gtc/matrix_transform.hpp>
 
 class Entity;
+class Resources;
 
 class Core : public std::enable_shared_from_this<Core>
 {
@@ -14,19 +16,22 @@ public:
 	Core();
 	~Core();
 
-	static std::shared_ptr<Core> init() { std::shared_ptr<Core> c = std::shared_ptr<Core>(new Core()); c->StartSDL(); return c; };
+	static std::shared_ptr<Core> init();
 	void Start();
 	void Stop();
 	std::shared_ptr<Entity> AddEntity();
 
+
+	std::shared_ptr<Resources> GetResources() { return m_resources; }
 	glm::vec3 GetCamera() { return _cameraPosition; }
 	glm::mat4 GetVM() { return _viewMatrix; }
 	glm::mat4 GetPM() { return _projMatrix; }
 private:
 
 	void StartSDL();
-
+	float m_lastTime;
 	bool m_running;
+	std::shared_ptr<Resources> m_resources;
 	std::vector<std::shared_ptr<Entity>> m_entities;
 	SDL_Window* m_window;
 
