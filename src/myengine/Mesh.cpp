@@ -197,7 +197,7 @@ void Mesh::LoadOBJ(std::string filename)
 				glEnableVertexAttribArray(2);
 			}
 
-			//I have no idea what I'm doing for normal maps, but let's give it a shot:
+			//normal maps, let's give it a shot:
 			if (orderedUVData.size() > 0)
 			{
 				for (int i = 0; i < orderedPositionData.size(); i += 3)
@@ -291,3 +291,11 @@ void Mesh::Draw()
 	glBindVertexArray(0);
 }
 
+std::shared_ptr<Mesh> Mesh::Load(std::string filename)
+{
+	std::shared_ptr<Mesh> rtn = std::shared_ptr<Mesh>(new Mesh());
+	rtn->LoadOBJ(filename);
+	rtn->m_path = filename;
+	rtn->m_timer = 0;
+	return rtn;
+}

@@ -9,8 +9,7 @@
 
 Core::Core()
 {
-	_cameraAngleX = 89.49f, _cameraAngleY = 0.0f;
-	_cameraPanX = 0.0f, _cameraPanY = 0.0f, _cameraPanZ = -5.5f;
+	_cameraAngleX = 0.0f, _cameraAngleY = 0.0f;
 	// This represents the camera's orientation and position
 	_cameraPosition = { 0, -0.09, -1.0f };
 	_viewMatrix = glm::translate(glm::mat4(1.0f), _cameraPosition);
@@ -55,7 +54,7 @@ std::shared_ptr<Entity> Core::AddEntity()
 	std::shared_ptr<Entity> rtn = std::shared_ptr<Entity>(new Entity());
 	m_entities.push_back(rtn);
 	rtn->SetCore(shared_from_this());
-
+	rtn->m_alive = true;
 	rtn->Init();
 	
 	return rtn;
@@ -92,7 +91,7 @@ void Core::Start()
 	{
 		SDL_Event event = { 0 };
 		unsigned int current = SDL_GetTicks();
-		float deltaTs = (float)(current - m_lastTime) / 1000.0f;
+		m_deltaTs = (float)(current - m_lastTime) / 1000.0f;
 		m_lastTime = current;
 		while (SDL_PollEvent(&event))
 		{
@@ -100,17 +99,73 @@ void Core::Start()
 			{
 				m_running = false;
 			}
+			if (event.type == SDL_KEYDOWN)
+			{
+				switch (event.key.keysym.sym) //what key has been pressed?
+				{
+				case SDLK_q:
+					_cameraPosition.x += 0.01f;
+					break;
+				case SDLK_w:
+					_cameraPosition.x -= 0.01f;
+					break;
+				case SDLK_e:
+					_cameraPosition.y += 0.01f;
+					break;
+				case SDLK_r:
+					_cameraPosition.y -= 0.01f;
+					break;
+				case SDLK_t:
+					_cameraPosition.z += 0.01f;
+					break;
+				case SDLK_y:
+					_cameraPosition.z -= 0.01f;
+					break;
+				case SDLK_a:
+					_cameraAngleX += 0.05f;
+					break;
+				case SDLK_d:
+					_cameraAngleX -= 0.05f;
+					break;
+				case SDLK_z:
+					_cameraAngleY += 0.05f;
+					break;
+				case SDLK_c:
+					_cameraAngleY -= 0.05f;
+					break;
+				}
+			}
 		}
-		m_resources->CleanUp(deltaTs);
+		m_resources->CleanUp(m_deltaTs);
 
 		for (std::vector<std::shared_ptr<Entity> >::iterator it = m_entities.begin();
 			it != m_entities.end(); it++)
 		{
-			(*it)->Tick();
+			try
+			{
+				(*it)->Tick();
+			}
+			catch (MyEngineException e)
+			{
+				(*it)->m_alive = false;
+			}
 		}
 
+		for (std::vector<std::shared_ptr<Entity> >::iterator it = m_entities.begin();
+			it != m_entities.end(); it++)
+		{
+			if (!(*it)->m_alive)
+			{
+				//if an error wants us to kill it, we should kill it
+				it = m_entities.erase(it);
+				it--;
+			}
+		}
 
-		_viewMatrix = glm::translate(glm::mat4(1.0f), _cameraPosition);
+		//
+		_viewMatrix = glm::rotate(glm::mat4(1.0f), _cameraAngleX, glm::vec3(1, 0, 0));
+		_viewMatrix = glm::rotate(_viewMatrix, _cameraAngleY, glm::vec3(0, 1, 0));
+		_viewMatrix = glm::translate(_viewMatrix, _cameraPosition);
 		glClearColor(0.0f, 0.0f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		int x, y;

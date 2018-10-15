@@ -6,13 +6,17 @@
 #include <GLM/glm.hpp>
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
+#include <memory>
+#include "Resource.h"
 
 // Encapsulates shaders and textures
-class Material
+class Material : public Resource
 {
 public:
 	Material();
 	~Material();
+
+	static std::shared_ptr<Material> Create();
 
 	// Loads shaders from file
 	// Returns false if there was an error - it will also print out messages to console

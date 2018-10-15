@@ -8,15 +8,16 @@
 #include <string>
 #include <math.h>
 #include <vector>
+#include "resource.h"
 
 // For loading a mesh from OBJ file and keeping a reference for it
-class Mesh
+class Mesh : public Resource
 {
 public:
 
 	Mesh();
 	~Mesh();
-
+	static std::shared_ptr<Mesh> Load(std::string filename);
 	// OBJ file must be triangulated
 	void LoadOBJ(std::string filename);
 

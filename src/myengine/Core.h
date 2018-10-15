@@ -1,5 +1,8 @@
 #pragma once
 #include <iostream>
+#include <exception>
+#include "MyEngineException.h"
+#include <string>
 #include <memory>
 #include <vector>
 #include <SDL2/SDL.h>
@@ -26,10 +29,13 @@ public:
 	glm::vec3 GetCamera() { return _cameraPosition; }
 	glm::mat4 GetVM() { return _viewMatrix; }
 	glm::mat4 GetPM() { return _projMatrix; }
+
+	float GetDeltaTime() { return m_deltaTs; }
 private:
 
 	void StartSDL();
 	float m_lastTime;
+	float m_deltaTs;
 	bool m_running;
 	std::shared_ptr<Resources> m_resources;
 	std::vector<std::shared_ptr<Entity>> m_entities;
@@ -42,7 +48,7 @@ private:
 	glm::mat4 _projMatrix;
 
 	// Current rotation information about the camera
-	float _cameraAngleX, _cameraAngleY, _cameraPanX, _cameraPanY, _cameraPanZ;
+	float _cameraAngleX, _cameraAngleY;
 
 	// Position of the single point-light in the scene
 	glm::vec3 _lightPosition;

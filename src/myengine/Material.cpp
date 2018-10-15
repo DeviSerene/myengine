@@ -293,3 +293,10 @@ void Material::Apply()
 	glUniform1i(_shaderHeightSamplerLocation, 2);
 	glBindTexture(GL_TEXTURE_2D, _heightTexture);
 }
+
+std::shared_ptr<Material> Material::Create()
+{
+	std::shared_ptr<Material> rtn = std::shared_ptr<Material>(new Material());
+	rtn->m_timer = 0;
+	return rtn;
+}

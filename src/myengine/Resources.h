@@ -31,7 +31,13 @@ public:
 	}
 
 	template <typename T>
-	std::shared_ptr<T> Create();
+	std::shared_ptr <T> Create()
+	{
+		std::shared_ptr <T> rtn;
+		rtn = T::Create();
+		m_resources.push_back(rtn);
+		return rtn;
+	}
 
 	void CleanUp(float& _deltaTime);
 

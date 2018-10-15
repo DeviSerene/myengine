@@ -76,9 +76,11 @@ public:
 
 	void Tick();
 	void Display();
+	bool m_alive;
 
-private:
+protected:
 	std::vector<std::shared_ptr<Component>> m_components;
 	std::weak_ptr<Core> m_core;
+
 
 };

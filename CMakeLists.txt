@@ -54,6 +54,9 @@ add_library(engine
 	src/myengine/Resources.cpp
 	src/myengine/Sound.h
 	src/myengine/Sound.cpp
+	src/myengine/MyEngineException.h
+	src/myengine/Transform.h
+	src/myengine/Transform.cpp
 )
 
 add_executable(game
