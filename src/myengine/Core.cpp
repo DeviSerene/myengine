@@ -29,6 +29,30 @@ std::shared_ptr<Core> Core::init()
 	c->m_resources = std::shared_ptr<Resources>(new Resources());
 	c->m_lastTime = 0;
 
+	//audio
+	c->device = alcOpenDevice(NULL);
+
+	if (!c->device)
+	{
+		throw std::exception();
+	}
+
+	c->context = alcCreateContext(c->device, NULL);
+
+	if (!c->context)
+	{
+		alcCloseDevice(c->device);
+		throw std::exception();
+	}
+
+	if (!alcMakeContextCurrent(c->context))
+	{
+		alcDestroyContext(c->context);
+		alcCloseDevice(c->device);
+		throw std::exception();
+	}
+	//end audio
+
 	return c; 
 }
 
@@ -37,7 +61,9 @@ Core::~Core()
 
 	SDL_DestroyWindow(m_window);
 	SDL_Quit();
-
+	alcMakeContextCurrent(NULL);
+	alcDestroyContext(context);
+	alcCloseDevice(device);
 }
 
 
@@ -48,7 +74,7 @@ std::shared_ptr<Entity> Core::AddEntity()
 	if (tr->GetData())
 		std::cout << "Resources works!";
 
-	std::shared_ptr<Sound> s = m_resources->Load<Sound>("dixie_horn.ogg");
+	std::shared_ptr<Sound> s = m_resources->Load<Sound>("fan2.ogg");
 	s->Play();
 
 	std::shared_ptr<Entity> rtn = std::shared_ptr<Entity>(new Entity());

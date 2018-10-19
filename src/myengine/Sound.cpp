@@ -111,6 +111,30 @@ void Sound::Play()
 	//audioSources.push_back(sid);
 }
 
+void Sound::PlayLoop()
+{
+	alSourcei(imp->id, AL_LOOPING, 1);
+	std::cout << "Sound Played Loop";
+	ALuint sid = 0;
+	alGenSources(1, &sid);
+	alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
+	alSource3f(sid, AL_POSITION, 0.0f, 0.0f, 0.0f);
+	alSourcei(sid, AL_BUFFER, imp->id);
+	alSourcePlay(sid);
+
+}
+
+void Sound::StopLooping()
+{ 
+	alSourcei(imp->id, AL_LOOPING, 0); 
+}
+
+
+void Sound::Stop()
+{
+	alSourceStop(imp->id);
+}
+
 void Sound::Play(float vol, float varMin, float varMax)
 {
 	//For better rand resolution

@@ -9,6 +9,9 @@
 #include <GL/glew.h>
 #include <GLM/glm.hpp>
 #include <GLM/gtc/matrix_transform.hpp>
+#include <AL/al.h>
+#include <AL/alc.h>
+
 
 class Entity;
 class Resources;
@@ -40,6 +43,8 @@ private:
 	std::shared_ptr<Resources> m_resources;
 	std::vector<std::shared_ptr<Entity>> m_entities;
 	SDL_Window* m_window;
+	ALCdevice* device;
+	ALCcontext* context;
 
 	// This matrix represents the camera's position and orientation
 	glm::mat4 _viewMatrix;
