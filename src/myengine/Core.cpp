@@ -34,7 +34,7 @@ std::shared_ptr<Core> Core::init()
 
 	if (!c->device)
 	{
-		throw std::exception();
+		throw MyEngineException("Unable to create audio device");
 	}
 
 	c->context = alcCreateContext(c->device, NULL);
@@ -42,14 +42,14 @@ std::shared_ptr<Core> Core::init()
 	if (!c->context)
 	{
 		alcCloseDevice(c->device);
-		throw std::exception();
+		throw MyEngineException("Unable to create audio context");
 	}
 
 	if (!alcMakeContextCurrent(c->context))
 	{
 		alcDestroyContext(c->context);
 		alcCloseDevice(c->device);
-		throw std::exception();
+		throw MyEngineException("Unable to make audio context current");
 	}
 	//end audio
 
@@ -91,7 +91,7 @@ void Core::StartSDL()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		throw std::exception();
+		throw MyEngineException("Unable to init SDL Video");
 	}
 
 	m_window = SDL_CreateWindow("Triangle",
@@ -100,11 +100,11 @@ void Core::StartSDL()
 
 	if (!SDL_GL_CreateContext(m_window))
 	{
-		throw std::exception();
+		throw MyEngineException("Unable to create SDL Window");
 	}
 	if (glewInit() != GLEW_OK)
 	{
-		throw std::exception();
+		throw MyEngineException("Unable to init GLEW");
 	}
 
 }
@@ -112,6 +112,8 @@ void Core::StartSDL()
 void Core::Start()
 {
 	m_running = true;
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 
 	while (m_running)
 	{
@@ -189,6 +191,7 @@ void Core::Start()
 		}
 
 		//
+
 		_viewMatrix = glm::rotate(glm::mat4(1.0f), _cameraAngleX, glm::vec3(1, 0, 0));
 		_viewMatrix = glm::rotate(_viewMatrix, _cameraAngleY, glm::vec3(0, 1, 0));
 		_viewMatrix = glm::translate(_viewMatrix, _cameraPosition);
