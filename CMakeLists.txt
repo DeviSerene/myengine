@@ -57,6 +57,8 @@ add_library(engine
 	src/myengine/MyEngineException.h
 	src/myengine/Transform.h
 	src/myengine/Transform.cpp
+	src/myengine/Gui.h
+	src/myengine/Gui.cpp
 )
 
 add_executable(game
