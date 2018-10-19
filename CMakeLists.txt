@@ -59,6 +59,8 @@ add_library(engine
 	src/myengine/Transform.cpp
 	src/myengine/Gui.h
 	src/myengine/Gui.cpp
+	src/myengine/DepthBuffer.h
+	src/myengine/DepthBuffer.cpp
 )
 
 add_executable(game

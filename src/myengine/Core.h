@@ -46,6 +46,8 @@ private:
 	ALCdevice* device;
 	ALCcontext* context;
 
+
+
 	// This matrix represents the camera's position and orientation
 	glm::mat4 _viewMatrix;
 
@@ -58,4 +60,7 @@ private:
 	// Position of the single point-light in the scene
 	glm::vec3 _lightPosition;
 	glm::vec3 _cameraPosition;
+
+	
+
 };

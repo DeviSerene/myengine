@@ -196,7 +196,8 @@ void Core::Start()
 		_viewMatrix = glm::rotate(_viewMatrix, _cameraAngleY, glm::vec3(0, 1, 0));
 		_viewMatrix = glm::translate(_viewMatrix, _cameraPosition);
 		glClearColor(0.0f, 0.0f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT || GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_DEPTH_BUFFER_BIT);
 		int x, y;
 		SDL_GetWindowSize(m_window, &x, &y);
 		glViewport(0, 0, x, y);
@@ -212,3 +213,4 @@ void Core::Start()
 		SDL_GL_SwapWindow(m_window);
 	}
 }
+
