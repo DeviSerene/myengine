@@ -8,11 +8,14 @@
 #include <myengine/Core.h>
 #include <myengine/MyEngineException.h>
 #include <Windows.h>
+#include <vector>
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 
 void safe_main()
 {
 	std::cout << "Hello world" << std::endl;
-
+	std::vector<std::shared_ptr<Entity>> m_entities;
 
 	std::shared_ptr<Core> core = Core::init();
 
@@ -24,6 +27,13 @@ void safe_main()
 	std::shared_ptr<Entity> enti2 = core->AddEntity();
 	std::shared_ptr<Transform> tran2 = enti2->AddComponent<Transform>(glm::vec3(1, 1, -1), glm::vec3(1, 1, 1), glm::vec3(1, 1, 1));
 	std::shared_ptr<MeshRenderer> com2 = enti2->AddComponent<MeshRenderer>();
+	srand(time(NULL));
+	for (int i = 0; i < 100; i++)
+	{
+		m_entities.push_back(core->AddEntity());
+		m_entities[i]->AddComponent<Transform>(glm::vec3(rand() % 10, rand() % 10, -(rand() % 10)), glm::vec3(1, 1, 1), glm::vec3(1, 1, 1));
+		m_entities[i]->AddComponent<MeshRenderer>();
+	}
 
 	if (enti->GetComponent<MeshRenderer>())
 		std::cout << "Has a MESH";

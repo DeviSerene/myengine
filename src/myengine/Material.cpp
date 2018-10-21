@@ -184,6 +184,7 @@ bool Material::LoadShaders(std::string vertFilename, std::string fragFilename)
 	_shaderTex1SamplerLocation = glGetUniformLocation(_shaderProgram, "tex1");
 	_shaderNormalSamplerLocation = glGetUniformLocation(_shaderProgram, "normalMap");
 	_shaderHeightSamplerLocation = glGetUniformLocation(_shaderProgram, "heightMap");
+	_shadowMapID = glGetUniformLocation(_shaderProgram, "shadowMap");
 
 	return true;
 }

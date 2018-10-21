@@ -69,6 +69,7 @@ protected:
 	int _shaderTex1SamplerLocation;
 	int _shaderNormalSamplerLocation;
 	int _shaderHeightSamplerLocation;
+	int _shadowMapID;
 
 	// Local store of material properties to be sent to the shader
 	glm::vec3 _emissiveColour, _diffuseColour, _specularColour;

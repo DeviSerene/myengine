@@ -15,6 +15,7 @@ public:
 
 	void SetUpDepthBuffer();
 	void SetMVP(glm::vec3 _lightInvDir);
+	bool LoadShaders(std::string vertFilename, std::string fragFilename);
 
 private:
 	/////This is the depth buffer
@@ -24,7 +25,6 @@ private:
 	int depthMatrixID;
 
 
-	bool LoadShaders(std::string vertFilename, std::string fragFilename);
 	// The OpenGL shader program handle
 	int _shaderProgram;
 

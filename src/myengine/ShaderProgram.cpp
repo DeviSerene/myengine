@@ -137,6 +137,47 @@ void ShaderProgram::SetUniform(std::string uniform, glm::mat4 value)
 	}
 }
 
+unsigned int ShaderProgram::LoadTexture(std::string filename)
+{
+	// Load SDL surface
+	SDL_Surface *image = SDL_LoadBMP(filename.c_str());
+
+	if (!image) // Check it worked
+	{
+		std::cerr << "WARNING: could not load BMP image: " << filename << std::endl;
+		return 0;
+	}
+
+	// Create OpenGL texture
+	unsigned int texName = 0;
+	glGenTextures(1, &texName);
+
+
+	glBindTexture(GL_TEXTURE_2D, texName);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	// By default, OpenGL mag filter is linear
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	// By default, OpenGL min filter will use mipmaps
+	// We therefore either need to tell it to use linear or generate a mipmap
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	// SDL loads images in BGR order
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->w, image->h, 0, GL_BGR, GL_UNSIGNED_BYTE, image->pixels);
+
+	//glGenerateMipmap(GL_TEXTURE_2D);
+
+	SDL_FreeSurface(image);
+
+	//glBindTexture(GL_TEXTURE_2D, 0);
+
+
+	return texName;
+}
+
 void ShaderProgram::Draw(std::shared_ptr<Mesh> _mesh)
 {
 	glUseProgram(m_id);
@@ -146,4 +187,21 @@ void ShaderProgram::Draw(std::shared_ptr<Mesh> _mesh)
 
 	glBindVertexArray(0);
 	glUseProgram(0);
+}
+
+void ShaderProgram::Apply()
+{
+	glUseProgram(m_id);
+
+	glActiveTexture(GL_TEXTURE0);
+	glUniform1i(glGetUniformLocation(m_id, "tex1"), 0);
+	glBindTexture(GL_TEXTURE_2D, _texture1);
+
+	glActiveTexture(GL_TEXTURE1);
+	glUniform1i(glGetUniformLocation(m_id, "normalMap"), 1);
+	glBindTexture(GL_TEXTURE_2D, _normalTexture);
+
+	glActiveTexture(GL_TEXTURE2);
+	glUniform1i(glGetUniformLocation(m_id, "heightMap"), 2);
+	glBindTexture(GL_TEXTURE_2D, _heightTexture);
 }

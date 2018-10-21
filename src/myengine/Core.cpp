@@ -69,13 +69,8 @@ Core::~Core()
 
 std::shared_ptr<Entity> Core::AddEntity()
 {
-
-	std::shared_ptr<TestResource> tr = m_resources->Load<TestResource>("tr");
-	if (tr->GetData())
-		std::cout << "Resources works!";
-
-	std::shared_ptr<Sound> s = m_resources->Load<Sound>("fan2.ogg");
-	s->Play();
+	//std::shared_ptr<Sound> s = m_resources->Load<Sound>("fan2.ogg");
+	//s->Play();
 
 	std::shared_ptr<Entity> rtn = std::shared_ptr<Entity>(new Entity());
 	m_entities.push_back(rtn);

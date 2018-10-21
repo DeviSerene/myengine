@@ -5,6 +5,8 @@
 #include <GLM/glm.hpp>
 #include <GL/glew.h>
 #include <GLM/gtc/matrix_transform.hpp>
+#include "ShaderProgram.h"
+//#include "DepthBuffer.h"
 
 //this component is for displaying a 3D object on screen
 //to do that, we need a VAO (organised information about the 3D object, like where the vertex positions, normals, texture coords...)
@@ -27,8 +29,9 @@ private:
 	std::shared_ptr<Mesh> m_mesh;
 	// The material contains the shader
 	std::shared_ptr<Material> m_mat;
+	//std::shared_ptr<DepthBuffer> m_db;
 	std::shared_ptr<glm::vec3> m_cam;
-
+	//std::shared_ptr <ShaderProgram> m_shader1;
 	// Matrix for the position and orientation of the game object
 	glm::mat4 m_modelMatrix;
 	glm::mat4 m_invModelMatrix;
