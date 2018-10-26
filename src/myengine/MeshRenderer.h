@@ -6,6 +6,7 @@
 #include <GL/glew.h>
 #include <GLM/gtc/matrix_transform.hpp>
 #include "ShaderProgram.h"
+#include "Texture.h"
 //#include "DepthBuffer.h"
 
 //this component is for displaying a 3D object on screen
@@ -31,6 +32,9 @@ private:
 	std::shared_ptr<Material> m_mat;
 	//std::shared_ptr<DepthBuffer> m_db;
 	std::shared_ptr<glm::vec3> m_cam;
+	std::shared_ptr<Texture> m_texture;
+	std::shared_ptr<Texture> m_normal;
+	std::shared_ptr<Texture> m_height;
 	//std::shared_ptr <ShaderProgram> m_shader1;
 	// Matrix for the position and orientation of the game object
 	glm::mat4 m_modelMatrix;

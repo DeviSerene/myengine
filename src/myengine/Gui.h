@@ -8,6 +8,7 @@
 #include <memory>
 #include <iostream>
 #include <fstream>
+#include "VertexArray.h"
 
 class Core;
 
@@ -33,4 +34,5 @@ private:
 	// Locations of Uniforms in the vertex shader
 	int _shaderModelMatLocation;
 	int _shaderProjMatLocation;
+	std::shared_ptr<VertexArray> m_shape;
 };

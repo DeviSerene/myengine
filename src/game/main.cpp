@@ -11,6 +11,7 @@
 #include <vector>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
+#include "TestScene.h"
 
 void safe_main()
 {
@@ -23,6 +24,7 @@ void safe_main()
 
 	std::shared_ptr<Transform> tran = enti->AddComponent<Transform>(glm::vec3(0,0,0), glm::vec3(50, 50, 50), glm::vec3(1, 1, 1));
 	std::shared_ptr<MeshRenderer> com = enti->AddComponent<MeshRenderer>();
+	enti->AddComponent<TestScene>();
 
 	std::shared_ptr<Entity> enti2 = core->AddEntity();
 	std::shared_ptr<Transform> tran2 = enti2->AddComponent<Transform>(glm::vec3(1, 1, -1), glm::vec3(1, 1, 1), glm::vec3(1, 1, 1));

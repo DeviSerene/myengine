@@ -205,6 +205,11 @@ void Core::Start()
 		{
 			(*it)->Display();
 		}
+		for (std::vector<std::shared_ptr<Entity> >::iterator it = m_entities.begin();
+			it != m_entities.end(); it++)
+		{
+			(*it)->Gui();
+		}
 
 		SDL_GL_SwapWindow(m_window);
 	}

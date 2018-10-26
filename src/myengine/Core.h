@@ -11,7 +11,7 @@
 #include <GLM/gtc/matrix_transform.hpp>
 #include <AL/al.h>
 #include <AL/alc.h>
-
+#include "Gui.h"
 
 class Entity;
 class Resources;
@@ -27,7 +27,7 @@ public:
 	void Stop();
 	std::shared_ptr<Entity> AddEntity();
 
-
+	std::shared_ptr<Gui> GetGui() { return m_gui; }
 	std::shared_ptr<Resources> GetResources() { return m_resources; }
 	glm::vec3 GetCamera() { return _cameraPosition; }
 	glm::mat4 GetVM() { return _viewMatrix; }
@@ -40,6 +40,7 @@ private:
 	float m_lastTime;
 	float m_deltaTs;
 	bool m_running;
+	std::shared_ptr<Gui> m_gui;
 	std::shared_ptr<Resources> m_resources;
 	std::vector<std::shared_ptr<Entity>> m_entities;
 	SDL_Window* m_window;

@@ -53,3 +53,8 @@ void Component::OnDisplay()
 {
 
 }
+
+void Component::OnGui()
+{
+
+}

@@ -40,6 +40,7 @@ public:
 	bool SetTexture(std::string filename) { _texture1 = LoadTexture(filename); return _texture1 > 0; }
 	bool SetNormal(std::string filename) { _normalTexture = LoadTexture(filename); return _normalTexture > 0; }
 	bool SetHeightMap(std::string filename) { _heightTexture = LoadTexture(filename); return _heightTexture > 0; }
+	void SetTex(int type, GLuint _texture) { if (type == 0)_texture1 = _texture; else if (type == 1)_normalTexture = _texture; else if (type == 2)_heightTexture = _texture;}
 
 	// Sets the material, applying the shaders
 	void Apply();

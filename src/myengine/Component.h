@@ -24,6 +24,7 @@ public:
 	virtual void OnBegin();
 	virtual void OnTick();
 	virtual void OnDisplay();
+	virtual void OnGui();
 
 	void HasBegun() { if (m_began == false) { OnBegin(); m_began = true; } }
 private:

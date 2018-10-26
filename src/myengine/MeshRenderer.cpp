@@ -35,13 +35,16 @@ void MeshRenderer::OnInit()
 	m_cam = std::shared_ptr<glm::vec3>(new glm::vec3(0.0f, 0.0f, 0.0f));
 
 	m_mesh = GetCore()->GetResources()->Load<Mesh>("Card.obj"); //std::shared_ptr <Mesh>(new Mesh());
+	m_texture = GetCore()->GetResources()->Load<Texture>("Card.bmp");
+	m_normal = GetCore()->GetResources()->Load<Texture>("Card_normal.bmp");
+	m_height = GetCore()->GetResources()->Load<Texture>("Card_height.bmp");
 	//m_mesh->LoadOBJ("Card.obj");
 	//m_db = std::shared_ptr<DepthBuffer>(new DepthBuffer());
 	//m_db->LoadShaders("depthVertShader.txt", "depthFragShader.txt");
 	m_mat = GetCore()->GetResources()->Create<Material>();
-	m_mat->SetTexture("Card.bmp");
-	m_mat->SetNormal("Card_normal.bmp");
-	m_mat->SetHeightMap("Card_height.bmp");
+	//m_mat->SetTexture("Card.bmp");
+	//m_mat->SetNormal("Card_normal.bmp");
+	//m_mat->SetHeightMap("Card_height.bmp");
 	m_mat->LoadShaders("VertShader.txt", "FragShader.txt");
 	m_mat->SetMatrices(m_modelMatrix, m_invModelMatrix, glm::mat4(1.0f), glm::mat4(1.0f));
 	m_mat->SetLightPosition({ 1.0f, 0.0f, 0.0f });
@@ -82,6 +85,9 @@ void MeshRenderer::OnDisplay()
 		m_mat->SetMatrices(m_modelMatrix, m_invModelMatrix, GetCore()->GetVM(), GetCore()->GetPM());
 		m_mat->SetCameraPosition(&GetCore()->GetCamera());
 		// This activates the shader
+		m_mat->SetTex(0, m_texture->GetTexture());
+		m_mat->SetTex(1, m_normal->GetTexture());
+		m_mat->SetTex(2, m_height->GetTexture());
 		m_mat->Apply();
 		//m_db->SetMVP({ 0.5f,2,2 });
 		m_mesh->Draw();

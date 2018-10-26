@@ -1,9 +1,25 @@
 #include "Gui.h"
 #include "Core.h"
+#include "VertexBuffer.h"
 
 Gui::Gui()
 {
+	std::shared_ptr<VertexBuffer> positions = std::make_shared<VertexBuffer>();
+	positions->Add(glm::vec3(0.0f, 0.0f, 0.0f));
+	positions->Add(glm::vec3(1.0f, 1.0f, 0.0f));
+	positions->Add(glm::vec3(0.0f, 1.0f, 0.0f));
+	positions->Add(glm::vec3(1.0f, 0.0f, 0.0f));
 
+	std::shared_ptr<VertexBuffer> colors = std::make_shared<VertexBuffer>();
+	colors->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	colors->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	colors->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	colors->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+
+
+	m_shape = std::make_shared<VertexArray>();
+	m_shape->SetBuffer(IN_POSITION, positions);
+	m_shape->SetBuffer(IN_COLOUR, colors);
 }
 
 Gui::~Gui()
@@ -13,6 +29,7 @@ Gui::~Gui()
 
 bool Gui::Button(glm::vec4 _pos, std::string _label)
 {
+	glUseProgram(_shaderProgram);
 	//Update the projection matrix
 	SetUniform(_shaderProjMatLocation, m_core.lock()->GetPM());
 	//update the model matrix;
@@ -20,6 +37,14 @@ bool Gui::Button(glm::vec4 _pos, std::string _label)
 	modelmat = glm::translate(modelmat, glm::vec3(_pos.x, _pos.y, 1));
 	modelmat = glm::scale(modelmat, glm::vec3(_pos.z, _pos.w, 1));
 	SetUniform(_shaderModelMatLocation, modelmat);
+	glBindVertexArray(m_shape->GetId());
+
+	// Tell OpenGL to draw it
+	// Must specify the type of geometry to draw and the number of vertices
+	glDrawArrays(GL_TRIANGLES, 0, m_shape->GetVertexCount());
+
+	// Unbind VAO
+	glBindVertexArray(0);
 	///
 
 	return false;

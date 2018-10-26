@@ -76,6 +76,7 @@ public:
 
 	void Tick();
 	void Display();
+	void Gui();
 	bool m_alive;
 
 protected:
