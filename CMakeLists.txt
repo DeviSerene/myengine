@@ -38,6 +38,8 @@ add_library(engine
 	src/myengine/MeshRenderer.cpp
 	src/myengine/ShaderProgram.h
 	src/myengine/ShaderProgram.cpp
+	src/myengine/Shader.h
+	src/myengine/Shader.cpp
 	src/myengine/VertexArray.h
 	src/myengine/VertexArray.cpp
 	src/myengine/VertexBuffer.h
@@ -61,6 +63,8 @@ add_library(engine
 	src/myengine/Gui.cpp
 	src/myengine/DepthBuffer.h
 	src/myengine/DepthBuffer.cpp
+	src/myengine/Texture.h
+	src/myengine/Texture.cpp
 )
 
 add_executable(game
