@@ -106,6 +106,9 @@ void Core::StartSDL()
 
 void Core::Start()
 {
+
+	m_gui = std::shared_ptr<Gui>(new Gui());
+	m_gui->Init(shared_from_this());
 	m_running = true;
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
@@ -199,17 +202,20 @@ void Core::Start()
 		glViewport(0, 0, x, y);
 		// Set up a projection matrix
 		_projMatrix = glm::perspective(glm::radians(45.0f), (float)x / (float)y, 0.1f, 100.0f);
-
+		glEnable(GL_DEPTH_TEST);
 		for (std::vector<std::shared_ptr<Entity> >::iterator it = m_entities.begin();
 			it != m_entities.end(); it++)
 		{
 			(*it)->Display();
 		}
+		glDisable(GL_DEPTH_TEST);
+		_projMatrix = glm::ortho(0, x, 0, y, 5, 100);
 		for (std::vector<std::shared_ptr<Entity> >::iterator it = m_entities.begin();
 			it != m_entities.end(); it++)
 		{
 			(*it)->Gui();
 		}
+		_projMatrix = glm::perspective(glm::radians(45.0f), (float)x / (float)y, 0.1f, 100.0f);
 
 		SDL_GL_SwapWindow(m_window);
 	}

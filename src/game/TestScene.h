@@ -4,7 +4,7 @@
 class TestScene : public Component
 {
 public:
-	void OnInit(); //this will override the Components
+	void OnInit() {} //this will override the Components
 	void OnGui();
 
 private:

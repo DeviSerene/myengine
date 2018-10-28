@@ -4,6 +4,7 @@ VertexBuffer::VertexBuffer()
 {
 	m_components = 0;
 	m_dirty = false;
+	m_id = 0;
 
 	glGenBuffers(1, &m_id);
 }

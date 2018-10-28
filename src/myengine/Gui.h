@@ -18,6 +18,7 @@ public:
 	Gui();
 	~Gui();
 
+	void Init(std::shared_ptr<Core> _c);
 	bool Button(glm::vec4 _pos, std::string _label);
 
 private:

@@ -4,14 +4,27 @@
 
 Gui::Gui()
 {
+}
+
+void Gui::Init(std::shared_ptr<Core> _c)
+{
+	m_core = _c;
+	LoadShaders("guiVert.txt", "guiFrag.txt");
+
 	std::shared_ptr<VertexBuffer> positions = std::make_shared<VertexBuffer>();
 	positions->Add(glm::vec3(0.0f, 0.0f, 0.0f));
 	positions->Add(glm::vec3(1.0f, 1.0f, 0.0f));
 	positions->Add(glm::vec3(0.0f, 1.0f, 0.0f));
+
+	positions->Add(glm::vec3(1.0f, 1.0f, 0.0f));
+	positions->Add(glm::vec3(0.0f, 0.0f, 0.0f));
 	positions->Add(glm::vec3(1.0f, 0.0f, 0.0f));
 
 	std::shared_ptr<VertexBuffer> colors = std::make_shared<VertexBuffer>();
 	colors->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	colors->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	colors->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+
 	colors->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 	colors->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 	colors->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
@@ -34,8 +47,8 @@ bool Gui::Button(glm::vec4 _pos, std::string _label)
 	SetUniform(_shaderProjMatLocation, m_core.lock()->GetPM());
 	//update the model matrix;
 	glm::mat4 modelmat = glm::mat4(1.0f);
-	modelmat = glm::translate(modelmat, glm::vec3(_pos.x, _pos.y, 1));
-	modelmat = glm::scale(modelmat, glm::vec3(_pos.z, _pos.w, 1));
+	//modelmat = glm::translate(modelmat, glm::vec3(_pos.x, _pos.y, 1));
+	//modelmat = glm::scale(modelmat, glm::vec3(_pos.z, _pos.w, 1));
 	SetUniform(_shaderModelMatLocation, modelmat);
 	glBindVertexArray(m_shape->GetId());
 
