@@ -61,6 +61,8 @@ add_library(engine
 	src/myengine/Transform.cpp
 	src/myengine/Gui.h
 	src/myengine/Gui.cpp
+	src/myengine/FrameBuffer.h
+	src/myengine/FrameBuffer.cpp
 	src/myengine/DepthBuffer.h
 	src/myengine/DepthBuffer.cpp
 	src/myengine/Texture.h

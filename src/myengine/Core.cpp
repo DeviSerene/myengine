@@ -52,7 +52,7 @@ std::shared_ptr<Core> Core::init()
 		throw MyEngineException("Unable to make audio context current");
 	}
 	//end audio
-
+	//c->m_fb = std::shared_ptr<FrameBuffer>(new FrameBuffer());
 	return c; 
 }
 
@@ -89,7 +89,7 @@ void Core::StartSDL()
 		throw MyEngineException("Unable to init SDL Video");
 	}
 
-	m_window = SDL_CreateWindow("Triangle",
+	m_window = SDL_CreateWindow("Hello World",
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 		WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 
@@ -201,12 +201,23 @@ void Core::Start()
 		glClearColor(0.0f, 0.0f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
 		int x, y;
 		SDL_GetWindowSize(m_window, &x, &y);
-		glViewport(0, 0, x, y);
 		// Set up a projection matrix
 		_projMatrix = glm::perspective(glm::radians(45.0f), (float)x / (float)y, 0.1f, 100.0f);
-		glEnable(GL_DEPTH_TEST);
+
+		/*
+		glBindFramebuffer(GL_FRAMEBUFFER, m_fb->GetBuffer());
+		glViewport(0, 0, 1024, 768);
+		for (std::vector<std::shared_ptr<Entity> >::iterator it = m_entities.begin();
+			it != m_entities.end(); it++)
+		{
+			(*it)->Display();
+		}
+		*/
+
+		glViewport(0, 0, x, y);
 		for (std::vector<std::shared_ptr<Entity> >::iterator it = m_entities.begin();
 			it != m_entities.end(); it++)
 		{

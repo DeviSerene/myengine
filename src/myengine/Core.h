@@ -2,6 +2,7 @@
 #include <iostream>
 #include <exception>
 #include "MyEngineException.h"
+#include "Framebuffer.h"
 #include <string>
 #include <memory>
 #include <vector>
@@ -44,6 +45,7 @@ private:
 	float m_lastTime;
 	float m_deltaTs;
 	bool m_running;
+	std::shared_ptr<FrameBuffer> m_fb;
 	std::shared_ptr<Gui> m_gui;
 	std::shared_ptr<Resources> m_resources;
 	std::vector<std::shared_ptr<Entity>> m_entities;
