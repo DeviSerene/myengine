@@ -116,6 +116,7 @@ void Core::Start()
 
 	while (m_running)
 	{
+		mouse = false;
 		SDL_Event event = { 0 };
 		unsigned int current = SDL_GetTicks();
 		m_deltaTs = (float)(current - m_lastTime) / 1000.0f;
@@ -125,6 +126,10 @@ void Core::Start()
 			if (event.type == SDL_QUIT)
 			{
 				m_running = false;
+			}
+			if (event.type == SDL_MOUSEBUTTONDOWN) 
+			{ 
+				mouse = event.button.button; 
 			}
 			if (event.type == SDL_KEYDOWN)
 			{
@@ -189,8 +194,7 @@ void Core::Start()
 			}
 		}
 
-		//
-
+		// Start Drawing the Scene
 		_viewMatrix = glm::rotate(glm::mat4(1.0f), _cameraAngleX, glm::vec3(1, 0, 0));
 		_viewMatrix = glm::rotate(_viewMatrix, _cameraAngleY, glm::vec3(0, 1, 0));
 		_viewMatrix = glm::translate(_viewMatrix, _cameraPosition);
@@ -208,8 +212,9 @@ void Core::Start()
 		{
 			(*it)->Display();
 		}
-		glDisable(GL_DEPTH_TEST);
-		_projMatrix = glm::ortho(0, x, 0, y, 5, 100);
+		// Draw GUI
+		glDisable(GL_DEPTH_TEST); 
+		_projMatrix = glm::ortho(0, x, 0, y, 0, 100);
 		for (std::vector<std::shared_ptr<Entity> >::iterator it = m_entities.begin();
 			it != m_entities.end(); it++)
 		{

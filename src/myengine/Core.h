@@ -32,6 +32,10 @@ public:
 	glm::vec3 GetCamera() { return _cameraPosition; }
 	glm::mat4 GetVM() { return _viewMatrix; }
 	glm::mat4 GetPM() { return _projMatrix; }
+	glm::vec2 GetMouseLocation() { int x, y; SDL_GetMouseState(&x, &y); glm::vec2 ret; ret.x = x; ret.y = y; return ret; }
+	glm::vec2 GetScreenSize() { int x, y; SDL_GetWindowSize(m_window, &x, &y); glm::vec2 ret; ret.x = x; ret.y = y; return ret; }
+	bool IsMouseDown() { return mouse; }
+	//bool IsMouseDown() { SDL_Event e; while (SDL_PollEvent(&e)) { if (e.type == SDL_MOUSEBUTTONDOWN) { return e.button.button; } } return false; }
 
 	float GetDeltaTime() { return m_deltaTs; }
 private:
@@ -62,6 +66,6 @@ private:
 	glm::vec3 _lightPosition;
 	glm::vec3 _cameraPosition;
 
-	
+	bool mouse;
 
 };

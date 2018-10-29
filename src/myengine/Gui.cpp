@@ -20,19 +20,37 @@ void Gui::Init(std::shared_ptr<Core> _c)
 	positions->Add(glm::vec3(0.0f, 0.0f, 0.0f));
 	positions->Add(glm::vec3(1.0f, 0.0f, 0.0f));
 
-	std::shared_ptr<VertexBuffer> colors = std::make_shared<VertexBuffer>();
-	colors->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-	colors->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-	colors->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	red = std::make_shared<VertexBuffer>();
+	red->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	red->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	red->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 
-	colors->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-	colors->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-	colors->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	red->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	red->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	red->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	
+	green = std::make_shared<VertexBuffer>();
+	green->Add(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	green->Add(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	green->Add(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+
+	green->Add(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	green->Add(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	green->Add(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+
+	blue = std::make_shared<VertexBuffer>();
+	blue->Add(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	blue->Add(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	blue->Add(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+
+	blue->Add(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	blue->Add(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	blue->Add(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 
 
 	m_shape = std::make_shared<VertexArray>();
 	m_shape->SetBuffer(IN_POSITION, positions);
-	m_shape->SetBuffer(IN_COLOUR, colors);
+	m_shape->SetBuffer(IN_COLOUR, red);
 }
 
 Gui::~Gui()
@@ -42,13 +60,47 @@ Gui::~Gui()
 
 bool Gui::Button(glm::vec4 _pos, std::string _label)
 {
+	
+	glm::vec4 screenPos;
+	screenPos.x = (1+_pos.x) * (m_core.lock()->GetScreenSize().x /2);
+	if (_pos.y > 0)
+	{
+		(_pos.y) * (m_core.lock()->GetScreenSize().y / 2);
+	}
+	else
+	{
+		screenPos.y = ((1+_pos.y) * (m_core.lock()->GetScreenSize().y / 2)) + (m_core.lock()->GetScreenSize().y / 2);
+	}
+	screenPos.z = screenPos.x + ((_pos.z / 2) * m_core.lock()->GetScreenSize().x);
+	screenPos.w = screenPos.y +((_pos.w / 2) * m_core.lock()->GetScreenSize().y);
+	//screenPos.y = screenPos.y - (screenPos.w/2);
+	//screenPos.w = screenPos.y + (screenPos.w / 2);
+	
+
+	if (Intersect(screenPos, m_core.lock()->GetMouseLocation()))
+	{
+		if (m_core.lock()->IsMouseDown())
+		{
+			m_shape->SetBuffer(IN_COLOUR, green);
+
+		}
+		else
+		{
+			m_shape->SetBuffer(IN_COLOUR, blue);
+
+		}
+	}
+	else
+	{
+		m_shape->SetBuffer(IN_COLOUR, red);
+	}
 	glUseProgram(_shaderProgram);
 	//Update the projection matrix
 	SetUniform(_shaderProjMatLocation, m_core.lock()->GetPM());
 	//update the model matrix;
 	glm::mat4 modelmat = glm::mat4(1.0f);
-	//modelmat = glm::translate(modelmat, glm::vec3(_pos.x, _pos.y, 1));
-	//modelmat = glm::scale(modelmat, glm::vec3(_pos.z, _pos.w, 1));
+	modelmat = glm::translate(modelmat, glm::vec3(_pos.x, _pos.y, 0));
+	modelmat = glm::scale(modelmat, glm::vec3(_pos.z, _pos.w, 1));
 	SetUniform(_shaderModelMatLocation, modelmat);
 	glBindVertexArray(m_shape->GetId());
 
@@ -60,9 +112,25 @@ bool Gui::Button(glm::vec4 _pos, std::string _label)
 	glBindVertexArray(0);
 	///
 
+	if (Intersect(screenPos, m_core.lock()->GetMouseLocation()))
+	{
+		if (m_core.lock()->IsMouseDown())
+		{
+			return true;
+		}
+	}
+
 	return false;
 }
 
+bool Gui::Intersect(glm::vec4 _pos, glm::vec2 _mouse)
+{
+	if (_mouse.x > _pos.x && _mouse.x < _pos.z && _mouse.y > _pos.y && _mouse.y < _pos.w)
+	{
+		return true;
+	}
+	return false;
+}
 
 
 

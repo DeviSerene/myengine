@@ -5,9 +5,12 @@
 void TestScene::OnGui()
 {
 	glm::vec4 pos;
-	pos.x = 5;
-	pos.y = 5;
-	pos.z = 50;
-	pos.w = 50;
-	GetCore()->GetGui()->Button(pos, "Hello");
+	pos.x = -0.7;
+	pos.y = -0.7;
+	pos.z = 0.50;
+	pos.w = 0.50;
+	if (GetCore()->GetGui()->Button(pos, "Hello"))
+	{
+		std::cout << "Hit! ";
+	}
 }

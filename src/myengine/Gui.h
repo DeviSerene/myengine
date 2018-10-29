@@ -9,9 +9,13 @@
 #include <iostream>
 #include <fstream>
 #include "VertexArray.h"
+#include "VertexBuffer.h"
 
 class Core;
 
+/*!
+This handles the gui
+*/
 class Gui
 {
 public:
@@ -36,4 +40,7 @@ private:
 	int _shaderModelMatLocation;
 	int _shaderProjMatLocation;
 	std::shared_ptr<VertexArray> m_shape;
+	std::shared_ptr<VertexBuffer> red;
+	std::shared_ptr<VertexBuffer> blue;
+	std::shared_ptr<VertexBuffer> green;
 };
