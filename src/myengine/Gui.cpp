@@ -79,7 +79,7 @@ bool Gui::Button(glm::vec4 _pos, std::string _label)
 
 	if (Intersect(screenPos, m_core.lock()->GetMouseLocation()))
 	{
-		if (m_core.lock()->IsMouseDown())
+		if (m_core.lock()->GetKeyboard()->Input(A_BUTTON))
 		{
 			m_shape->SetBuffer(IN_COLOUR, green);
 
@@ -114,7 +114,7 @@ bool Gui::Button(glm::vec4 _pos, std::string _label)
 
 	if (Intersect(screenPos, m_core.lock()->GetMouseLocation()))
 	{
-		if (m_core.lock()->IsMouseDown())
+		if (m_core.lock()->GetKeyboard()->Input(A_BUTTON))
 		{
 			return true;
 		}
