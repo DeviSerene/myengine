@@ -13,6 +13,7 @@
 #include <AL/al.h>
 #include <AL/alc.h>
 #include "Gui.h"
+#include "Keyboard.h"
 
 class Entity;
 class Resources;
@@ -27,10 +28,10 @@ public:
 	void Start();
 	void Stop();
 	std::shared_ptr<Entity> AddEntity();
-
+	std::shared_ptr<Keyboard> GetKeyboard() { return m_keyboard; }
 	std::shared_ptr<Gui> GetGui() { return m_gui; }
 	std::shared_ptr<Resources> GetResources() { return m_resources; }
-	glm::vec3 GetCamera() { return _cameraPosition; }
+	glm::vec3 GetCamera() { return cameraPos; }
 	glm::mat4 GetVM() { return _viewMatrix; }
 	glm::mat4 GetPM() { return _projMatrix; }
 	glm::vec2 GetMouseLocation() { int x, y; SDL_GetMouseState(&x, &y); glm::vec2 ret; ret.x = x; ret.y = y; return ret; }
@@ -47,11 +48,14 @@ private:
 	bool m_running;
 	std::shared_ptr<FrameBuffer> m_fb;
 	std::shared_ptr<Gui> m_gui;
+	std::shared_ptr<Keyboard> m_keyboard;
 	std::shared_ptr<Resources> m_resources;
 	std::vector<std::shared_ptr<Entity>> m_entities;
 	SDL_Window* m_window;
 	ALCdevice* device;
 	ALCcontext* context;
+
+	bool rebindA;
 
 
 
@@ -66,7 +70,14 @@ private:
 
 	// Position of the single point-light in the scene
 	glm::vec3 _lightPosition;
-	glm::vec3 _cameraPosition;
+
+	glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+	glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+	glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+	glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
+	glm::vec3 cameraRight = glm::normalize(glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), cameraDirection));
+	float pitch = 0, yaw = -60;
 
 	bool mouse;
 

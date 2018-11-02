@@ -11,15 +11,15 @@ Core::Core()
 {
 	_cameraAngleX = 0.0f, _cameraAngleY = 0.0f;
 	// This represents the camera's orientation and position
-	_cameraPosition = { 0, -0.09, -1.0f };
-	_viewMatrix = glm::translate(glm::mat4(1.0f), _cameraPosition);
+	_viewMatrix = glm::translate(glm::mat4(1.0f), cameraPos);
 
 
 	// Set up a projection matrix
 	_projMatrix = glm::perspective(glm::radians(45.0f), (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.1f, 100.0f);
 	// Position of the light, in world-space
 	_lightPosition = glm::vec3(10, 10, 0);
-
+	m_keyboard = std::shared_ptr<Keyboard>(new Keyboard());
+	rebindA = false;
 }
 
 std::shared_ptr<Core> Core::init() 
@@ -121,6 +121,7 @@ void Core::Start()
 		unsigned int current = SDL_GetTicks();
 		m_deltaTs = (float)(current - m_lastTime) / 1000.0f;
 		m_lastTime = current;
+		/*
 		while (SDL_PollEvent(&event))
 		{
 			if (event.type == SDL_QUIT)
@@ -167,7 +168,10 @@ void Core::Start()
 					break;
 				}
 			}
+			m_keyboard->Update(event);
 		}
+		*/
+
 		m_resources->CleanUp(m_deltaTs);
 
 		for (std::vector<std::shared_ptr<Entity> >::iterator it = m_entities.begin();
@@ -194,10 +198,78 @@ void Core::Start()
 			}
 		}
 
+
+		m_keyboard->Update();
+
+		if (m_keyboard->Input(A_BUTTON))
+		{
+			std::cout << "A PRESSED" << std::endl;
+		}
+		if (m_keyboard->PressOnce(B_BUTTON))
+		{
+			rebindA = true;
+			std::cout << "Press a key to rebind A: " << std::endl;
+		}
+		if (rebindA)
+		{
+			if (m_keyboard->ReturnKeyCode())
+			{
+				if (m_keyboard->ReBind(A_BUTTON, m_keyboard->ReturnKeyCode()))
+				{
+					std::cout << "A has been REBOUND" << std::endl;
+					rebindA = false;
+				}
+			}
+		}
+		if (m_keyboard->Input(LEFT_BUTTON))
+		{
+			yaw -= 0.5f;
+		//	cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * 0.05f;
+			//_cameraAngleY -= 0.05f;
+		}
+		if (m_keyboard->Input(RIGHT_BUTTON))
+		{
+			yaw += 0.5f;
+		//	cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * 0.05f;
+			//_cameraAngleY += 0.05f;
+		}
+		if (m_keyboard->Input(LB_BUTTON))
+		{
+			pitch -= 0.5f;
+			//	cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * 0.05f;
+			//_cameraAngleY -= 0.05f;
+		}
+		if (m_keyboard->Input(RB_BUTTON))
+		{
+			pitch += 0.5f;
+			//	cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * 0.05f;
+			//_cameraAngleY += 0.05f;
+		}
+		if (m_keyboard->Input(UP_BUTTON))
+		{
+			cameraPos += 0.05f * cameraFront;
+			//_cameraPosition -= glm::vec3(0.5f *_cameraPosition.x * _cameraAngleX, 0.5f  *_cameraPosition.y * _cameraAngleY, -0.05);
+		}
+		if (m_keyboard->Input(DOWN_BUTTON))
+		{
+			cameraPos -= 0.05f * cameraFront;
+			//_cameraPosition += glm::vec3(0.5f  *_cameraPosition.x * _cameraAngleX, 0.5f  *_cameraPosition.y * _cameraAngleY, 0.05);
+		}
+		if (pitch > 89.0f)
+			pitch = 89.0f;
+		if (pitch < -89.0f)
+			pitch = -89.0f;
+		glm::vec3 front;
+		front.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
+		front.y = sin(glm::radians(pitch));
+		front.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
+		cameraFront = glm::normalize(front);
 		// Start Drawing the Scene
-		_viewMatrix = glm::rotate(glm::mat4(1.0f), _cameraAngleX, glm::vec3(1, 0, 0));
-		_viewMatrix = glm::rotate(_viewMatrix, _cameraAngleY, glm::vec3(0, 1, 0));
-		_viewMatrix = glm::translate(_viewMatrix, _cameraPosition);
+
+		_viewMatrix = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+		//_viewMatrix = glm::rotate(glm::mat4(1.0f), _cameraAngleX, glm::vec3(1, 0, 0));
+		//_viewMatrix = glm::rotate(_viewMatrix, _cameraAngleY, glm::vec3(0, 1, 0));
+		//_viewMatrix = glm::translate(_viewMatrix, _cameraPosition);
 		glClearColor(0.0f, 0.0f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
