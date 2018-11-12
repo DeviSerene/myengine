@@ -7,6 +7,7 @@ class VertexBuffer
 {
 public:
 	VertexBuffer();
+	void Add(glm::vec2 value);
 	void Add(glm::vec3 value);
 	void Add(glm::vec4 value);
 
@@ -17,7 +18,7 @@ public:
 
 private:
 	GLuint m_id;
-	int m_components; //are we dealing with vec3s or vec4s? KEEP IT CONSISTENT!
+	int m_components; //are we dealing with vec3s or vec4s?
 	std::vector<GLfloat> m_data; 
 	bool m_dirty; //has the data been modified (via Add())? If so, we need to rebind it
 };

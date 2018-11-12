@@ -19,6 +19,9 @@ void VertexArray::SetBuffer(VAType _type, std::weak_ptr<VertexBuffer> _vertexBuf
 	case IN_COLOUR:
 		m_buffers[1] = _vertexBuffer.lock();
 		break;
+	case IN_UV:
+		m_buffers[2] = _vertexBuffer.lock();
+		break;
 	default:
 		break;
 	}
@@ -46,7 +49,7 @@ GLuint VertexArray::GetId()
 	{
 		glBindVertexArray(m_id);
 
-		for (int i = 0; i < 2; i++) //...there must be a better way to do this.
+		for (int i = 0; i < 3; i++) //...there must be a better way to do this.
 		{
 			if (m_buffers[i]) //was something defined here?
 			{

@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_gamecontroller.h>
+#define MAX_CONTROLLERS 1
 
 enum INPUTACTION
 {
@@ -16,6 +18,8 @@ struct InputButton
 	INPUTACTION m_action;
 	std::vector<SDL_Keycode> m_mappedKeys;
 	std::vector<int> m_mappedMouse;
+	int m_axis;
+	int m_direction;
 	bool m_pressed;
 };
 
@@ -36,4 +40,5 @@ private:
 	std::vector<InputButton> m_inputs;
 	SDL_Event ev;
 	SDL_Keycode m_lastkey;
+	SDL_GameController *ControllerHandles[MAX_CONTROLLERS];
 };

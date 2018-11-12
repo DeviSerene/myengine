@@ -20,12 +20,20 @@ void Gui::Init(std::shared_ptr<Core> _c)
 	positions->Add(glm::vec3(0.0f, 0.0f, 0.0f));
 	positions->Add(glm::vec3(1.0f, 0.0f, 0.0f));
 
+	std::shared_ptr<VertexBuffer> uv = std::make_shared<VertexBuffer>();
+	uv->Add(glm::vec2(0.0f, 0.0f));
+	uv->Add(glm::vec2(1.0f, 1.0f));
+	uv->Add(glm::vec2(0.0f, 1.0f));
+	uv->Add(glm::vec2(1.0f, 1.0f));
+	uv->Add(glm::vec2(0.0f, 0.0f));
+	uv->Add(glm::vec2(1.0f, 0.0f));
+
 	red = std::make_shared<VertexBuffer>();
 	red->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 	red->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 	red->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 
-	red->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	red->Add(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 	red->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 	red->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 	
@@ -51,6 +59,7 @@ void Gui::Init(std::shared_ptr<Core> _c)
 	m_shape = std::make_shared<VertexArray>();
 	m_shape->SetBuffer(IN_POSITION, positions);
 	m_shape->SetBuffer(IN_COLOUR, red);
+	m_shape->SetBuffer(IN_UV, uv);
 }
 
 Gui::~Gui()
@@ -60,7 +69,8 @@ Gui::~Gui()
 
 bool Gui::Button(glm::vec4 _pos, std::string _label)
 {
-	
+	glUseProgram(_shaderProgram);
+
 	glm::vec4 screenPos;
 	screenPos.x = (1+_pos.x) * (m_core.lock()->GetScreenSize().x /2);
 	if (_pos.y > 0)
@@ -82,25 +92,37 @@ bool Gui::Button(glm::vec4 _pos, std::string _label)
 		if (m_core.lock()->GetKeyboard()->Input(A_BUTTON))
 		{
 			m_shape->SetBuffer(IN_COLOUR, green);
+			glActiveTexture(GL_TEXTURE0);
+			glUniform1i(_shaderTex1SamplerLocation, 0);
+			glBindTexture(GL_TEXTURE_2D, pressed->GetTexture());
 
 		}
 		else
 		{
 			m_shape->SetBuffer(IN_COLOUR, blue);
+			glActiveTexture(GL_TEXTURE0);
+			glUniform1i(_shaderTex1SamplerLocation, 0);
+			glBindTexture(GL_TEXTURE_2D, highlight->GetTexture());
 
 		}
 	}
 	else
 	{
 		m_shape->SetBuffer(IN_COLOUR, red);
+		glActiveTexture(GL_TEXTURE0);
+		glUniform1i(_shaderTex1SamplerLocation, 0);
+		glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
 	}
-	glUseProgram(_shaderProgram);
+
+	///texture
+
 	//Update the projection matrix
 	SetUniform(_shaderProjMatLocation, m_core.lock()->GetPM());
 	//update the model matrix;
 	glm::mat4 modelmat = glm::mat4(1.0f);
 	modelmat = glm::translate(modelmat, glm::vec3(_pos.x, _pos.y, 0));
 	modelmat = glm::scale(modelmat, glm::vec3(_pos.z, _pos.w, 1));
+	//modelmat = glm::scale(modelmat, glm::vec3(1, 1, 1));
 	SetUniform(_shaderModelMatLocation, modelmat);
 	glBindVertexArray(m_shape->GetId());
 
@@ -287,6 +309,7 @@ bool Gui::LoadShaders(std::string vertFilename, std::string fragFilename)
 	glUseProgram(_shaderProgram);
 	_shaderModelMatLocation = glGetUniformLocation(_shaderProgram, "in_Model");
 	_shaderProjMatLocation = glGetUniformLocation(_shaderProgram, "in_Projection");
+	_shaderTex1SamplerLocation = glGetUniformLocation(_shaderProgram, "in_Texture");
 
 	return true;
 }

@@ -9,6 +9,22 @@ VertexBuffer::VertexBuffer()
 	glGenBuffers(1, &m_id);
 }
 
+void VertexBuffer::Add(glm::vec2 value)
+{
+	if (m_components == 0)
+	{
+		m_components = 2;
+	}
+	else if (m_components != 2)
+	{
+		return;
+	}
+
+	m_data.push_back(value.x);
+	m_data.push_back(value.y);
+	m_dirty = true;
+}
+
 void VertexBuffer::Add(glm::vec3 value)
 {
 	if (m_components == 0)

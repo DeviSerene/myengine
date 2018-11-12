@@ -1,4 +1,5 @@
 #include "Keyboard.h"
+#define JOYSTICK_DEAD_ZONE 8000
 
 Keyboard::Keyboard()
 {
@@ -7,6 +8,7 @@ Keyboard::Keyboard()
 	A.AddKey(SDLK_z);
 	A.AddMouse(SDL_BUTTON_LEFT);
 	A.m_pressed = false;
+	A.m_axis = -1;
 	m_inputs.push_back(A);
 	///
 	InputButton B;
@@ -14,50 +16,86 @@ Keyboard::Keyboard()
 	B.AddKey(SDLK_x);
 	B.AddMouse(SDL_BUTTON_RIGHT);
 	B.m_pressed = false;
+	B.m_axis = -1;
 	m_inputs.push_back(B);
 	///
 	InputButton UP;
 	UP.SetInput(UP_BUTTON);
 	UP.AddKey(SDLK_w);
 	UP.m_pressed = false;
+	UP.m_axis = 1;
+	UP.m_direction = 1;
 	m_inputs.push_back(UP);
 	///
 	InputButton DOWN;
 	DOWN.SetInput(DOWN_BUTTON);
 	DOWN.AddKey(SDLK_s);
 	DOWN.m_pressed = false;
+	DOWN.m_axis = 1;
+	DOWN.m_direction = -1;
 	m_inputs.push_back(DOWN);
 	///
 	InputButton LEFT;
 	LEFT.SetInput(LEFT_BUTTON);
 	LEFT.AddKey(SDLK_a);
 	LEFT.m_pressed = false;
+	LEFT.m_axis = 0;
+	LEFT.m_direction = -1;
 	m_inputs.push_back(LEFT);
 	///
 	InputButton RIGHT;
 	RIGHT.SetInput(RIGHT_BUTTON);
 	RIGHT.AddKey(SDLK_d);
 	RIGHT.m_pressed = false;
+	RIGHT.m_axis = 0;
+	RIGHT.m_direction = 1;
 	m_inputs.push_back(RIGHT);
 	///
 	InputButton RB;
 	RB.SetInput(RB_BUTTON);
 	RB.AddKey(SDLK_e);
 	RB.m_pressed = false;
+	RB.m_axis = -1;
 	m_inputs.push_back(RB);
 	///
 	InputButton LB;
 	LB.SetInput(LB_BUTTON);
 	LB.AddKey(SDLK_q);
 	LB.m_pressed = false;
+	LB.m_axis = -1;
 	m_inputs.push_back(LB);
 	///
 	ev = { 0 };
 	m_lastkey = NULL;
+
+	///set up the joypads
+	int attachedJoysticks = SDL_NumJoysticks();
+	int cIndex = 0;
+	for (int pad = 0; pad < attachedJoysticks; pad++)
+	{
+		if (!SDL_IsGameController(pad)) //if this isn't a game pad, we want to skip it
+		{
+			continue;
+		}
+		if (cIndex >= MAX_CONTROLLERS) //if we have already attached 4 gamepads
+		{
+			break; //we no longer need to add any
+		}
+		ControllerHandles[cIndex] = SDL_GameControllerOpen(pad); //add the controller to our list of controllers
+		cIndex++;
+	}
+
 }
 
 Keyboard::~Keyboard()
 {
+	for (int ControllerIndex = 0; ControllerIndex < MAX_CONTROLLERS; ++ControllerIndex)
+	{
+		if (ControllerHandles[ControllerIndex])
+		{
+			SDL_GameControllerClose(ControllerHandles[ControllerIndex]);
+		}
+	}
 }
 
 void Keyboard::Update()
@@ -116,6 +154,27 @@ void Keyboard::Update()
 						{
 							mp = true;
 							m_inputs[i].m_pressed = true;
+						}
+					}
+				}
+			}
+
+			if (ev.type == SDL_JOYAXISMOTION)
+			{
+				if (m_inputs[i].m_axis >= 0)
+				{
+					if (ev.jaxis.which == 0)
+					{
+						if (ev.jaxis.axis == m_inputs[i].m_axis)
+						{
+							if (m_inputs[i].m_direction == 1 && ev.jaxis.value > JOYSTICK_DEAD_ZONE)
+							{
+								m_inputs[i].m_pressed = true;
+							}
+							else if (m_inputs[i].m_direction == -1 && ev.jaxis.value < -JOYSTICK_DEAD_ZONE)
+							{ 
+								m_inputs[i].m_pressed = true;
+							}
 						}
 					}
 				}

@@ -3,6 +3,7 @@
 #include "Resources.h"
 #include "TestResource.h"
 #include "Sound.h"
+#include "Texture.h"
 
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
@@ -30,6 +31,7 @@ std::shared_ptr<Core> Core::init()
 	c->m_lastTime = 0;
 
 	//audio
+	/*
 	c->device = alcOpenDevice(NULL);
 
 	if (!c->device)
@@ -51,6 +53,7 @@ std::shared_ptr<Core> Core::init()
 		alcCloseDevice(c->device);
 		throw MyEngineException("Unable to make audio context current");
 	}
+	*/
 	//end audio
 	//c->m_fb = std::shared_ptr<FrameBuffer>(new FrameBuffer());
 	return c; 
@@ -84,9 +87,9 @@ std::shared_ptr<Entity> Core::AddEntity()
 
 void Core::StartSDL()
 {
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) < 0)
 	{
-		throw MyEngineException("Unable to init SDL Video");
+		throw MyEngineException("Unable to init SDL");
 	}
 
 	m_window = SDL_CreateWindow("Hello World",
@@ -109,6 +112,9 @@ void Core::Start()
 
 	m_gui = std::shared_ptr<Gui>(new Gui());
 	m_gui->Init(shared_from_this());
+	m_gui->SetTexture(GetResources()->Load<Texture>("Card.bmp"));
+	m_gui->SetHighlight(GetResources()->Load<Texture>("Card_normal.bmp"));
+	m_gui->SetPressed(GetResources()->Load<Texture>("Card_height.bmp"));
 	m_running = true;
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);

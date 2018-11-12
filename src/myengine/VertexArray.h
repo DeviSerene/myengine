@@ -13,7 +13,7 @@
 
 enum VAType
 {
-	IN_POSITION, IN_COLOUR
+	IN_POSITION, IN_COLOUR, IN_UV
 };
 
 class VertexBuffer;
@@ -31,5 +31,5 @@ private:
 
 	GLuint m_id;
 	bool m_modified;
-	std::shared_ptr<VertexBuffer> m_buffers[2];
+	std::shared_ptr<VertexBuffer> m_buffers[3];
 };
