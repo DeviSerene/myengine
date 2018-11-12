@@ -1,7 +1,12 @@
 
 in vec4 ex_Color;
+in vec2 ex_texCoord;
+uniform sampler2D in_Texture;
 
 void main()
 {
+ vec3 texColour = vec3(texture(in_Texture,ex_texCoord));
+
   gl_FragColor = ex_Color;
+  gl_FragColor = vec4(texColour,255);
 }
