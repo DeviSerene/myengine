@@ -7,6 +7,7 @@
 #include <memory>
 #include <vector>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_gamecontroller.h>
 #include <GL/glew.h>
 #include <GLM/glm.hpp>
 #include <GLM/gtc/matrix_transform.hpp>
@@ -14,6 +15,8 @@
 #include <AL/alc.h>
 #include "Gui.h"
 #include "Keyboard.h"
+#include "Transform.h"
+#include "Camera.h"
 
 class Entity;
 class Resources;
@@ -36,7 +39,8 @@ public:
 	glm::mat4 GetPM() { return _projMatrix; }
 	glm::vec2 GetMouseLocation() { int x, y; SDL_GetMouseState(&x, &y); glm::vec2 ret; ret.x = x; ret.y = y; return ret; }
 	glm::vec2 GetScreenSize() { int x, y; SDL_GetWindowSize(m_window, &x, &y); glm::vec2 ret; ret.x = x; ret.y = y; return ret; }
-	bool IsMouseDown() { return mouse; }
+	SDL_Window* GetWindow() { return m_window; }
+
 	//bool IsMouseDown() { SDL_Event e; while (SDL_PollEvent(&e)) { if (e.type == SDL_MOUSEBUTTONDOWN) { return e.button.button; } } return false; }
 
 	float GetDeltaTime() { return m_deltaTs; }
@@ -57,19 +61,15 @@ private:
 
 	bool rebindA;
 
-
-
 	// This matrix represents the camera's position and orientation
 	glm::mat4 _viewMatrix;
-
 	// This matrix is like the camera's lens
 	glm::mat4 _projMatrix;
 
-	// Current rotation information about the camera
-	float _cameraAngleX, _cameraAngleY;
-
 	// Position of the single point-light in the scene
 	glm::vec3 _lightPosition;
+
+	std::shared_ptr<Entity> m_camera;
 
 	glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 	glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
@@ -79,6 +79,5 @@ private:
 	glm::vec3 cameraRight = glm::normalize(glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), cameraDirection));
 	float pitch = 0, yaw = -60;
 
-	bool mouse;
 
 };

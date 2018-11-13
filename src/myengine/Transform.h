@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Component.h" //inherits from component (as it is something that can be slot into an entity)
 #include <memory>
 #include <iostream>
@@ -10,17 +9,25 @@
 class Transform : public Component
 {
 public:
-	Transform() {m_position.x = 1;m_position.y = 1;m_position.z = 1;m_rotation.x = 0; m_rotation.y = 0;m_rotation.z = 0; m_scale.x = 1;m_scale.y = 1;m_scale.z = 1;}
-	Transform(glm::vec3 _p, glm::vec3 _r, glm::vec3 _s) {m_position = _p;m_rotation = _r;m_scale = _s;}
+	Transform();
+	Transform(glm::vec3 _p, glm::vec3 _r, glm::vec3 _s);
 	void OnInit(); //this will override the Components
-	void OnTick() { m_rotation.x += 0.01f; }
+	void OnTick();
 
 	glm::vec3 GetPosition() { return m_position; }
 	glm::vec3 GetRotation() { return m_rotation; }
 	glm::vec3 GetScale() { return m_scale; }
+	glm::vec3 GetFront() { return m_front; }
+	glm::vec3 GetUp() { return m_up; }
+	glm::vec3 GetRight() { return m_right; }
 
 private:
 	glm::vec3 m_position;
 	glm::vec3 m_rotation;
 	glm::vec3 m_scale;
+
+	glm::vec3 m_front;
+	glm::vec3 m_up;
+	glm::vec3 m_right;
+
 };

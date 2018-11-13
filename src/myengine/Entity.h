@@ -26,6 +26,7 @@ public:
 	std::shared_ptr <T> AddComponent()
 	{
 		std::shared_ptr <T> rtn = std::shared_ptr <T>(new T());
+		rtn->SetEntity(shared_from_this());
 		ADDCOMPONENT
 	}
 

@@ -6,6 +6,7 @@
 #include <myengine/Component.h>
 #include <myengine/Entity.h>
 #include <myengine/Core.h>
+#include <myengine/Camera.h>
 #include <myengine/MyEngineException.h>
 #include <Windows.h>
 #include <vector>

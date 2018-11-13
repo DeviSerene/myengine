@@ -26,7 +26,7 @@ std::shared_ptr<Core> Component::GetCore()
 
 std::shared_ptr<Keyboard> Component::GetKeyboard()
 {
-	return nullptr;
+	return m_entity.lock()->GetCore()->GetKeyboard();
 }
 
 std::shared_ptr<Environment> Component::GetEnvironment()
