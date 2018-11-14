@@ -69,8 +69,6 @@ void main()
 	color = vec3(fragColour);
 	//fragColour = normalize(vec4(normalmap,alpha));
 	//fragColour = vec4(lightDir,1);
-
-	//ythythythy - Karsten
 }
 
 float facing(vec3 _normal, vec3 _lightDir)

@@ -36,6 +36,8 @@ add_library(engine
 	src/myengine/Keyboard.cpp
 	src/myengine/MeshRenderer.h
 	src/myengine/MeshRenderer.cpp
+	src/myengine/SpriteRenderer.h
+	src/myengine/SpriteRenderer.cpp
 	src/myengine/ShaderProgram.h
 	src/myengine/ShaderProgram.cpp
 	src/myengine/Shader.h

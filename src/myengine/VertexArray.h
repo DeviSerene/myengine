@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include "Resource.h"
 //instead of #include "VertexBuffer", we can forward declare it and that leaves less chance for things to go wrong
 
 //A VAO is a collection of pointers to the data in the VBOs
@@ -18,10 +19,11 @@ enum VAType
 
 class VertexBuffer;
 
-class VertexArray
+class VertexArray : public Resource
 {
 public:
 
+	static std::shared_ptr<VertexArray> Load(std::string _path);
 	VertexArray();
 	void SetBuffer(VAType _type, std::weak_ptr<VertexBuffer> _vertexBuffer);
 	int GetVertexCount();
