@@ -8,6 +8,14 @@ VertexArray::VertexArray()
 	glGenVertexArrays(1, &m_id);
 }
 
+std::shared_ptr<VertexArray> VertexArray::Load(std::string _path)
+{
+	std::shared_ptr<VertexArray> rtn = std::shared_ptr<VertexArray>(new VertexArray());
+	rtn->m_path = _path;
+	rtn->m_timer = 0;
+	return rtn;
+}
+
 
 void VertexArray::SetBuffer(VAType _type, std::weak_ptr<VertexBuffer> _vertexBuffer)
 {

@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include "Entity.h"
 
 Transform::Transform()
 {
@@ -45,4 +46,27 @@ void Transform::OnTick()
 	front.y = sin(glm::radians(m_rotation.y));
 	front.z = cos(glm::radians(m_rotation.y)) * sin(glm::radians(m_rotation.x));
 	m_front = glm::normalize(front);
+}
+
+glm::vec3 Transform::GetPosition()
+{ 
+	//std::shared_ptr<Entity> ent = GetEntity();
+	glm::vec3 position = m_position;
+	//if(ent->m_parent != nullptr)
+	//	position = position * ent->m_parent->GetComponent<Transform>()->GetPosition();
+	return position;
+}
+
+glm::vec3 Transform::GetRotation()
+{
+	//std::shared_ptr<Entity> ent = GetEntity();
+	glm::vec3 rotation = m_rotation;
+	//if (ent->m_parent != nullptr)
+	//	rotation = rotation * ent->m_parent->GetComponent<Transform>()->GetRotation();
+	return rotation;
+}
+
+glm::vec3 Transform::GetScale()
+{
+	return m_scale; 
 }

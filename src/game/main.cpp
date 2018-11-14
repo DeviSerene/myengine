@@ -3,6 +3,7 @@
 #include <memory>
 #include <myengine/Transform.h>
 #include <myengine/MeshRenderer.h>
+#include <myengine/SpriteRenderer.h>
 #include <myengine/Component.h>
 #include <myengine/Entity.h>
 #include <myengine/Core.h>
@@ -33,7 +34,7 @@ void safe_main()
 	srand(time(NULL));
 	for (int i = 0; i < 100; i++)
 	{
-		m_entities.push_back(core->AddEntity());
+		m_entities.push_back(enti->AddChild());
 		m_entities[i]->AddComponent<Transform>(glm::vec3(rand() % 10, rand() % 10, -(rand() % 10)), glm::vec3(rand() % 10, rand() % 10, -(rand() % 10)), glm::vec3((0.1 + (0.1f * (rand() % 10))), (0.1 + (0.1f * (rand() % 10))), (0.1 + (0.1f * (rand() % 10)))));
 		m_entities[i]->AddComponent<MeshRenderer>();
 	}

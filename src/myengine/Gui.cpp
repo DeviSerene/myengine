@@ -61,7 +61,8 @@ void Gui::Init(std::shared_ptr<Core> _c)
 	blue->Add(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 
 
-	m_shape = std::make_shared<VertexArray>();
+	m_shape = _c->GetResources()->Load<VertexArray>("Square");
+		//std::make_shared<VertexArray>();
 	m_shape->SetBuffer(IN_POSITION, positions);
 	m_shape->SetBuffer(IN_COLOUR, red);
 	m_shape->SetBuffer(IN_UV, uv);

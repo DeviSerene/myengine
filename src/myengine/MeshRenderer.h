@@ -23,6 +23,7 @@ class MeshRenderer : public Component
 public:
 	void OnInit(); //this will override the Components
 	void OnDisplay();
+	glm::mat4 GetModelMatrix() { return m_modelMatrix; }
 
 private:
 

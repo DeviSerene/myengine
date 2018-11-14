@@ -7,6 +7,7 @@ include_directories(
     contrib/msvc-windows-x86/glew/include
     contrib/msvc-windows-x86/SDL2/include
     contrib/msvc-windows-x86/SDL2_image/include
+    contrib/msvc-windows-x86/SDL2_ttf/include
     contrib/msvc-windows-x86/openal-soft/include
     contrib/msvc-windows-x86/ogg/include
     contrib/msvc-windows-x86/vorbis/include
@@ -15,6 +16,7 @@ include_directories(
   link_directories(
     ${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/SDL2/lib
     ${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/SDL2_image/lib
+    ${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/SDL2_tff/lib
     ${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/glew/lib
     ${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/openal-soft/lib
     ${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/ogg/lib
@@ -82,7 +84,7 @@ add_executable(game
 target_link_libraries(game
 	engine
 	
-    SDL2 SDL2_image glew32 opengl32 OpenAL32 ogg vorbis vorbisfile
+    SDL2 SDL2_image SDL2_ttf glew32 opengl32 OpenAL32 ogg vorbis vorbisfile
 )
 
  add_custom_command(TARGET game POST_BUILD
@@ -94,6 +96,12 @@ target_link_libraries(game
    add_custom_command(TARGET game POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
       "${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/SDL2_image/bin/SDL2_image.dll"
+      "$<TARGET_FILE_DIR:game>"
+  )
+  
+   add_custom_command(TARGET game POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/SDL2_ttf/lib/x86/SDL2_tff.dll"
       "$<TARGET_FILE_DIR:game>"
   )
 

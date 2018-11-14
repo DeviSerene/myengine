@@ -9,14 +9,16 @@ std::shared_ptr<Shader> Shader::Load(std::string _path)
 	std::shared_ptr<Shader> rtn = std::shared_ptr<Shader>(new Shader());
 	rtn->m_path = _path;
 	rtn->m_timer = 0;
+	rtn->loaded = false;
 	return rtn;
 }
 
 bool Shader::LoadShaders(std::string vertFilename, std::string fragFilename)
 {
 	// OpenGL doesn't provide any functions for loading shaders from file
-
-
+	if (loaded)
+		return true;
+	loaded = true;
 	std::ifstream vertFile(vertFilename);
 	char *vShaderText = NULL;
 

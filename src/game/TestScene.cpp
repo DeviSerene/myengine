@@ -27,6 +27,6 @@ void TestScene::OnGui()
 	pos2.w = 380;
 
 
-	GetCore()->GetGui()->SetTexture(GetCore()->GetResources()->Load<Texture>("mat_gold.png"));
+	GetCore()->GetGui()->SetTexture(GetCore()->GetResources()->Load<Texture>("ability_0.png"));
 	GetCore()->GetGui()->Sprite(GetCore()->GetGui()->GetPos(pos2));
 }

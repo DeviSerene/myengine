@@ -7,8 +7,9 @@
 #include <GLM/gtc/matrix_transform.hpp>
 #include "Shader.h"
 #include "Texture.h"
+#include "VertexArray.h"
 
-class MeshRenderer : public Component
+class SpriteRenderer : public Component
 {
 public:
 	void OnInit(); //this will override the Components
@@ -18,14 +19,13 @@ private:
 
 	// The actual model geometry
 	std::shared_ptr<VertexArray> m_shape;
-	// The material contains the shader
+	// Shader applied and the texture
 	std::shared_ptr<Shader> m_shader;
 	std::shared_ptr<Texture> m_texture;
-	//std::shared_ptr <ShaderProgram> m_shader1;
+
 	// Matrix for the position and orientation of the game object
 	glm::mat4 m_modelMatrix;
 	glm::mat4 m_invModelMatrix;
 
-	//	std::shared_ptr<ShaderProgram> m_shader;
 
 };

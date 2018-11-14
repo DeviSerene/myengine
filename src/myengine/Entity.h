@@ -21,6 +21,17 @@ public:
 	void Init() {}
 	void SetCore(std::shared_ptr<Core> _c) { m_core = _c; }
 	std::shared_ptr<Core> GetCore() { return m_core.lock(); }
+	
+	std::shared_ptr <Entity> AddChild()
+	{
+		std::shared_ptr<Entity> rtn = std::shared_ptr<Entity>(new Entity());
+		rtn->SetCore(m_core.lock());
+		rtn->m_alive = true;
+		rtn->Init();
+		rtn->m_parent = shared_from_this();
+		m_children.push_back(rtn);
+		return rtn;
+	}
 
 	template <typename T>
 	std::shared_ptr <T> AddComponent()
@@ -79,6 +90,8 @@ public:
 	void Display();
 	void Gui();
 	bool m_alive;
+	std::shared_ptr<Entity> m_parent;
+	std::vector<std::shared_ptr<Entity>> m_children;
 
 protected:
 	std::vector<std::shared_ptr<Component>> m_components;

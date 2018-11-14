@@ -36,4 +36,5 @@ private:
 	GLuint _shaderProgram;
 	bool CheckShaderCompiled(GLint shader);
 	std::vector <std::shared_ptr<Uniform>> m_uniforms;
+	bool loaded;
 };

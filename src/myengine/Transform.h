@@ -14,9 +14,10 @@ public:
 	void OnInit(); //this will override the Components
 	void OnTick();
 
-	glm::vec3 GetPosition() { return m_position; }
-	glm::vec3 GetRotation() { return m_rotation; }
-	glm::vec3 GetScale() { return m_scale; }
+	glm::vec3 GetPosition();
+	glm::vec3 GetRotation();
+	glm::vec3 GetScale();
+
 	glm::vec3 GetFront() { return m_front; }
 	glm::vec3 GetUp() { return m_up; }
 	glm::vec3 GetRight() { return m_right; }
