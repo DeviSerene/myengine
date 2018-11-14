@@ -54,6 +54,7 @@ private:
 	bool ButtonPress(int i);
 	bool AxisPress(int i);
 
+	bool controllerConnected;
 	std::vector<InputButton> m_inputs;
 	SDL_Event ev;
 	SDL_Keycode m_lastkey;

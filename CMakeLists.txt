@@ -67,6 +67,8 @@ add_library(engine
 	src/myengine/DepthBuffer.cpp
 	src/myengine/Texture.h
 	src/myengine/Texture.cpp
+	src/myengine/Camera.h
+	src/myengine/Camera.cpp
 )
 
 add_executable(game

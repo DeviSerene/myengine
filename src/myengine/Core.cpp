@@ -51,6 +51,9 @@ std::shared_ptr<Core> Core::init()
 	//c->m_fb = std::shared_ptr<FrameBuffer>(new FrameBuffer());
 
 
+	c->m_gui = std::shared_ptr<Gui>(new Gui());
+	c->m_gui->Init(c->shared_from_this());
+
 	return c; 
 }
 
@@ -107,16 +110,13 @@ void Core::Start()
 {
 	m_camera = AddEntity();
 	m_camera->AddComponent<Camera>();
-
-	m_gui = std::shared_ptr<Gui>(new Gui());
-	m_gui->Init(shared_from_this());
-	m_gui->SetTexture(GetResources()->Load<Texture>("Card.bmp"));
-	m_gui->SetHighlight(GetResources()->Load<Texture>("Card_normal.bmp"));
-	m_gui->SetPressed(GetResources()->Load<Texture>("Card_height.bmp"));
 	m_running = true;
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
-	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST); 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glDisable(GL_BLEND);
 
 	while (m_running)
 	{

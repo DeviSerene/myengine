@@ -4,6 +4,14 @@
 #include <GLM/gtc/type_ptr.hpp>
 #include <GLM/gtc/matrix_transform.hpp>
 
+std::shared_ptr<Shader> Shader::Load(std::string _path)
+{
+	std::shared_ptr<Shader> rtn = std::shared_ptr<Shader>(new Shader());
+	rtn->m_path = _path;
+	rtn->m_timer = 0;
+	return rtn;
+}
+
 bool Shader::LoadShaders(std::string vertFilename, std::string fragFilename)
 {
 	// OpenGL doesn't provide any functions for loading shaders from file
@@ -145,6 +153,22 @@ bool Shader::LoadShaders(std::string vertFilename, std::string fragFilename)
 	glUseProgram(_shaderProgram);
 
 	return true;
+}
+
+GLuint Shader::GetUniformLocation(std::string _id)
+{
+	if (m_uniforms.empty())
+	{
+		for (unsigned int i = 0; i < m_uniforms.size(); i++)
+		{
+			if (m_uniforms[i]->m_ID == _id)
+			{
+				return m_uniforms[i]->m_location;
+			}
+		}
+	}
+
+	return 0;
 }
 
 bool Shader::CheckShaderCompiled(GLint shader)

@@ -11,6 +11,7 @@
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 #include "Texture.h"
+#include "Shader.h"
 
 class Core;
 
@@ -25,26 +26,19 @@ public:
 
 	void Init(std::shared_ptr<Core> _c);
 	bool Button(glm::vec4 _pos, std::string _label);
+	void Sprite(glm::vec4 _pos);
 	void SetTexture(std::shared_ptr<Texture> _texture) { texture = _texture; }
 	void SetHighlight(std::shared_ptr<Texture> _texture) { highlight = _texture; }
 	void SetPressed(std::shared_ptr<Texture> _texture) { pressed = _texture; }
 
+	glm::vec4 GetPos(glm::vec4 _pos);
+
 private:
 
-	void SetUniform(int _location, glm::mat4 _set);
-
-
 	bool Intersect(glm::vec4 _pos, glm::vec2 _mouse);
-	bool LoadShaders(std::string vertFilename, std::string fragFilename);
 
 	std::weak_ptr<Core> m_core;
 
-	// The OpenGL shader program handle
-	int _shaderProgram;
-	// Locations of Uniforms in the vertex shader
-	int _shaderModelMatLocation;
-	int _shaderProjMatLocation; 
-	int _shaderTex1SamplerLocation;
 	std::shared_ptr<VertexArray> m_shape;
 	std::shared_ptr<VertexBuffer> red;
 	std::shared_ptr<VertexBuffer> blue;
@@ -52,4 +46,8 @@ private:
 	std::shared_ptr<Texture> texture;
 	std::shared_ptr<Texture> highlight;
 	std::shared_ptr<Texture> pressed;
+
+
+	std::shared_ptr<Shader> m_shader;
+
 };

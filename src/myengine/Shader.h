@@ -17,11 +17,18 @@ struct Uniform
 	std::string m_ID;
 };
 
-class Shader : Resource
+class Shader : public Resource
 {
 public:
+	static std::shared_ptr<Shader> Load(std::string _path);
+
+	GLuint GetShader() { return _shaderProgram; }
+	GLuint GetUniformLocation(std::string _id);
 	bool LoadShaders(std::string vertFilename, std::string fragFilename);
 	void AddUniform(std::string _uniform);
+	void SetUniform(GLuint _location, glm::mat4 _set){glUniformMatrix4fv(_location, 1, GL_FALSE, glm::value_ptr(_set));}
+
+
 	void SetMatrices(glm::mat4 modelMatrix, glm::mat4 invModelMatrix, glm::mat4 viewMatrix, glm::mat4 projMatrix);
 	void AddTexture(std::shared_ptr<Texture> _tex, std::string _type);
 	void Apply();

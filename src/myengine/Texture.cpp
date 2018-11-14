@@ -11,8 +11,11 @@ std::shared_ptr<Texture> Texture::Load(std::string _path)
 
 void Texture::LoadTexture(std::string filename)
 {
+	std::string type = filename.substr(filename.length() - 3);
 	// Load SDL surface
-	SDL_Surface *image = SDL_LoadBMP(filename.c_str());
+	//SDL_Surface *image = SDL_LoadBMP(filename.c_str());
+	SDL_Surface *image = IMG_Load(filename.c_str());
+
 
 	if (!image) // Check it worked
 	{
@@ -38,9 +41,12 @@ void Texture::LoadTexture(std::string filename)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 	// SDL loads images in BGR order
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->w, image->h, 0, GL_BGR, GL_UNSIGNED_BYTE, image->pixels);
+	if(type == "bmp")
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->w, image->h, 0, GL_BGR, GL_UNSIGNED_BYTE, image->pixels);
+	else
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image->pixels);
 
-	//glGenerateMipmap(GL_TEXTURE_2D);
+	glGenerateMipmap(GL_TEXTURE_2D);
 
 	SDL_FreeSurface(image);
 
