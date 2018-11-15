@@ -1,0 +1,8 @@
+//varying vec4 ex_Color;
+in vec2 texCoord;
+
+void main()
+{
+vec3 texColour = vec3(texture(tex1,myCoords));
+  gl_FragColor = texColour;
+}

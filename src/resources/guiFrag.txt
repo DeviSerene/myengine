@@ -1,0 +1,15 @@
+
+in vec4 ex_Color;
+in vec2 ex_texCoord;
+uniform sampler2D in_Texture;
+
+void main()
+{
+vec2 myCoords; 
+myCoords.x = ex_texCoord.x; 
+myCoords.y = -ex_texCoord.y;
+
+ vec4 texColour = vec4(texture(in_Texture,myCoords)).rgba;
+
+  gl_FragColor = vec4(texColour);
+}

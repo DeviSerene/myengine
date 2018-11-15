@@ -4,13 +4,15 @@
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include "Texture.h"
+#include <SDL2/SDL_ttf.h>
 
-class Texture : public Resource
+class TextTexture : public Resource
 {
 public:
-	static std::shared_ptr<Texture> Create();
-	static std::shared_ptr<Texture> Load(std::string _path);
-	void LoadTexture(std::string filename);
+	static std::shared_ptr<TextTexture> Create();
+	static std::shared_ptr<TextTexture> Load(std::string _path);
+	void SetText(SDL_Color _colour, int _textsize);
 	GLuint GetTexture() { return  m_texture; }
 private:
 	// OpenGL handle for the texture

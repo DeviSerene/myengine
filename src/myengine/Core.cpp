@@ -67,22 +67,6 @@ Core::~Core()
 	alcCloseDevice(device);
 }
 
-
-std::shared_ptr<Entity> Core::AddEntity()
-{
-	//std::shared_ptr<Sound> s = m_resources->Load<Sound>("fan2.ogg");
-	//s->Play();
-
-	std::shared_ptr<Entity> rtn = std::shared_ptr<Entity>(new Entity());
-	m_entities.push_back(rtn);
-	rtn->SetCore(shared_from_this());
-	rtn->m_alive = true;
-	rtn->Init();
-	
-	return rtn;
-}
-
-
 void Core::StartSDL()
 {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER | SDL_INIT_JOYSTICK) < 0)
@@ -103,13 +87,26 @@ void Core::StartSDL()
 		throw MyEngineException("Unable to init GLEW");
 	}
 
+	//Initialize SDL_ttf
+	if (TTF_Init() == -1)
+	{
+		throw MyEngineException("Unable to init SDL_TTF");
+	}
+
+	//Initialize PNG loading
+	int imgFlags = IMG_INIT_PNG;
+	if (!(IMG_Init(imgFlags) & imgFlags))
+	{
+		throw MyEngineException("Unable to init SDL_PNG");
+	}
+
 	m_keyboard = std::shared_ptr<Keyboard>(new Keyboard());
 }
 
 void Core::Start()
 {
-	m_camera = AddEntity();
-	m_camera->AddComponent<Camera>();
+	//m_camera = AddEntity();
+	//m_camera->AddComponent<Camera>();
 	m_running = true;
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
@@ -130,30 +127,10 @@ void Core::Start()
 		m_keyboard->Update();
 
 		m_resources->CleanUp(m_deltaTs);
+		
+		if (m_scene)
+			m_scene->Tick();
 
-		for (std::vector<std::shared_ptr<Entity> >::iterator it = m_entities.begin();
-			it != m_entities.end(); it++)
-		{
-			try
-			{
-				(*it)->Tick();
-			}
-			catch (MyEngineException e)
-			{
-				(*it)->m_alive = false;
-			}
-		}
-
-		for (std::vector<std::shared_ptr<Entity> >::iterator it = m_entities.begin();
-			it != m_entities.end(); it++)
-		{
-			if (!(*it)->m_alive)
-			{
-				//if an error wants us to kill it, we should kill it
-				it = m_entities.erase(it);
-				it--;
-			}
-		}
 		////
 		if (m_keyboard->Input(A_BUTTON))
 		{
@@ -195,35 +172,25 @@ void Core::Start()
 		glClear(GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 		// Set up a projection matrix
-		_viewMatrix = m_camera->GetComponent<Camera>()->GetViewMatrix();
-		_projMatrix = m_camera->GetComponent<Camera>()->GetProjMatrix();
-		
-		/*
-		glBindFramebuffer(GL_FRAMEBUFFER, m_fb->GetBuffer());
-		glViewport(0, 0, 1024, 768);
-		for (std::vector<std::shared_ptr<Entity> >::iterator it = m_entities.begin();
-			it != m_entities.end(); it++)
+		if (m_camera)
 		{
-			(*it)->Display();
+			_viewMatrix = m_camera->GetComponent<Camera>()->GetViewMatrix();
+			_projMatrix = m_camera->GetComponent<Camera>()->GetProjMatrix();
 		}
-		*/
-
 		glViewport(0, 0, x, y);
-		for (std::vector<std::shared_ptr<Entity> >::iterator it = m_entities.begin();
-			it != m_entities.end(); it++)
-		{
-			(*it)->Display();
-		}
+
+		if(m_scene)
+			m_scene->Display();
+
 		// Draw GUI
 		glDisable(GL_DEPTH_TEST);
 		_projMatrix = glm::ortho(0, x, 0, y, 0, 100);
-		for (std::vector<std::shared_ptr<Entity> >::iterator it = m_entities.begin();
-			it != m_entities.end(); it++)
-		{
-			(*it)->Gui();
-		}
+		
+		if (m_scene)
+			m_scene->Gui();
 
 		SDL_GL_SwapWindow(m_window);
 	}
 }
 
+glm::vec3 Core::GetCamera() { return m_camera->GetComponent<Camera>()->GetCameraPos(); }

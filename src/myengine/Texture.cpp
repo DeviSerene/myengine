@@ -1,5 +1,12 @@
 #include "Texture.h"
 
+std::shared_ptr<Texture> Texture::Create()
+{
+	std::shared_ptr<Texture> rtn = std::shared_ptr<Texture>(new Texture());
+	rtn->m_timer = 0;
+	return rtn;
+}
+
 std::shared_ptr<Texture> Texture::Load(std::string _path)
 {
 	std::shared_ptr<Texture> rtn = std::shared_ptr<Texture>(new Texture());

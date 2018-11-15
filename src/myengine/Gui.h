@@ -27,9 +27,9 @@ public:
 	void Init(std::shared_ptr<Core> _c);
 	bool Button(glm::vec4 _pos, std::string _label);
 	void Sprite(glm::vec4 _pos);
-	void SetTexture(std::shared_ptr<Texture> _texture) { texture = _texture; }
-	void SetHighlight(std::shared_ptr<Texture> _texture) { highlight = _texture; }
-	void SetPressed(std::shared_ptr<Texture> _texture) { pressed = _texture; }
+	void SetTexture(GLuint _texture) { texture = _texture; }
+	void SetHighlight(GLuint _texture) { highlight = _texture; }
+	void SetPressed(GLuint _texture) { pressed = _texture; }
 
 	glm::vec4 GetPos(glm::vec4 _pos);
 
@@ -43,9 +43,9 @@ private:
 	std::shared_ptr<VertexBuffer> red;
 	std::shared_ptr<VertexBuffer> blue;
 	std::shared_ptr<VertexBuffer> green;
-	std::shared_ptr<Texture> texture;
-	std::shared_ptr<Texture> highlight;
-	std::shared_ptr<Texture> pressed;
+	GLuint texture;
+	GLuint highlight;
+	GLuint pressed;
 
 
 	std::shared_ptr<Shader> m_shader;

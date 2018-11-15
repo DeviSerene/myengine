@@ -101,7 +101,7 @@ bool Gui::Button(glm::vec4 _pos, std::string _label)
 			glActiveTexture(GL_TEXTURE0);
 			//glUniform1i(_shaderTex1SamplerLocation, 0);
 			glUniform1i(m_shader->GetUniformLocation("in_Texture"), 0);
-			glBindTexture(GL_TEXTURE_2D, pressed->GetTexture());
+			glBindTexture(GL_TEXTURE_2D, pressed);
 
 		}
 		else
@@ -109,7 +109,7 @@ bool Gui::Button(glm::vec4 _pos, std::string _label)
 			m_shape->SetBuffer(IN_COLOUR, blue);
 			glActiveTexture(GL_TEXTURE0);
 			glUniform1i(m_shader->GetUniformLocation("in_Texture"), 0);
-			glBindTexture(GL_TEXTURE_2D, highlight->GetTexture());
+			glBindTexture(GL_TEXTURE_2D, highlight);
 
 		}
 	}
@@ -118,7 +118,7 @@ bool Gui::Button(glm::vec4 _pos, std::string _label)
 		m_shape->SetBuffer(IN_COLOUR, red);
 		glActiveTexture(GL_TEXTURE0);
 		glUniform1i(m_shader->GetUniformLocation("in_Texture"), 0);
-		glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
+		glBindTexture(GL_TEXTURE_2D, texture);
 	}
 
 	///texture
@@ -186,7 +186,7 @@ void Gui::Sprite(glm::vec4 _pos)
 	m_shape->SetBuffer(IN_COLOUR, red);
 	glActiveTexture(GL_TEXTURE0);
 	glUniform1i(m_shader->GetUniformLocation("in_Texture"), 0);
-	glBindTexture(GL_TEXTURE_2D, texture->GetTexture());
+	glBindTexture(GL_TEXTURE_2D, texture);
 	
 
 	///texture
