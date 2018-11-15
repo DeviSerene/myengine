@@ -117,6 +117,12 @@ target_link_libraries(game
       "$<TARGET_FILE_DIR:game>"
   )
 
+   add_custom_command(TARGET game POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/SDL2_ttf/bin/libfreetype-6.dll"
+      "$<TARGET_FILE_DIR:game>"
+  )
+
      add_custom_command(TARGET game POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
       "${CMAKE_SOURCE_DIR}/contrib/msvc-windows-x86/SDL2_image/bin/libpng16-16.dll"

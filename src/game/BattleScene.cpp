@@ -21,7 +21,7 @@ BattleScene::BattleScene(std::shared_ptr<Core> _c)
 	std::shared_ptr<MeshRenderer> com2 = enti2->AddComponent<MeshRenderer>();
 	for (int i = 0; i < 100; i++)
 	{
-		m_entities.push_back(enti->AddChild());
+		m_entities.push_back(m_scene->AddEntity());
 		m_entities[i]->AddComponent<Transform>(glm::vec3(rand() % 10, rand() % 10, -(rand() % 10)), glm::vec3(rand() % 10, rand() % 10, -(rand() % 10)), glm::vec3((0.1 + (0.1f * (rand() % 10))), (0.1 + (0.1f * (rand() % 10))), (0.1 + (0.1f * (rand() % 10)))));
 		m_entities[i]->AddComponent<MeshRenderer>();
 	}

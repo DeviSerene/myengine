@@ -31,11 +31,11 @@ void SpriteRenderer::OnDisplay()
 	{
 
 		glUseProgram(m_shader->GetShader());
-		m_modelMatrix = glm::translate(glm::mat4(1.0f), myTransform->GetPosition());
 		m_modelMatrix = glm::rotate(m_modelMatrix, myTransform->GetRotation().y, glm::vec3(0, 1, 0));
 		m_modelMatrix = glm::rotate(m_modelMatrix, myTransform->GetRotation().z, glm::vec3(0, 0, 1));
 		m_modelMatrix = glm::rotate(m_modelMatrix, myTransform->GetRotation().x, glm::vec3(1, 0, 0));
 		m_modelMatrix = glm::scale(m_modelMatrix, myTransform->GetScale());
+		m_modelMatrix = glm::translate(glm::mat4(1.0f), myTransform->GetPosition());
 
 		m_invModelMatrix = glm::rotate(glm::mat4(1.0f), -0.0f, glm::vec3(0, 1, 0));
 
