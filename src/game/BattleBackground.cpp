@@ -17,9 +17,9 @@ void BattleBackground::OnInit()
 	backgroundAssets.y = -1;
 	backgroundAssets.z = 2;
 	backgroundAssets.w = 2;
-	m_sprites.push_back(GetCore()->GetResources()->Load<Texture>("grass_background.png"));
-	m_sprites.push_back(GetCore()->GetResources()->Load<Texture>("grass_foreground.png"));
-	m_sprites.push_back(GetCore()->GetResources()->Load<Texture>("grass_parallax.png"));
+	m_sprites.push_back(GetCore()->GetResources()->Load<Texture>("assets/grass_background.png"));
+	m_sprites.push_back(GetCore()->GetResources()->Load<Texture>("assets/grass_foreground.png"));
+	m_sprites.push_back(GetCore()->GetResources()->Load<Texture>("assets/grass_parallax.png"));
 }
 
 void BattleBackground::OnTick()
@@ -48,6 +48,12 @@ void BattleBackground::OnTick()
 
 void BattleBackground::OnGui()
 {
+	glm::vec4 fi;
+	fi.x = 1;
+	fi.y = 1;
+	fi.z = 1;
+	fi.w = 1;
+	GetCore()->GetGui()->SetFrameInfo(fi);
 	GetCore()->GetGui()->SetTexture(m_sprites[0]->GetTexture());
 	GetCore()->GetGui()->Sprite(backgroundAssets);
 	GetCore()->GetGui()->SetTexture(m_sprites[1]->GetTexture());

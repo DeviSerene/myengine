@@ -30,6 +30,7 @@ public:
 	void SetTexture(GLuint _texture) { texture = _texture; }
 	void SetHighlight(GLuint _texture) { highlight = _texture; }
 	void SetPressed(GLuint _texture) { pressed = _texture; }
+	void SetFrameInfo(glm::vec4 _frameInfo) { m_frameInfo = _frameInfo; }
 
 	glm::vec4 GetPos(glm::vec4 _pos);
 
@@ -46,7 +47,7 @@ private:
 	GLuint texture;
 	GLuint highlight;
 	GLuint pressed;
-
+	glm::vec4 m_frameInfo;
 
 	std::shared_ptr<Shader> m_shader;
 

@@ -15,6 +15,7 @@ void Gui::Init(std::shared_ptr<Core> _c)
 	m_shader->AddUniform("in_Model");
 	m_shader->AddUniform("in_Projection");
 	m_shader->AddUniform("in_Texture");
+	m_shader->AddUniform("in_FrameInfo");
 
 	std::shared_ptr<VertexBuffer> positions = std::make_shared<VertexBuffer>();
 	positions->Add(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -66,6 +67,11 @@ void Gui::Init(std::shared_ptr<Core> _c)
 	m_shape->SetBuffer(IN_POSITION, positions);
 	m_shape->SetBuffer(IN_COLOUR, red);
 	m_shape->SetBuffer(IN_UV, uv);
+
+	m_frameInfo.x = 1.0f;
+	m_frameInfo.y = 1.0f;
+	m_frameInfo.z = 4.0f;
+	m_frameInfo.w = 1.0f;
 }
 
 Gui::~Gui()
@@ -132,7 +138,11 @@ bool Gui::Button(glm::vec4 _pos, std::string _label)
 	//modelmat = glm::scale(modelmat, glm::vec3(1, 1, 1));
 	//SetUniform(_shaderModelMatLocation, modelmat);
 	m_shader->SetUniform(m_shader->GetUniformLocation("in_Model"), modelmat);
+	m_shader->SetUniform(m_shader->GetUniformLocation("in_FrameInfo"), m_frameInfo);
+
 	glBindVertexArray(m_shape->GetId());
+
+	//update texture coordinates
 
 	// Tell OpenGL to draw it
 	// Must specify the type of geometry to draw and the number of vertices
@@ -198,6 +208,16 @@ void Gui::Sprite(glm::vec4 _pos)
 	modelmat = glm::translate(modelmat, glm::vec3(_pos.x, _pos.y, 0));
 	modelmat = glm::scale(modelmat, glm::vec3(_pos.z, _pos.w, 1));
 	m_shader->SetUniform(m_shader->GetUniformLocation("in_Model"), modelmat);
+
+	/*
+	m_frameInfo.x = 1.0f;
+	m_frameInfo.y = 1.0f;
+	m_frameInfo.z = 4.0f;
+	m_frameInfo.w = 1.0f;
+	*/
+	//update texture coordinates
+	m_shader->SetUniform(m_shader->GetUniformLocation("in_FrameInfo"), m_frameInfo);
+
 	glBindVertexArray(m_shape->GetId());
 
 	// Tell OpenGL to draw it

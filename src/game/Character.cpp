@@ -15,6 +15,7 @@ void Character::OnInit()
 	m_idleSprites.push_back(GetCore()->GetResources()->Load<Texture>(m_spritePath + "_0_1.png"));
 	m_idleSprites.push_back(GetCore()->GetResources()->Load<Texture>(m_spritePath + "_0_2.png"));
 	m_idleSprites.push_back(GetCore()->GetResources()->Load<Texture>(m_spritePath + "_0_3.png"));
+	m_spritesheet = GetCore()->GetResources()->Load<Texture>(m_spritePath + ".png");
 }
 
 void Character::OnTick()
@@ -37,6 +38,10 @@ void Character::OnGui()
 {
 	GLuint texture = m_idleSprites[m_frame]->GetTexture();
 
-	GetCore()->GetGui()->SetTexture(texture);
+	float a = (float)(m_frame + 1) / 4.0f;
+	std::cout << "X% = " << a << std::endl;
+
+	GetCore()->GetGui()->SetTexture(m_spritesheet->GetTexture());
+	GetCore()->GetGui()->SetFrameInfo({ (float)(m_frame + 1),1.0f,4.0f,1.0f });
 	GetCore()->GetGui()->Sprite(m_pos);
 }

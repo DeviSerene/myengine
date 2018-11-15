@@ -159,7 +159,7 @@ bool Shader::LoadShaders(std::string vertFilename, std::string fragFilename)
 
 GLuint Shader::GetUniformLocation(std::string _id)
 {
-	if (m_uniforms.empty())
+	if (!m_uniforms.empty())
 	{
 		for (unsigned int i = 0; i < m_uniforms.size(); i++)
 		{
@@ -170,7 +170,7 @@ GLuint Shader::GetUniformLocation(std::string _id)
 		}
 	}
 
-	return 0;
+	return -1;
 }
 
 bool Shader::CheckShaderCompiled(GLint shader)

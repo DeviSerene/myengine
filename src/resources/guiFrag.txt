@@ -2,12 +2,18 @@
 in vec4 ex_Color;
 in vec2 ex_texCoord;
 uniform sampler2D in_Texture;
+uniform vec4 in_FrameInfo;
 
 void main()
 {
 vec2 myCoords; 
 myCoords.x = ex_texCoord.x; 
 myCoords.y = -ex_texCoord.y;
+
+//myCoords.x = myCoords.x / in_FrameInfo.z; 
+myCoords.x = (in_FrameInfo.x * (1 / in_FrameInfo.z)) + (myCoords.x * (1 / in_FrameInfo.z));
+myCoords.y = (in_FrameInfo.y * (1 / in_FrameInfo.w)) + (myCoords.y * (1 / in_FrameInfo.w));
+
 
  vec4 texColour = vec4(texture(in_Texture,myCoords)).rgba;
 

@@ -21,4 +21,5 @@ private:
 	float m_timer;
 	glm::vec4 m_pos;
 	std::vector<std::shared_ptr<Texture>> m_idleSprites;
+	std::shared_ptr<Texture> m_spritesheet;
 };
