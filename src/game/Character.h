@@ -6,6 +6,7 @@
 #include <myengine/Core.h>
 #include "myengine/Resources.h"
 #include "myengine/Texture.h"
+#include "myengine/TextTexture.h"
 
 class Character : public Component
 {
@@ -20,6 +21,8 @@ private:
 	int m_frame;
 	float m_timer;
 	glm::vec4 m_pos;
-	std::vector<std::shared_ptr<Texture>> m_idleSprites;
+	glm::vec4 test;
 	std::shared_ptr<Texture> m_spritesheet;
+	std::shared_ptr<Texture> m_glowSheet;
+	std::shared_ptr<TextTexture> m_name;
 };

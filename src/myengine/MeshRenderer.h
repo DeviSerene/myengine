@@ -21,9 +21,13 @@ class Material;
 class MeshRenderer : public Component
 {
 public:
+	MeshRenderer();
+	MeshRenderer(std::shared_ptr<Mesh> _mesh);
+	MeshRenderer(std::shared_ptr<Mesh> _mesh, std::shared_ptr<Texture> _texture);
 	void OnInit(); //this will override the Components
 	void OnDisplay();
 	glm::mat4 GetModelMatrix() { return m_modelMatrix; }
+	void SetMesh(std::shared_ptr<Mesh> _mesh);
 
 private:
 
@@ -40,7 +44,7 @@ private:
 	// Matrix for the position and orientation of the game object
 	glm::mat4 m_modelMatrix;
 	glm::mat4 m_invModelMatrix;
-
+	bool mesh;
 //	std::shared_ptr<ShaderProgram> m_shader;
 
 };

@@ -54,12 +54,12 @@ void BattleBackground::OnGui()
 	fi.z = 1;
 	fi.w = 1;
 	GetCore()->GetGui()->SetFrameInfo(fi);
-	GetCore()->GetGui()->SetTexture(m_sprites[0]->GetTexture());
-	GetCore()->GetGui()->Sprite(backgroundAssets);
-	GetCore()->GetGui()->SetTexture(m_sprites[1]->GetTexture());
-	GetCore()->GetGui()->Sprite(backgroundAssets);
+	//GetCore()->GetGui()->SetTexture(m_sprites[0]->GetTexture());
+	//GetCore()->GetGui()->Sprite(backgroundAssets);
+	//GetCore()->GetGui()->SetTexture(m_sprites[1]->GetTexture());
+	//GetCore()->GetGui()->Sprite(backgroundAssets);
+	//GetCore()->GetGui()->SetTexture(m_sprites[2]->GetTexture());
 	GetCore()->GetGui()->SetTexture(m_sprites[2]->GetTexture());
 	GetCore()->GetGui()->Sprite(clouds1);
-	GetCore()->GetGui()->SetTexture(m_sprites[2]->GetTexture());
 	GetCore()->GetGui()->Sprite(clouds2);
 }

@@ -39,7 +39,7 @@ void Transform::OnInit()
 
 void Transform::OnTick()
 {
-	m_rotation.x += 0.01f;
+	//m_rotation.x += 0.01f;
 
 	glm::vec3 front;
 	front.x = cos(glm::radians(m_rotation.y)) * cos(glm::radians(m_rotation.x));

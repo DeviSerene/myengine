@@ -9,6 +9,25 @@
 #include "Entity.h"
 #include "Transform.h"
 
+MeshRenderer::MeshRenderer()
+{
+	mesh = false;
+	//m_mesh = GetCore()->GetResources()->Load<Mesh>("Card.obj");
+}
+
+MeshRenderer::MeshRenderer(std::shared_ptr<Mesh> _mesh)
+{
+	m_mesh = _mesh;
+	mesh = true;
+	m_texture = GetCore()->GetResources()->Load<Texture>("Card.bmp");
+}
+
+MeshRenderer::MeshRenderer(std::shared_ptr<Mesh> _mesh, std::shared_ptr<Texture> _texture)
+{
+	m_mesh = _mesh;
+	m_texture = _texture;
+	mesh = true;
+}
 
 void MeshRenderer::OnInit()
 {
@@ -17,8 +36,11 @@ void MeshRenderer::OnInit()
 
 	m_cam = std::shared_ptr<glm::vec3>(new glm::vec3(0.0f, 0.0f, 0.0f));
 
-	m_mesh = GetCore()->GetResources()->Load<Mesh>("Card.obj");
-	m_texture = GetCore()->GetResources()->Load<Texture>("Card.bmp");
+	if (!mesh)
+	{
+		m_mesh = GetCore()->GetResources()->Load<Mesh>("assets/box.obj");
+		m_texture = GetCore()->GetResources()->Load<Texture>("Card.bmp");
+	}
 	m_normal = GetCore()->GetResources()->Load<Texture>("Card_normal.bmp");
 	m_height = GetCore()->GetResources()->Load<Texture>("Card_height.bmp");
 	m_mat = GetCore()->GetResources()->Create<Material>();
@@ -27,6 +49,8 @@ void MeshRenderer::OnInit()
 	m_mat->SetLightPosition({ 1.0f, 0.0f, 0.0f });
 }
 
+void MeshRenderer::SetMesh(std::shared_ptr<Mesh> _mesh) { m_mesh = _mesh; }
+
 void MeshRenderer::OnDisplay()
 {
 	std::shared_ptr<Transform> myTransform = GetEntity()->GetComponent<Transform>();
@@ -34,11 +58,11 @@ void MeshRenderer::OnDisplay()
 	{
 		std::shared_ptr<Entity> ent = GetEntity();
 
-		m_modelMatrix = glm::scale(glm::mat4(1.0f), myTransform->GetScale());
+		m_modelMatrix = glm::translate(glm::mat4(1.0f), myTransform->GetPosition());
 		m_modelMatrix = glm::rotate(m_modelMatrix, myTransform->GetRotation().y, glm::vec3(0, 1, 0));
 		m_modelMatrix = glm::rotate(m_modelMatrix, myTransform->GetRotation().z, glm::vec3(0, 0, 1));
 		m_modelMatrix = glm::rotate(m_modelMatrix, myTransform->GetRotation().x, glm::vec3(1, 0, 0));
-		m_modelMatrix = glm::translate(m_modelMatrix, myTransform->GetPosition());
+		m_modelMatrix = glm::scale(m_modelMatrix, myTransform->GetScale());
 
 		if (ent->m_parent != nullptr)
 		{

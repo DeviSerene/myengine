@@ -30,6 +30,8 @@ void TextTexture::SetText(SDL_Color _colour, int _textsize)
 		//std::cerr << "WARNING: could not load BMP image: " << filename << std::endl;
 		return;
 	}
+	m_width = surfaceText->w;
+	m_height = surfaceText->h;
 
 	unsigned int texName = 0;
 	glGenTextures(1, &texName);

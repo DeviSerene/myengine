@@ -18,6 +18,7 @@ public:
 	glm::mat4 GetViewMatrix();
 	glm::mat4 GetProjMatrix();
 	glm::vec3 GetCameraPos() {return cameraPos;}
+	void SetPos(glm::vec3 _cameraPos) { cameraPos = _cameraPos; }
 
 private:
 	// This matrix represents the camera's position and orientation

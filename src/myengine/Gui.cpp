@@ -231,8 +231,9 @@ void Gui::Sprite(glm::vec4 _pos)
 
 bool Gui::Intersect(glm::vec4 _pos, glm::vec2 _mouse)
 {
-	if (_mouse.x > _pos.x && _mouse.x < _pos.z && _mouse.y > _pos.y && _mouse.y < _pos.w)
+	if (_mouse.x > _pos.x && _mouse.x < _pos.z)// && _mouse.y > _pos.y && _mouse.y < _pos.w)
 	{
+		if(_mouse.y < _pos.y && _mouse.y > (_pos.w- _pos.y))
 		return true;
 	}
 	return false;

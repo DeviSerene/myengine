@@ -2,6 +2,7 @@
 #include <fstream>
 #include <memory>
 #include <myengine/Transform.h>
+#include <myengine/Texture.h>
 #include <myengine/MeshRenderer.h>
 #include <myengine/SpriteRenderer.h>
 #include <myengine/Component.h>
@@ -25,4 +26,6 @@ public:
 private:
 	std::shared_ptr<Scene> m_scene;
 	std::weak_ptr<Core> m_core;
+	std::shared_ptr<Mesh> m_mesh;
+	std::shared_ptr<Texture> m_grass;
 };

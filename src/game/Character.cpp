@@ -10,12 +10,17 @@ void Character::OnInit()
 	m_pos.y = -0.5f;
 	m_pos.z = 0.5f;
 	m_pos.w = 0.7f;
+	//
 
-	m_idleSprites.push_back(GetCore()->GetResources()->Load<Texture>(m_spritePath+"_0_0.png"));
-	m_idleSprites.push_back(GetCore()->GetResources()->Load<Texture>(m_spritePath + "_0_1.png"));
-	m_idleSprites.push_back(GetCore()->GetResources()->Load<Texture>(m_spritePath + "_0_2.png"));
-	m_idleSprites.push_back(GetCore()->GetResources()->Load<Texture>(m_spritePath + "_0_3.png"));
+	test.x = -0.85f;
+	test.y = -0.5f;
+	test.z = 0.5f;
+	test.w = 0.7f;
+
 	m_spritesheet = GetCore()->GetResources()->Load<Texture>(m_spritePath + ".png");
+	m_glowSheet = GetCore()->GetResources()->Load<Texture>(m_spritePath + "_glow.png");
+	m_name = GetCore()->GetResources()->Load<TextTexture>("Ophilia");
+	m_name->SetText({ 200,200,200,255 }, 24);
 }
 
 void Character::OnTick()
@@ -36,12 +41,24 @@ void Character::OnTick()
 
 void Character::OnGui()
 {
-	GLuint texture = m_idleSprites[m_frame]->GetTexture();
-
-	float a = (float)(m_frame + 1) / 4.0f;
-	std::cout << "X% = " << a << std::endl;
-
+	//draw the character sprite in the current frame
 	GetCore()->GetGui()->SetTexture(m_spritesheet->GetTexture());
-	GetCore()->GetGui()->SetFrameInfo({ (float)(m_frame + 1),1.0f,4.0f,1.0f });
-	GetCore()->GetGui()->Sprite(m_pos);
+	GetCore()->GetGui()->SetHighlight(m_glowSheet->GetTexture());
+	GetCore()->GetGui()->SetPressed(m_glowSheet->GetTexture());
+	GetCore()->GetGui()->SetFrameInfo({ m_frame + 1, m_animation + 1, 4, 1 });
+	
+	if (GetCore()->GetGui()->Button(m_pos, "Ophilia"))
+	{
+		std::cout << "Hit! ";
+	}
+	if (GetCore()->GetGui()->Button(test, "Ophilia"))
+	{
+		std::cout << "Hit! ";
+	}
+
+	//draw the name of the character
+	GetCore()->GetGui()->SetTexture(m_name->GetTexture());
+	GetCore()->GetGui()->SetFrameInfo({ 1,1,1,1 });
+	GetCore()->GetGui()->Sprite({ m_pos.x, m_pos.y+ m_pos.w,0.005f * m_name->GetWidth(),0.005f * m_name->GetHeight() });
+
 }
