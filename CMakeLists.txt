@@ -91,6 +91,14 @@ add_executable(game
 	src/game/Character.h
 	src/game/Stats.cpp
 	src/game/Stats.h
+	src/game/Enemy.cpp
+	src/game/Enemy.h
+	src/game/ActionBar.cpp
+	src/game/ActionBar.h
+	src/game/TurnBar.cpp
+	src/game/TurnBar.h
+	src/game/Ability.cpp
+	src/game/Ability.h
 )
 
 target_link_libraries(game

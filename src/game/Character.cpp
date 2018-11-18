@@ -19,8 +19,8 @@ void Character::OnInit()
 
 	m_spritesheet = GetCore()->GetResources()->Load<Texture>(m_spritePath + ".png");
 	m_glowSheet = GetCore()->GetResources()->Load<Texture>(m_spritePath + "_glow.png");
-	m_name = GetCore()->GetResources()->Load<TextTexture>("Ophilia");
-	m_name->SetText({ 200,200,200,255 }, 24);
+	m_stats = std::shared_ptr<Stats>(new Stats(GetCore()->GetResources()->Load < TextTexture>("Ophilia"), GetCore()->GetResources()));
+	m_dead = false;
 }
 
 void Character::OnTick()
@@ -51,14 +51,10 @@ void Character::OnGui()
 	{
 		std::cout << "Hit! ";
 	}
-	if (GetCore()->GetGui()->Button(test, "Ophilia"))
-	{
-		std::cout << "Hit! ";
-	}
-
 	//draw the name of the character
-	GetCore()->GetGui()->SetTexture(m_name->GetTexture());
-	GetCore()->GetGui()->SetFrameInfo({ 1,1,1,1 });
-	GetCore()->GetGui()->Sprite({ m_pos.x, m_pos.y+ m_pos.w,0.005f * m_name->GetWidth(),0.005f * m_name->GetHeight() });
+	m_stats->Draw(0.9f, GetCore()->GetGui());
+	//GetCore()->GetGui()->SetTexture(m_name->GetTexture());
+	//GetCore()->GetGui()->SetFrameInfo({ 1,1,1,1 });
+	//GetCore()->GetGui()->Sprite({ m_pos.x, m_pos.y+ m_pos.w,0.005f * m_name->GetWidth(),0.005f * m_name->GetHeight() });
 
 }

@@ -28,4 +28,8 @@ private:
 	std::weak_ptr<Core> m_core;
 	std::shared_ptr<Mesh> m_mesh;
 	std::shared_ptr<Texture> m_grass;
+
+	std::vector<std::shared_ptr<Entity>> m_environment;
+	std::vector<std::shared_ptr<Entity>> m_party;
+	std::vector<std::shared_ptr<Entity>> m_enemies;
 };

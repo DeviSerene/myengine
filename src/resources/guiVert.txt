@@ -7,6 +7,11 @@ attribute vec4 IN_COLOUR;
 attribute vec2 IN_UV;
 out vec4 ex_Color;
 out vec2 ex_texCoord;
+out vec2 blurHTextureCoords[11];
+out vec2 blurVTextureCoords[11];
+
+uniform bool in_Flip;
+uniform vec2 in_Screen;
 
 void main()
 {
@@ -14,5 +19,21 @@ void main()
  gl_Position =  in_Model * vec4(IN_POSITION,1.0);
   ex_Color = IN_COLOUR;
  ex_texCoord = IN_UV;
+
+if(in_Flip)
+{
+float pixelSize = 1.0 / in_Screen.x;
+	
+		for(int i = -5; i <=5;i++)
+		{
+			blurHTextureCoords[i+5] = IN_UV + vec2(pixelSize * i,0.0);
+		}
+
+		pixelSize = 1.0 / in_Screen.y;
+		for(int i = -5; i <=5;i++)
+		{
+			blurVTextureCoords[i+5] = IN_UV + vec2(0.0, pixelSize * i);
+		}
+}
 }
 

@@ -5,15 +5,14 @@
 #include "Sound.h"
 #include "Texture.h"
 
-#define WINDOW_WIDTH 640
-#define WINDOW_HEIGHT 480
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
 
 Core::Core()
 {
 	// Position of the light, in world-space
-	_lightPosition = glm::vec3(10, 10, 0);
+	_lightPosition = glm::vec3(0, 1, 0);
 	rebindA = false;
-
 }
 
 std::shared_ptr<Core> Core::init() 
@@ -74,7 +73,7 @@ void Core::StartSDL()
 		throw MyEngineException("Unable to init SDL");
 	}
 
-	m_window = SDL_CreateWindow("Hello World",
+	m_window = SDL_CreateWindow("Ophilia Traveller",
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 		WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 
@@ -107,6 +106,7 @@ void Core::Start()
 {
 	//m_camera = AddEntity();
 	//m_camera->AddComponent<Camera>();
+	m_fb = std::shared_ptr<FrameBuffer>(new FrameBuffer());
 	m_running = true;
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
@@ -167,6 +167,8 @@ void Core::Start()
 		// Start Drawing the Scene
 		int x, y;
 		SDL_GetWindowSize(m_window, &x, &y);
+		m_fb->Update(x, y);
+		glBindFramebuffer(GL_FRAMEBUFFER, m_fb->GetBuffer());
 		glClearColor(0.0f, 0.0f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
@@ -182,10 +184,21 @@ void Core::Start()
 		if(m_scene)
 			m_scene->Display();
 
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glClearColor(0.0f, 0.0f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_DEPTH_BUFFER_BIT);
 		// Draw GUI
 		glDisable(GL_DEPTH_TEST);
 		_projMatrix = glm::ortho(0, x, 0, y, 0, 100);
-		
+		m_gui->Flip(true);
+		m_gui->SetTexture(m_fb->GetTexture());
+		m_gui->SetHighlight(m_fb->GetTexture());
+		//m_gui->SetHighlight(m_fb->GetDepth());
+		m_gui->SetFrameInfo(glm::vec4(1, 1, 1, 1));
+		glm::vec4 pos = { -1, -1, 2, 2 };
+		m_gui->Sprite(pos);
+		m_gui->Flip(false);
 		if (m_scene)
 			m_scene->Gui();
 

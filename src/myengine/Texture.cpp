@@ -29,6 +29,8 @@ void Texture::LoadTexture(std::string filename)
 		//std::cerr << "WARNING: could not load BMP image: " << filename << std::endl;
 		return;
 	}
+	m_height = image->h;
+	m_width = image->w;
 
 	// Create OpenGL texture
 	unsigned int texName = 0;

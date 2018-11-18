@@ -16,9 +16,16 @@ public:
 	~FrameBuffer();
 
 	GLuint GetBuffer() { return m_buffer; }
+	GLuint GetTexture() { return m_texture; }
+	GLuint GetDepth() { return m_depth; }
+
+	void Update(int x, int y);
 
 private:
 	GLuint m_buffer;
-	GLuint m_depth;
 	GLuint m_texture;
+	GLuint m_depth;
+
+	int m_x;
+	int m_y;
 };

@@ -7,6 +7,7 @@
 #include "myengine/Resources.h"
 #include "myengine/Texture.h"
 #include "myengine/TextTexture.h"
+#include "Stats.h"
 
 class Character : public Component
 {
@@ -14,6 +15,9 @@ public:
 	void OnInit(); //this will override the Components
 	void OnGui();
 	void OnTick();
+	std::string GetFilePath() { return m_spritePath; }
+	bool IsDead() { return m_dead; }
+	int GetSpeed() {return m_stats->GetSpeed(); }
 
 private:
 	std::string m_spritePath;
@@ -24,5 +28,7 @@ private:
 	glm::vec4 test;
 	std::shared_ptr<Texture> m_spritesheet;
 	std::shared_ptr<Texture> m_glowSheet;
-	std::shared_ptr<TextTexture> m_name;
+	std::shared_ptr < Stats> m_stats;
+
+	bool m_dead;
 };

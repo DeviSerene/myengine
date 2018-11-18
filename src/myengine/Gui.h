@@ -33,6 +33,7 @@ public:
 	void SetFrameInfo(glm::vec4 _frameInfo) { m_frameInfo = _frameInfo; }
 
 	glm::vec4 GetPos(glm::vec4 _pos);
+	void Flip(bool _set) { m_flip = _set; }
 
 private:
 
@@ -48,6 +49,7 @@ private:
 	GLuint highlight;
 	GLuint pressed;
 	glm::vec4 m_frameInfo;
+	bool m_flip;
 
 	std::shared_ptr<Shader> m_shader;
 

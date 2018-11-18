@@ -1,21 +1,71 @@
 
 in vec4 ex_Color;
 in vec2 ex_texCoord;
+in vec2 blurHTextureCoords[11];
+in vec2 blurVTextureCoords[11];
+
 uniform sampler2D in_Texture;
 uniform vec4 in_FrameInfo;
+uniform bool in_Flip;
 
 void main()
 {
 vec2 myCoords; 
 myCoords.x = ex_texCoord.x; 
-myCoords.y = -ex_texCoord.y;
+if(in_Flip)
+	myCoords.y = ex_texCoord.y;
+else
+	myCoords.y = -ex_texCoord.y;
 
-//myCoords.x = myCoords.x / in_FrameInfo.z; 
 myCoords.x = (in_FrameInfo.x * (1 / in_FrameInfo.z)) + (myCoords.x * (1 / in_FrameInfo.z));
 myCoords.y = (in_FrameInfo.y * (1 / in_FrameInfo.w)) + (myCoords.y * (1 / in_FrameInfo.w));
-
-
  vec4 texColour = vec4(texture(in_Texture,myCoords)).rgba;
+//FAKE BLOOM
+if(in_Flip)
+{
+vec4 color = vec4(0.0);
+bool useBlur = false;
+if(texColour.r > 0.5f ||texColour.b > 0.5f ||texColour.g > 0.5f)
+	useBlur = true;
+
+	if(useBlur)
+	{
+    	color += texture( in_Texture, blurHTextureCoords[0]) * 0.0093;
+    	color += texture( in_Texture, blurHTextureCoords[1]) * 0.028002;
+    	color += texture( in_Texture, blurHTextureCoords[2]) * 0.065984;
+   	 color += texture( in_Texture, blurHTextureCoords[3]) * 0.121703;
+   	 color += texture( in_Texture, blurHTextureCoords[4]) * 0.175713;
+   	 color += texture( in_Texture, blurHTextureCoords[5]) * 0.198596;
+   	 color += texture( in_Texture, blurHTextureCoords[6]) * 0.175713;
+   	 color += texture( in_Texture, blurHTextureCoords[7]) * 0.121703;
+   	 color += texture( in_Texture, blurHTextureCoords[8]) * 0.065984;
+   	 color += texture( in_Texture, blurHTextureCoords[9]) * 0.028002;
+   	 color += texture( in_Texture, blurHTextureCoords[10]) * 0.0093;
+	
+	color = color / 11;
+
+  	  color += texture( in_Texture, blurVTextureCoords[0]) * 0.0093;
+  	  color += texture( in_Texture, blurVTextureCoords[1]) * 0.028002;
+  	  color += texture( in_Texture, blurVTextureCoords[2]) * 0.065984;
+  	  color += texture( in_Texture, blurVTextureCoords[3]) * 0.121703;
+  	  color += texture( in_Texture, blurVTextureCoords[4]) * 0.175713;
+  	  color += texture( in_Texture, blurVTextureCoords[5]) * 0.198596;
+  	  color += texture( in_Texture, blurVTextureCoords[6]) * 0.175713;
+   	 color += texture( in_Texture, blurVTextureCoords[7]) * 0.121703;
+   	 color += texture( in_Texture, blurVTextureCoords[8]) * 0.065984;
+   	 color += texture( in_Texture, blurVTextureCoords[9]) * 0.028002;
+   	 color += texture( in_Texture, blurVTextureCoords[10]) * 0.0093;
+texColour = color;
+	}
+}
+
+//END BLOOM
+
+
+//myCoords.x = myCoords.x / in_FrameInfo.z; 
+
+
 
   gl_FragColor = vec4(texColour);
 }
+

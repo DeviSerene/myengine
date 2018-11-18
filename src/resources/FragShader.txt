@@ -33,9 +33,9 @@ uniform sampler2D heightMap;
 void main()
 {
 	// Calculate the direction from the sample position to the light
-//	vec3 lightDir = normalize( eyeSpaceLightPosV - eyeSpaceVertPosV);
-	vec3 lightDir = normalize(tanSpaceLightPosV);
-	//vec3 lightDir = vec3(-1,5,0);
+	vec3 lightDir = normalize( eyeSpaceLightPosV - eyeSpaceVertPosV);
+//	vec3 lightDir = normalize(tanSpaceLightPosV);
+//	vec3 lightDir = vec3(-1,5,0);
 
 	////-~ PARRALEX MAPPING ~-////
 	vec3 biasedHeight = normalize(eyeSpaceVertPosV);
@@ -56,13 +56,13 @@ void main()
 
 	////-~ DIFFUSE ~-////
 	vec3 diffuse = diffuseColour * lightColour * max( clamp(dot( normal, lightDir ),0,1), 0);
-	diffuse = vec3(0,0,0);
+	diffuse = vec3(1,1,1);
 
 	////-~ SPECULAR ~-////
 	vec3 eyeDir = normalize( -eyeSpaceVertPosV );
 	vec3 H = normalize(lightDir + eyeDir);
 	vec3 specular = specularColour * lightColour * facing(normal, lightDir) * pow(max(dot(normal,H),0),shininess);
-	specular = vec3(0,0,0);
+	specular = vec3(1,1,1);
 
 	////-~ FINAL COLOUR ~-////
 	fragColour = vec4( emissiveColour + texColour*(ambientColour + diffuse + specular), alpha) ;

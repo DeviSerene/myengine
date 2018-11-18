@@ -9,6 +9,7 @@ Gui::Gui()
 
 void Gui::Init(std::shared_ptr<Core> _c)
 {
+	m_flip = false;
 	m_core = _c;
 	m_shader = _c->GetResources()->Load<Shader>("GuiShader");
 	m_shader->LoadShaders("guiVert.txt", "guiFrag.txt");
@@ -16,6 +17,8 @@ void Gui::Init(std::shared_ptr<Core> _c)
 	m_shader->AddUniform("in_Projection");
 	m_shader->AddUniform("in_Texture");
 	m_shader->AddUniform("in_FrameInfo");
+	m_shader->AddUniform("in_Flip");
+	m_shader->AddUniform("in_Screen");
 
 	std::shared_ptr<VertexBuffer> positions = std::make_shared<VertexBuffer>();
 	positions->Add(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -84,7 +87,9 @@ bool Gui::Button(glm::vec4 _pos, std::string _label)
 	glUseProgram(m_shader->GetShader());
 
 	glm::vec4 screenPos;
-	screenPos.x = (1+_pos.x) * (m_core.lock()->GetScreenSize().x /2);
+	screenPos.x = (((m_core.lock()->GetScreenSize().x / 2)) * _pos.x) + (m_core.lock()->GetScreenSize().x / 2);
+	screenPos.y = (((m_core.lock()->GetScreenSize().y / 2)) * _pos.y) + (m_core.lock()->GetScreenSize().y / 2);
+	/*screenPos.x = (1+_pos.x) * (m_core.lock()->GetScreenSize().x /2);
 	if (_pos.y > 0)
 	{
 		screenPos.y = (_pos.y) * (m_core.lock()->GetScreenSize().y / 2);
@@ -93,8 +98,9 @@ bool Gui::Button(glm::vec4 _pos, std::string _label)
 	{
 		screenPos.y = ((1+_pos.y) * (m_core.lock()->GetScreenSize().y / 2)) + (m_core.lock()->GetScreenSize().y / 2);
 	}
-	screenPos.z = screenPos.x + ((_pos.z / 2) * m_core.lock()->GetScreenSize().x);
-	screenPos.w = screenPos.y +((_pos.w / 2) * m_core.lock()->GetScreenSize().y);
+	*/
+	screenPos.z = (m_core.lock()->GetScreenSize().x / 2) * _pos.z;
+	screenPos.w = (m_core.lock()->GetScreenSize().y / 2) * _pos.w;
 	//screenPos.y = screenPos.y - (screenPos.w/2);
 	//screenPos.w = screenPos.y + (screenPos.w / 2);
 	
@@ -139,6 +145,8 @@ bool Gui::Button(glm::vec4 _pos, std::string _label)
 	//SetUniform(_shaderModelMatLocation, modelmat);
 	m_shader->SetUniform(m_shader->GetUniformLocation("in_Model"), modelmat);
 	m_shader->SetUniform(m_shader->GetUniformLocation("in_FrameInfo"), m_frameInfo);
+	m_shader->SetUniform(m_shader->GetUniformLocation("in_Flip"), m_flip);
+	m_shader->SetUniform(m_shader->GetUniformLocation("in_Screen"), m_core.lock()->GetScreenSize());
 
 	glBindVertexArray(m_shape->GetId());
 
@@ -178,21 +186,6 @@ glm::vec4 Gui::GetPos(glm::vec4 _pos)
 void Gui::Sprite(glm::vec4 _pos)
 {
 	glUseProgram(m_shader->GetShader());
-
-	glm::vec4 screenPos;
-	screenPos.x = (1 + _pos.x) * (m_core.lock()->GetScreenSize().x / 2);
-	if (_pos.y > 0)
-	{
-		screenPos.y = (_pos.y) * (m_core.lock()->GetScreenSize().y / 2);
-	}
-	else
-	{
-		screenPos.y = ((1 + _pos.y) * (m_core.lock()->GetScreenSize().y / 2)) + (m_core.lock()->GetScreenSize().y / 2);
-	}
-	screenPos.z = screenPos.x + ((_pos.z / 2) * m_core.lock()->GetScreenSize().x);
-	screenPos.w = screenPos.y + ((_pos.w / 2) * m_core.lock()->GetScreenSize().y);
-
-
 	m_shape->SetBuffer(IN_COLOUR, red);
 	glActiveTexture(GL_TEXTURE0);
 	glUniform1i(m_shader->GetUniformLocation("in_Texture"), 0);
@@ -217,6 +210,8 @@ void Gui::Sprite(glm::vec4 _pos)
 	*/
 	//update texture coordinates
 	m_shader->SetUniform(m_shader->GetUniformLocation("in_FrameInfo"), m_frameInfo);
+	m_shader->SetUniform(m_shader->GetUniformLocation("in_Flip"), m_flip);
+	m_shader->SetUniform(m_shader->GetUniformLocation("in_Screen"), m_core.lock()->GetScreenSize());
 
 	glBindVertexArray(m_shape->GetId());
 
@@ -231,9 +226,10 @@ void Gui::Sprite(glm::vec4 _pos)
 
 bool Gui::Intersect(glm::vec4 _pos, glm::vec2 _mouse)
 {
-	if (_mouse.x > _pos.x && _mouse.x < _pos.z)// && _mouse.y > _pos.y && _mouse.y < _pos.w)
+	_mouse.y = m_core.lock()->GetScreenSize().y - _mouse.y;
+	if (_mouse.x >= _pos.x && _mouse.x <= _pos.x + _pos.z)// && _mouse.y > _pos.y && _mouse.y < _pos.w)
 	{
-		if(_mouse.y < _pos.y && _mouse.y > (_pos.w- _pos.y))
+		if(_mouse.y >= _pos.y && _mouse.y <= ( _pos.y + _pos.w))
 		return true;
 	}
 	return false;

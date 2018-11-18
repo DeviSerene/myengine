@@ -12,7 +12,12 @@ public:
 	static std::shared_ptr<Texture> Load(std::string _path);
 	void LoadTexture(std::string filename);
 	GLuint GetTexture() { return  m_texture; }
+	int GetWidth() { return m_width; }
+	int GetHeight() { return m_height; }
+
 private:
 	// OpenGL handle for the texture
 	GLuint m_texture;
+	int m_width;
+	int m_height;
 };
