@@ -18,14 +18,15 @@ BattleScene::BattleScene(std::shared_ptr<Core> _c)
 	_c->SetScene(m_scene);
 	m_mesh = _c->GetResources()->Load<Mesh>("assets/Cube.obj");
 	m_grass = _c->GetResources()->Load<Texture>("assets/grass.bmp");
+	std::shared_ptr<Entity> camera2 = m_scene->AddEntity();
+	camera2->AddComponent<Camera>();
+	camera2->GetComponent<Camera>()->SetPos(glm::vec3(1, 1, 1));
+	//_c->AddCamera(camera2);
+
 	std::shared_ptr<Entity> enti = m_scene->AddEntity();
 	enti->AddComponent<Transform>(glm::vec3(3.55f, 0, 0), glm::vec3(0, 30, 0), glm::vec3(1, 1, 1));
 	enti->AddComponent<MeshRenderer>(m_mesh, _c->GetResources()->Load<Texture>("assets/cube.bmp"));
-	enti->AddComponent<BattleBackground>(); //this shouldnt be here 
-	//enti->AddComponent<Character>(); //this definitely shouldnt be here 
-	//enti->AddComponent<Enemy>(-0.5f, -0.35f, "assets/characters/enemy_01"); //this definitely shouldnt be here 
-	//enti->AddComponent<Enemy>(-0.95f, -0.55f, "assets/characters/enemy_01"); //this definitely shouldnt be here 
-	//enti->AddComponent<ActionBar>(); //this definitely shouldnt be here 
+	enti->AddComponent<BattleBackground>();
 	m_environment.push_back(enti);
 
 	std::shared_ptr<Entity> cave = m_scene->AddEntity();

@@ -77,6 +77,8 @@ add_library(engine
 	src/myengine/Camera.cpp
 	src/myengine/Scene.h
 	src/myengine/Scene.cpp
+	src/myengine/Compositor.h
+	src/myengine/Compositor.cpp
 )
 
 add_executable(game

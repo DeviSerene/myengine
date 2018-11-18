@@ -9,7 +9,7 @@ Scene::Scene(std::shared_ptr<Core> _c)
 	m_core = _c;
 	std::shared_ptr<Entity> m_camera = AddEntity();
 	m_camera->AddComponent<Camera>();
-	_c->SetCamera(m_camera);
+	_c->AddCamera(m_camera);
 }
 
 std::shared_ptr<Entity> Scene::AddEntity()

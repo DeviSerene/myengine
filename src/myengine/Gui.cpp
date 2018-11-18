@@ -136,7 +136,7 @@ bool Gui::Button(glm::vec4 _pos, std::string _label)
 	///texture
 
 	//Update the projection matrix
-	m_shader->SetUniform(m_shader->GetUniformLocation("in_Proj"), m_core.lock()->GetPM());
+	m_shader->SetUniform(m_shader->GetUniformLocation("in_Projection"), m_core.lock()->GetPM());
 	//update the model matrix;
 	glm::mat4 modelmat = glm::mat4(1.0f);
 	modelmat = glm::translate(modelmat, glm::vec3(_pos.x, _pos.y, 0));
@@ -195,7 +195,7 @@ void Gui::Sprite(glm::vec4 _pos)
 	///texture
 
 	//Update the projection matrix
-	m_shader->SetUniform(m_shader->GetUniformLocation("in_Proj"), m_core.lock()->GetPM());
+	m_shader->SetUniform(m_shader->GetUniformLocation("in_Projection"), m_core.lock()->GetPM());
 	//update the model matrix;
 	glm::mat4 modelmat = glm::mat4(1.0f);
 	modelmat = glm::translate(modelmat, glm::vec3(_pos.x, _pos.y, 0));

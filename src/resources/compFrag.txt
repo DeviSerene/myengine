@@ -1,0 +1,23 @@
+
+in vec2 ex_texCoord;
+
+uniform sampler2D in_FrameOne;
+uniform sampler2D in_FrameTwo;
+uniform vec2 in_ScreenSize;
+
+void main()
+{
+vec2 myCoords; 
+myCoords.x = ex_texCoord.x; 
+myCoords.y = ex_texCoord.y;
+
+vec4 texColour = vec4(texture(in_FrameOne,myCoords)).rgba;;
+//if(ex_texCoord.x < 0.5f)
+// texColour = vec4(texture(in_FrameOne,myCoords)).rgba;
+//else
+// texColour = vec4(texture(in_FrameTwo,myCoords)).rgba;
+
+  gl_FragColor = vec4(texColour);
+//  gl_FragColor = vec4(1,1,1,1);
+}
+

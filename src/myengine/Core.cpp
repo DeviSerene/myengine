@@ -52,6 +52,7 @@ std::shared_ptr<Core> Core::init()
 
 	c->m_gui = std::shared_ptr<Gui>(new Gui());
 	c->m_gui->Init(c->shared_from_this());
+	c->m_compositor = std::shared_ptr<Compositor>(new Compositor(c->shared_from_this()));
 
 	return c; 
 }
@@ -106,7 +107,7 @@ void Core::Start()
 {
 	//m_camera = AddEntity();
 	//m_camera->AddComponent<Camera>();
-	m_fb = std::shared_ptr<FrameBuffer>(new FrameBuffer());
+	//m_fb = std::shared_ptr<FrameBuffer>(new FrameBuffer());
 	m_running = true;
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
@@ -117,6 +118,11 @@ void Core::Start()
 
 	while (m_running)
 	{
+		while (m_fbs.size() < m_cameras.size())
+		{
+			m_fbs.push_back(std::shared_ptr<FrameBuffer>(new FrameBuffer()));
+		}
+
 		m_running = !m_keyboard->Quit();
 		//
 		unsigned int current = SDL_GetTicks();
@@ -167,23 +173,39 @@ void Core::Start()
 		// Start Drawing the Scene
 		int x, y;
 		SDL_GetWindowSize(m_window, &x, &y);
-		m_fb->Update(x, y);
-		glBindFramebuffer(GL_FRAMEBUFFER, m_fb->GetBuffer());
-		glClearColor(0.0f, 0.0f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glClear(GL_DEPTH_BUFFER_BIT);
-		glEnable(GL_DEPTH_TEST);
-		// Set up a projection matrix
-		if (m_camera)
+		for (int i = 0; i < m_fbs.size(); i++)
 		{
-			_viewMatrix = m_camera->GetComponent<Camera>()->GetViewMatrix();
-			_projMatrix = m_camera->GetComponent<Camera>()->GetProjMatrix();
+			m_fbs[i]->Update(x, y);
+			glBindFramebuffer(GL_FRAMEBUFFER, m_fbs[i]->GetBuffer());
+			glClearColor(0.0f, 0.0f, 0.3f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT);
+			glClear(GL_DEPTH_BUFFER_BIT);
+			glEnable(GL_DEPTH_TEST);
+			// Set up a projection matrix
+			if (m_cameras[i])
+			{
+				m_currentCamera = i;
+				_viewMatrix = m_cameras[i]->GetComponent<Camera>()->GetViewMatrix();
+				_projMatrix = m_cameras[i]->GetComponent<Camera>()->GetProjMatrix();
+				glViewport(0, 0, x, y);
+
+				if (m_scene)
+					m_scene->Display();
+			}
+
 		}
-		glViewport(0, 0, x, y);
-
-		if(m_scene)
-			m_scene->Display();
-
+		
+		if (m_fbs.size() >= 2)
+		{
+			m_compositor->Update(x,y);
+			glBindFramebuffer(GL_FRAMEBUFFER, m_compositor->GetBuffer());
+			glClearColor(0.0f, 0.0f, 0.3f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT);
+			glClear(GL_DEPTH_BUFFER_BIT);
+			glDisable(GL_DEPTH_TEST);
+			_projMatrix = glm::ortho(0, x, 0, y, 0, 100);
+			m_compositor->Composition(m_fbs, COMP_2_SPLIT_H);
+		}
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClearColor(0.0f, 0.0f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -191,9 +213,16 @@ void Core::Start()
 		// Draw GUI
 		glDisable(GL_DEPTH_TEST);
 		_projMatrix = glm::ortho(0, x, 0, y, 0, 100);
-		m_gui->Flip(true);
-		m_gui->SetTexture(m_fb->GetTexture());
-		m_gui->SetHighlight(m_fb->GetTexture());
+		m_gui->Flip(true); 
+		if (m_fbs.size() >= 2)
+		{
+			//m_gui->SetTexture(m_fbs[1]->GetTexture());
+			m_gui->SetTexture(m_compositor->GetTexture());
+		}
+		else
+		{
+			m_gui->SetTexture(m_fbs[0]->GetTexture());
+		}
 		//m_gui->SetHighlight(m_fb->GetDepth());
 		m_gui->SetFrameInfo(glm::vec4(1, 1, 1, 1));
 		glm::vec4 pos = { -1, -1, 2, 2 };
@@ -202,8 +231,10 @@ void Core::Start()
 		if (m_scene)
 			m_scene->Gui();
 
+		
+
 		SDL_GL_SwapWindow(m_window);
 	}
 }
 
-glm::vec3 Core::GetCamera() { return m_camera->GetComponent<Camera>()->GetCameraPos(); }
+glm::vec3 Core::GetCamera() { return m_cameras[m_currentCamera]->GetComponent<Camera>()->GetCameraPos(); }
