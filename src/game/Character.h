@@ -19,6 +19,12 @@ public:
 	bool IsDead() { return m_dead; }
 	int GetSpeed() {return m_stats->GetSpeed(); }
 
+	void NextTurn();
+	int GetCurrentBP() { return m_activeBP; }
+	void IncBP();
+	void DecBP();
+	void RemoveBP(int _n);
+
 private:
 	std::string m_spritePath;
 	int m_animation;
@@ -29,6 +35,10 @@ private:
 	std::shared_ptr<Texture> m_spritesheet;
 	std::shared_ptr<Texture> m_glowSheet;
 	std::shared_ptr < Stats> m_stats;
+
+	int m_BP;
+	int m_activeBP;
+	bool m_recoverBP;
 
 	bool m_dead;
 };

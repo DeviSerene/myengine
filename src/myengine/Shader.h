@@ -29,6 +29,7 @@ public:
 	void SetUniform(GLuint _location, glm::mat4 _set){glUniformMatrix4fv(_location, 1, GL_FALSE, glm::value_ptr(_set));}
 	void SetUniform(GLuint _location, glm::vec4 _set) { glUniform4fv(_location, 1, glm::value_ptr(_set)); }
 	void SetUniform(GLuint _location, glm::vec2 _set) { glUniform2fv(_location, 1, glm::value_ptr(_set)); }
+	void SetUniform(GLuint _location, glm::vec3 _set) { glUniform3fv(_location, 1, glm::value_ptr(_set)); }
 	void SetUniform(GLuint _location, bool _set) { glUniform1f(_location, _set); }
 
 

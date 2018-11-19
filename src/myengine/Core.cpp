@@ -195,17 +195,6 @@ void Core::Start()
 
 		}
 		
-		if (m_fbs.size() >= 2)
-		{
-			m_compositor->Update(x,y);
-			glBindFramebuffer(GL_FRAMEBUFFER, m_compositor->GetBuffer());
-			glClearColor(0.0f, 0.0f, 0.3f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
-			glClear(GL_DEPTH_BUFFER_BIT);
-			glDisable(GL_DEPTH_TEST);
-			_projMatrix = glm::ortho(0, x, 0, y, 0, 100);
-			m_compositor->Composition(m_fbs, COMP_2_SPLIT_H);
-		}
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClearColor(0.0f, 0.0f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -213,20 +202,34 @@ void Core::Start()
 		// Draw GUI
 		glDisable(GL_DEPTH_TEST);
 		_projMatrix = glm::ortho(0, x, 0, y, 0, 100);
-		m_gui->Flip(true); 
+		m_gui->Flip(true);
+		glm::vec4 pos = { -1, -1, 2, 2 };
 		if (m_fbs.size() >= 2)
 		{
 			//m_gui->SetTexture(m_fbs[1]->GetTexture());
-			m_gui->SetTexture(m_compositor->GetTexture());
+			m_gui->SetTexture(m_fbs[0]->GetTexture());
+			m_gui->SetFrameInfo(glm::vec4(2, 1, 4, 1));
+			pos = glm::vec4(-1, -1, 0.5f, 2.0f);
+			m_gui->Sprite(pos);
+			m_gui->SetFrameInfo(glm::vec4(3, 1, 4, 1));
+			pos = glm::vec4(-0.5f, -1, 0.5f, 2.0f);
+			m_gui->Sprite(pos);
+			
+			m_gui->SetTexture(m_fbs[1]->GetTexture());
+			m_gui->SetFrameInfo(glm::vec4(2, 1, 4, 1));
+			pos = glm::vec4(0, -1, 0.5f, 2);
+			m_gui->Sprite(pos);
+			m_gui->SetFrameInfo(glm::vec4(3, 1, 4, 1));
+			pos = glm::vec4(0.5f, -1, 0.5f, 2);
+			m_gui->Sprite(pos);
+			
 		}
 		else
 		{
 			m_gui->SetTexture(m_fbs[0]->GetTexture());
+			m_gui->SetFrameInfo(glm::vec4(1, 1, 1, 1));
+			m_gui->Sprite(pos);
 		}
-		//m_gui->SetHighlight(m_fb->GetDepth());
-		m_gui->SetFrameInfo(glm::vec4(1, 1, 1, 1));
-		glm::vec4 pos = { -1, -1, 2, 2 };
-		m_gui->Sprite(pos);
 		m_gui->Flip(false);
 		if (m_scene)
 			m_scene->Gui();

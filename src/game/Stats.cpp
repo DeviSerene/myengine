@@ -30,9 +30,12 @@ Stats::Stats(std::shared_ptr<TextTexture> _name, std::shared_ptr<Resources> _res
 	m_hpBar = _resources->Load<Texture>("assets/hp.png");
 	m_mpBar = _resources->Load<Texture>("assets/mp.png");
 	m_statusBar = _resources->Load<Texture>("assets/infoBar.png");
+	m_bp = _resources->Load<Texture>("assets/mana.png");
+	m_bpEmpty = _resources->Load<Texture>("assets/manaEmpty.png");
+	m_bpH = _resources->Load<Texture>("assets/manaHighlight.png");
 }
 
-void Stats::Draw(float _posY, std::shared_ptr <Gui> _gui)
+void Stats::Draw(float _posY, std::shared_ptr <Gui> _gui, int _bp, int _bpH)
 {
 	_gui->SetFrameInfo({ 1,1,1,1 });
 	//bg
@@ -77,4 +80,29 @@ void Stats::Draw(float _posY, std::shared_ptr <Gui> _gui)
 	pos.w = 0.005f * m_mpText->GetHeight();
 	_gui->SetTexture(m_mpText->GetTexture());
 	_gui->Sprite(pos);
+
+	//BP
+	pos.y -= 0.06f;
+	for (int i = 1; i < 6; i++)
+	{
+		pos.z = 0.05f;
+		pos.w = 0.05f;
+		if (_bp >= i)
+		{
+			_gui->SetTexture(m_bp->GetTexture());
+			_gui->Sprite(pos);
+			if (_bpH >= i)
+			{
+				_gui->SetTexture(m_bpH->GetTexture());
+				_gui->Sprite(pos);
+			}
+		}
+		else
+		{
+			_gui->SetTexture(m_bpEmpty->GetTexture());
+			_gui->Sprite(pos);
+		}
+		pos.x += 0.055f;
+	}
+
 }

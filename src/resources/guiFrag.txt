@@ -6,6 +6,7 @@ in vec2 blurVTextureCoords[11];
 
 uniform sampler2D in_Texture;
 uniform vec4 in_FrameInfo;
+uniform vec3 in_BlurInfo;
 uniform bool in_Flip;
 
 void main()
@@ -25,7 +26,7 @@ if(in_Flip)
 {
 vec4 color = vec4(0.0);
 bool useBlur = false;
-if(texColour.r > 0.5f ||texColour.b > 0.5f ||texColour.g > 0.5f)
+if(texColour.r > in_BlurInfo.r ||texColour.b > in_BlurInfo.b ||texColour.g > in_BlurInfo.g)
 	useBlur = true;
 
 	if(useBlur)

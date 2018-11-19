@@ -48,6 +48,20 @@ void TurnBar::OnTick()
 		}
 		else
 		{
+			//Handle BP
+			if (GetCore()->GetKeyboard()->PressOnce(RB_BUTTON))
+			{
+				m_party[m_currentTurnOrder[0]]->GetComponent<Character>()->IncBP();
+				m_waitTime = 0.075;
+				m_timer = 0;
+			}
+			else if (GetCore()->GetKeyboard()->PressOnce(LB_BUTTON))
+			{
+				m_party[m_currentTurnOrder[0]]->GetComponent<Character>()->DecBP();
+				m_waitTime = 0.075;
+				m_timer = 0;
+			}
+
 			//its the player
 			m_actionBar->SetActiveState(true);
 			if (m_actionBar->TargettingEnemy())
@@ -60,7 +74,8 @@ void TurnBar::OnTick()
 						//use ability/action against this enemy
 						m_abilities[m_actionBar->AbilityUsed()]->SetPos(m_enemies[i]->GetComponent<Enemy>()->GetX(), m_enemies[i]->GetComponent<Enemy>()->GetY());
 						m_abilities[m_actionBar->AbilityUsed()]->Begin();
-						m_enemies[i]->GetComponent<Enemy>()->TakeDamage(m_abilities[m_actionBar->AbilityUsed()]->GetDamage(), m_abilities[m_actionBar->AbilityUsed()]->GetElement());
+						m_enemies[i]->GetComponent<Enemy>()->TakeDamage(m_abilities[m_actionBar->AbilityUsed()]->GetDamage(), m_abilities[m_actionBar->AbilityUsed()]->GetElement(), m_party[m_currentTurnOrder[0]]->GetComponent<Character>()->GetCurrentBP());
+						m_party[m_currentTurnOrder[0]]->GetComponent<Character>()->RemoveBP(m_party[m_currentTurnOrder[0]]->GetComponent<Character>()->GetCurrentBP());
 						UpdateBar();
 						Actioned();
 						m_actionBar->SetActiveState(false);
@@ -197,6 +212,11 @@ void TurnBar::SetNextTurnOrder()
 
 void TurnBar::NextTurn()
 {
+	for (int p = 0; p < m_party.size(); p++)
+	{
+		std::shared_ptr<Character> c = m_party[p]->GetComponent<Character>();
+		c->NextTurn();
+	}
 	for (int e = 0; e < m_enemies.size(); e++)
 	{
 		std::shared_ptr<Enemy> enemy = m_enemies[e]->GetComponent<Enemy>();

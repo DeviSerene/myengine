@@ -105,7 +105,7 @@ void Enemy::OnGui()
 	}
 }
 
-void Enemy::TakeDamage(int _damage, BATTLE_ELEMENT _element)
+void Enemy::TakeDamage(int _damage, BATTLE_ELEMENT _element, int _bp)
 {
 	if (!m_broken)
 	{
@@ -124,6 +124,10 @@ void Enemy::TakeDamage(int _damage, BATTLE_ELEMENT _element)
 	else
 	{
 		_damage += _damage;
+	}
+	if (_bp)
+	{
+		_damage += ((float)_damage * ((float)_bp / 2.0f));
 	}
 
 	m_damage = GetCore()->GetResources()->Load<TextTexture>(std::to_string(_damage));

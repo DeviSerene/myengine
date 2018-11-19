@@ -28,7 +28,7 @@ public:
 	bool IsBroken() { return m_broken; }
 	bool IsRecoveringNext() { return m_recoverNextTurn; }
 	void NextTurn();//
-	void TakeDamage(int _damage, BATTLE_ELEMENT _element);
+	void TakeDamage(int _damage, BATTLE_ELEMENT _element, int _bp);
 	void AddWeakness(BATTLE_ELEMENT _weakness){m_weaknesses.push_back(_weakness); m_weakRevealed.push_back(false); }
 private:
 	std::string m_filepath;

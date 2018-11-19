@@ -34,6 +34,7 @@ public:
 
 	glm::vec4 GetPos(glm::vec4 _pos);
 	void Flip(bool _set) { m_flip = _set; }
+	void SetBlurInfo(glm::vec3 _b) { m_blurInfo = _b; }
 
 private:
 
@@ -50,6 +51,7 @@ private:
 	GLuint pressed;
 	glm::vec4 m_frameInfo;
 	bool m_flip;
+	glm::vec3 m_blurInfo;
 
 	std::shared_ptr<Shader> m_shader;
 

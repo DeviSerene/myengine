@@ -17,8 +17,10 @@ void Gui::Init(std::shared_ptr<Core> _c)
 	m_shader->AddUniform("in_Projection");
 	m_shader->AddUniform("in_Texture");
 	m_shader->AddUniform("in_FrameInfo");
+	m_shader->AddUniform("in_BlurInfo");
 	m_shader->AddUniform("in_Flip");
 	m_shader->AddUniform("in_Screen");
+	m_blurInfo = glm::vec3(0.75f, 0.75f, 0.75f);
 
 	std::shared_ptr<VertexBuffer> positions = std::make_shared<VertexBuffer>();
 	positions->Add(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -146,6 +148,7 @@ bool Gui::Button(glm::vec4 _pos, std::string _label)
 	m_shader->SetUniform(m_shader->GetUniformLocation("in_Model"), modelmat);
 	m_shader->SetUniform(m_shader->GetUniformLocation("in_FrameInfo"), m_frameInfo);
 	m_shader->SetUniform(m_shader->GetUniformLocation("in_Flip"), m_flip);
+	m_shader->SetUniform(m_shader->GetUniformLocation("in_BlurInfo"), m_blurInfo);
 	m_shader->SetUniform(m_shader->GetUniformLocation("in_Screen"), m_core.lock()->GetScreenSize());
 
 	glBindVertexArray(m_shape->GetId());
@@ -201,17 +204,10 @@ void Gui::Sprite(glm::vec4 _pos)
 	modelmat = glm::translate(modelmat, glm::vec3(_pos.x, _pos.y, 0));
 	modelmat = glm::scale(modelmat, glm::vec3(_pos.z, _pos.w, 1));
 	m_shader->SetUniform(m_shader->GetUniformLocation("in_Model"), modelmat);
-
-	/*
-	m_frameInfo.x = 1.0f;
-	m_frameInfo.y = 1.0f;
-	m_frameInfo.z = 4.0f;
-	m_frameInfo.w = 1.0f;
-	*/
-	//update texture coordinates
 	m_shader->SetUniform(m_shader->GetUniformLocation("in_FrameInfo"), m_frameInfo);
 	m_shader->SetUniform(m_shader->GetUniformLocation("in_Flip"), m_flip);
 	m_shader->SetUniform(m_shader->GetUniformLocation("in_Screen"), m_core.lock()->GetScreenSize());
+	m_shader->SetUniform(m_shader->GetUniformLocation("in_BlurInfo"), m_blurInfo);
 
 	glBindVertexArray(m_shape->GetId());
 

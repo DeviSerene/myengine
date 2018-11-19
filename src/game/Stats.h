@@ -9,7 +9,7 @@ class Stats
 {
 public:
 	Stats(std::shared_ptr<TextTexture> _name, std::shared_ptr<Resources> _resources);
-	void Draw(float _posY, std::shared_ptr <Gui> _gui );
+	void Draw(float _posY, std::shared_ptr <Gui> _gui, int _bp, int _bpH);
 	int GetSpeed() { return m_spd; }
 	bool TakeDamage(int _damage) { m_curHP -= _damage; if (m_curHP <= 0)return true; else return false; }
 
@@ -18,8 +18,6 @@ private:
 	int m_curHP;
 	int m_maxMP;
 	int m_curMP;
-
-	int m_BP;
 
 	int m_str;
 	int m_mag;
@@ -37,4 +35,7 @@ private:
 	std::shared_ptr<Texture> m_statusBar;
 	std::shared_ptr<Texture> m_hpBar;
 	std::shared_ptr<Texture> m_mpBar;
+	std::shared_ptr<Texture> m_bp;
+	std::shared_ptr<Texture> m_bpEmpty;
+	std::shared_ptr<Texture> m_bpH;
 };
