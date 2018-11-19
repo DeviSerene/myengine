@@ -1,12 +1,13 @@
 #include "Ability.h"
 
-Ability::Ability(std::string _filepath, std::string _name, BATTLE_ELEMENT _element, int _damage)
+Ability::Ability(std::string _filepath, std::string _name, BATTLE_ELEMENT _element, int _damage, int _sp)
 {
 	//
 	m_filepath = _filepath;
 	m_name = _name;
 	m_element = _element;
 	m_damage = _damage;
+	m_spCost = _sp;
 }
 
 void Ability::OnInit()

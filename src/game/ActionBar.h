@@ -16,6 +16,7 @@ public:
 
 	void SetActiveState(bool _set) { m_active = _set; if (_set == false) { m_clickedSkills = false; m_clickedAttack = false; m_clickedAction1 = false; m_clickedAction2 = false; } }
 	bool TargettingEnemy() { return (m_clickedAttack || m_clickedAction2); }
+	bool TargettingAlly() { return m_clickedAction1; }
 	int AbilityUsed() { if (m_clickedAttack)return 0; if (m_clickedAction1)return 1; if (m_clickedAction2)return 2; return -1; }
 
 private:

@@ -6,7 +6,7 @@ Stats::Stats(std::shared_ptr<TextTexture> _name, std::shared_ptr<Resources> _res
 	m_maxHP = 75;
 	m_curHP = 75;
 	m_maxMP = 75;
-	m_curMP = 25;
+	m_curMP = 75;
 
 	m_str = 50;
 	m_mag = 50;
@@ -19,20 +19,25 @@ Stats::Stats(std::shared_ptr<TextTexture> _name, std::shared_ptr<Resources> _res
 
 	m_name = _name;
 	m_name->SetText({ 220,220,220,255 }, 12);
-	std::string text;
-	text = "HP: " + std::to_string(m_curHP) + "/" + std::to_string(m_maxHP);
-	m_hpText = _resources->Load<TextTexture>(text);
-	m_hpText->SetText({ 225,225,225,255 }, 10);
-	text = "SP: " + std::to_string(m_curMP) + "/" + std::to_string(m_maxMP);
-	m_mpText = _resources->Load<TextTexture>(text);
-	m_mpText->SetText({ 225,225,225,255 }, 10);
-
+	
+	SetStats();
 	m_hpBar = _resources->Load<Texture>("assets/hp.png");
 	m_mpBar = _resources->Load<Texture>("assets/mp.png");
 	m_statusBar = _resources->Load<Texture>("assets/infoBar.png");
 	m_bp = _resources->Load<Texture>("assets/mana.png");
 	m_bpEmpty = _resources->Load<Texture>("assets/manaEmpty.png");
 	m_bpH = _resources->Load<Texture>("assets/manaHighlight.png");
+}
+
+void Stats::SetStats()
+{
+	std::string text;
+	text = "HP: " + std::to_string(m_curHP) + "/" + std::to_string(m_maxHP);
+	m_hpText = m_resources->Load<TextTexture>(text);
+	m_hpText->SetText({ 225,225,225,255 }, 10);
+	text = "SP: " + std::to_string(m_curMP) + "/" + std::to_string(m_maxMP);
+	m_mpText = m_resources->Load<TextTexture>(text);
+	m_mpText->SetText({ 225,225,225,255 }, 10);
 }
 
 void Stats::Draw(float _posY, std::shared_ptr <Gui> _gui, int _bp, int _bpH)

@@ -11,9 +11,15 @@ public:
 	Stats(std::shared_ptr<TextTexture> _name, std::shared_ptr<Resources> _resources);
 	void Draw(float _posY, std::shared_ptr <Gui> _gui, int _bp, int _bpH);
 	int GetSpeed() { return m_spd; }
-	bool TakeDamage(int _damage) { m_curHP -= _damage; if (m_curHP <= 0)return true; else return false; }
+	bool TakeDamage(int _damage) { m_curHP -= _damage; if (m_curHP < 0) m_curHP = 0; SetStats(); if (m_curHP <= 0)return true; else return false; }
+	void HealDamage(int _damage) { m_curHP += _damage; if (m_curHP >= m_maxHP) m_curHP = m_maxHP; SetStats();}
+	void ChangeSP(int _amount) { m_curMP += _amount; if (m_curMP < 0) { m_curMP = 0; }else if (m_curMP > m_maxMP) { m_curMP = m_maxMP; }SetStats();}
+	bool CanCast(int _amount) { if (m_curMP >= _amount) return true; else return false; }
 
 private:
+
+	void SetStats();
+
 	int m_maxHP;
 	int m_curHP;
 	int m_maxMP;

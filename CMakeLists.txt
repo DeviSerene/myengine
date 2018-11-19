@@ -87,6 +87,8 @@ add_executable(game
 	src/game/TestScene.h
 	src/game/BattleScene.cpp
 	src/game/BattleScene.h
+	src/game/BossScene.cpp
+	src/game/BossScene.h
 	src/game/BattleBackground.cpp
 	src/game/BattleBackground.h
 	src/game/Character.cpp

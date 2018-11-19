@@ -91,9 +91,11 @@ BattleScene::BattleScene(std::shared_ptr<Core> _c)
 
 	std::shared_ptr<Entity> abilityEntity = m_scene->AddEntity();
 	std::vector<std::shared_ptr<Ability>> abilities;
-	abilities.push_back(abilityEntity->AddComponent<Ability>("assets/hit.png", "Attack", BE_STAFF,10));
-	abilities.push_back(abilityEntity->AddComponent<Ability>("assets/cure.png", "Cure", BE_LIGHT,20));
-	abilities.push_back(abilityEntity->AddComponent<Ability>("assets/holy.png", "Holy Light", BE_LIGHT,20));
+	abilities.push_back(abilityEntity->AddComponent<Ability>("assets/hit.png", "Attack", BE_STAFF,10,0));
+	abilities.push_back(abilityEntity->AddComponent<Ability>("assets/cure.png", "Cure", BE_LIGHT,20,5));
+	abilities.push_back(abilityEntity->AddComponent<Ability>("assets/holy.png", "Holy Light", BE_LIGHT,20,5));
+	abilities.push_back(abilityEntity->AddComponent<Ability>("assets/hit.png", "Attack", BE_SWORD, 10, 0));
+	abilities.push_back(abilityEntity->AddComponent<Ability>("assets/hit.png", "Attack", BE_AXE, 9, 0));
 
 	std::shared_ptr<Entity> TurnOrder = m_scene->AddEntity();
 	std::shared_ptr<TurnBar> to = TurnOrder->AddComponent<TurnBar>();

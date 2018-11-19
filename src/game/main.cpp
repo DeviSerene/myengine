@@ -8,13 +8,14 @@
 #include <myengine/Core.h>
 #include <myengine/MyEngineException.h>
 #include "BattleScene.h"
+#include "BossScene.h"
 
 void safe_main()
 {
 	std::cout << "Hello world" << std::endl;
 	srand(time(NULL));
 	std::shared_ptr<Core> core = Core::init();
-	std::shared_ptr<BattleScene> bs = std::shared_ptr<BattleScene>(new BattleScene(core));
+	std::shared_ptr<BossScene> bs = std::shared_ptr<BossScene>(new BossScene(core));
 
 	core->Start();
 }

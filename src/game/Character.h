@@ -24,6 +24,14 @@ public:
 	void IncBP();
 	void DecBP();
 	void RemoveBP(int _n);
+	void SetClickable(bool _b) { m_clickable = _b; if (_b == false)m_clicked = false; }
+	bool GetClicked() {return m_clicked; }
+	float GetX() { return m_pos.x; }
+	float GetY() { return m_pos.y; }
+	void TakeDamage(int _amount);
+	void HealDamage(int _amount, int _bp);
+	void RemoveSP(int _amount) { m_stats->ChangeSP(-_amount); }
+	bool CanCast(int _amount) { return m_stats->CanCast(_amount); }
 
 private:
 	std::string m_spritePath;
@@ -34,11 +42,17 @@ private:
 	glm::vec4 test;
 	std::shared_ptr<Texture> m_spritesheet;
 	std::shared_ptr<Texture> m_glowSheet;
-	std::shared_ptr < Stats> m_stats;
+	std::shared_ptr <Stats> m_stats;
+
+	glm::vec4 m_damagePos;
+	std::shared_ptr<TextTexture> m_damage;
+	float m_damageTimer;
 
 	int m_BP;
 	int m_activeBP;
 	bool m_recoverBP;
+	bool m_clickable;
+	bool m_clicked;
 
 	bool m_dead;
 };

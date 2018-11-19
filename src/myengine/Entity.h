@@ -70,6 +70,13 @@ public:
 		ADDCOMPONENT
 	}
 
+	template <typename T, typename A, typename B, typename C, typename D, typename E>
+	std::shared_ptr <T> AddComponent(A _a, B _b, C _c, D _d, E _e)
+	{
+		std::shared_ptr <T> rtn = std::shared_ptr <T>(new T(_a, _b, _c, _d, _e));
+		ADDCOMPONENT
+	}
+
 	template <typename T>
 	std::shared_ptr<T> GetComponent()
 	{

@@ -40,11 +40,17 @@ void TurnBar::OnTick()
 		if (m_currentTurnOrder[0] >= m_party.size())
 		{
 			//enemies
-			m_actionBar->SetActiveState(false);
-			Actioned();
 			m_waitTime = 1;
 			m_timer = 0;
 			std::cout << "Enemy ATTACK ";
+			//use ability/action against this enemy
+			m_abilities[3]->SetPos(m_party[0]->GetComponent<Character>()->GetX(), m_party[0]->GetComponent<Character>()->GetY());
+			m_abilities[3]->Begin();
+			m_party[0]->GetComponent<Character>()->TakeDamage(m_abilities[3]->GetDamage());
+
+			m_actionBar->SetActiveState(false);
+			Actioned();
+
 		}
 		else
 		{
@@ -69,8 +75,9 @@ void TurnBar::OnTick()
 				for (int i = 0; i < m_enemies.size(); i++)
 				{
 					m_enemies[i]->GetComponent<Enemy>()->SetClickable(true);
-					if (m_enemies[i]->GetComponent<Enemy>()->GetClicked())
+					if (m_enemies[i]->GetComponent<Enemy>()->GetClicked() && m_party[m_currentTurnOrder[0]]->GetComponent<Character>()->CanCast(m_abilities[m_actionBar->AbilityUsed()]->GetCost()))
 					{
+						m_party[m_currentTurnOrder[0]]->GetComponent<Character>()->RemoveSP(m_abilities[m_actionBar->AbilityUsed()]->GetCost());
 						//use ability/action against this enemy
 						m_abilities[m_actionBar->AbilityUsed()]->SetPos(m_enemies[i]->GetComponent<Enemy>()->GetX(), m_enemies[i]->GetComponent<Enemy>()->GetY());
 						m_abilities[m_actionBar->AbilityUsed()]->Begin();
@@ -95,6 +102,32 @@ void TurnBar::OnTick()
 				for (int i = 0; i < m_enemies.size(); i++)
 				{
 					m_enemies[i]->GetComponent<Enemy>()->SetClickable(false);
+				}
+			}
+			if (m_actionBar->TargettingAlly())
+			{
+				for (int i = 0; i < m_party.size(); i++)
+				{
+					m_party[i]->GetComponent<Character>()->SetClickable(true);
+					if (m_party[i]->GetComponent<Character>()->GetClicked() && m_party[m_currentTurnOrder[0]]->GetComponent<Character>()->CanCast(m_abilities[m_actionBar->AbilityUsed()]->GetCost()))
+					{
+						m_party[m_currentTurnOrder[0]]->GetComponent<Character>()->RemoveSP(m_abilities[m_actionBar->AbilityUsed()]->GetCost());
+						//use ability/action against this enemy
+						m_abilities[m_actionBar->AbilityUsed()]->SetPos(m_party[i]->GetComponent<Character>()->GetX(), m_party[i]->GetComponent<Character>()->GetY());
+						m_abilities[m_actionBar->AbilityUsed()]->Begin();
+						m_party[i]->GetComponent<Character>()->HealDamage(m_abilities[m_actionBar->AbilityUsed()]->GetDamage(), m_party[m_currentTurnOrder[0]]->GetComponent<Character>()->GetCurrentBP());
+						m_party[m_currentTurnOrder[0]]->GetComponent<Character>()->RemoveBP(m_party[m_currentTurnOrder[0]]->GetComponent<Character>()->GetCurrentBP());
+						UpdateBar();
+						Actioned();
+						m_actionBar->SetActiveState(false);
+						for (int u = 0; u < m_party.size(); u++)
+						{
+							m_party[u]->GetComponent<Character>()->SetClickable(false);
+						}
+						m_waitTime = 1.5;
+						m_timer = 0;
+						return;
+					}
 				}
 			}
 		}

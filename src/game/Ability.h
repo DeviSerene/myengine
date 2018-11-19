@@ -17,7 +17,7 @@ enum BATTLE_ELEMENT
 class Ability : public Component
 {
 public:
-	Ability(std::string _filepath, std::string _name, BATTLE_ELEMENT _element, int _damage);
+	Ability(std::string _filepath, std::string _name, BATTLE_ELEMENT _element, int _damage, int _sp);
 	void OnInit(); //this will override the Components
 	void OnGui();
 	void OnTick();
@@ -26,7 +26,8 @@ public:
 	void SetPos(float x, float y) { m_pos.x = x; m_pos.y = y;}
 	void Begin() { m_display = true; m_finished = false; }
 	bool IsFinished() { return m_finished; }
-	int GetDamage() { return m_damage; }
+	int GetDamage() { return m_damage + ((rand()%10) - 5); }
+	int GetCost() { return m_spCost; }
 	BATTLE_ELEMENT GetElement() { return m_element; }
 	void PlaySound() {}
 
@@ -36,6 +37,7 @@ private:
 	glm::vec4 m_pos;
 	std::shared_ptr<Texture> m_sprite;
 	int m_damage;
+	int m_spCost;
 	float m_scale;
 	BATTLE_ELEMENT m_element;
 
