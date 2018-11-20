@@ -15,7 +15,11 @@ void safe_main()
 	std::cout << "Hello world" << std::endl;
 	srand(time(NULL));
 	std::shared_ptr<Core> core = Core::init();
-	std::shared_ptr<BossScene> bs = std::shared_ptr<BossScene>(new BossScene(core));
+	std::shared_ptr<BattleScene> bs = std::shared_ptr<BattleScene>(new BattleScene(core));
+	std::shared_ptr<BossScene> bs2 = std::shared_ptr<BossScene>(new BossScene(core));
+	core->AddScene(bs);
+	core->AddScene(bs2);
+	core->SetScene(0);
 
 	core->Start();
 }

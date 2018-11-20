@@ -5,6 +5,7 @@ class Entity;
 class Core;
 class Keyboard;
 class Environment;
+class Scene;
 
 class Component
 {
@@ -16,6 +17,7 @@ public:
 	std::shared_ptr<Core> GetCore();
 	std::shared_ptr<Keyboard> GetKeyboard();
 	std::shared_ptr<Environment> GetEnvironment();
+	std::shared_ptr<Scene> GetScene();
 
 	void SetEntity(std::shared_ptr<Entity> _e) { m_entity = _e; }
 

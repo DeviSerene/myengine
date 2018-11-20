@@ -81,3 +81,8 @@ void TextTexture::SetText(SDL_Color _colour, int _textsize)
 	font = nullptr;
 
 }
+
+TextTexture::~TextTexture()
+{
+	glDeleteTextures(1, &m_texture);
+}

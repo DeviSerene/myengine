@@ -12,7 +12,7 @@ Ability::Ability(std::string _filepath, std::string _name, BATTLE_ELEMENT _eleme
 
 void Ability::OnInit()
 {
-	m_sprite = GetCore()->GetResources()->Load<Texture>(m_filepath);
+	m_sprite = GetCore()->GetResources()->Load<Texture>(m_filepath+".png");
 	m_display = false;
 	m_finished = true;
 	m_pos.z = 0.5f;// *m_sprite->GetWidth();

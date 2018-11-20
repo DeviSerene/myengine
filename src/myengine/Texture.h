@@ -14,7 +14,7 @@ public:
 	GLuint GetTexture() { return  m_texture; }
 	int GetWidth() { return m_width; }
 	int GetHeight() { return m_height; }
-
+	~Texture();
 private:
 	// OpenGL handle for the texture
 	GLuint m_texture;

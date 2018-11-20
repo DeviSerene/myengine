@@ -38,6 +38,7 @@ public:
 	std::shared_ptr<Keyboard> GetKeyboard() { return m_keyboard; }
 	std::shared_ptr<Gui> GetGui() { return m_gui; }
 	std::shared_ptr<Resources> GetResources() { return m_resources; }
+	std::shared_ptr<Scene> GetScene() { return m_scenes[m_scene]; }
 	glm::vec3 GetCamera();
 	glm::mat4 GetVM() { return _viewMatrix; }
 	glm::mat4 GetPM() { return _projMatrix; }
@@ -46,11 +47,14 @@ public:
 	SDL_Window* GetWindow() { return m_window; }
 
 	void AddCamera(std::shared_ptr<Entity> _camera) { m_cameras.push_back(_camera); }
-	void SetScene(std::shared_ptr<Scene> _scene) { m_scene = _scene; }
+	void AddScene(std::shared_ptr<Scene> _scene) { m_scenes.push_back(_scene); }
+	void SetScene(int _scene) { m_new = _scene; m_changeScene = true; }
+	int GetSceneNo() { return m_scene; }
 
 	float GetDeltaTime() { return m_deltaTs; }
 private:
 
+	void ChangeScene(int _scene);
 	void StartSDL();
 	float m_lastTime;
 	float m_deltaTs;
@@ -61,7 +65,10 @@ private:
 	std::shared_ptr<Resources> m_resources;
 	std::shared_ptr<Compositor> m_compositor;
 	//std::vector<std::shared_ptr<Entity>> m_entities;
-	std::shared_ptr<Scene> m_scene;
+	int m_scene;
+	int m_new;
+	bool m_changeScene;
+	std::vector<std::shared_ptr<Scene>> m_scenes;
 	SDL_Window* m_window;
 	ALCdevice* device;
 	ALCcontext* context;

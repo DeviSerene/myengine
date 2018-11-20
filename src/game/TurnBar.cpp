@@ -2,6 +2,7 @@
 #include "myengine/Entity.h"
 #include "Character.h"
 #include "Enemy.h"
+#include "BossScene.h"
 
 TurnBar::TurnBar()
 {
@@ -12,8 +13,10 @@ void TurnBar::OnInit()
 	m_canClick = true;
 	m_active = true;
 	m_nextTurn = GetCore()->GetResources()->Load<Texture>("assets/nextTurn.png");
+	m_victory = GetCore()->GetResources()->Load<Sound>("assets/BattleVictory.ogg");
 	m_timer = 0;
 	m_waitTime = 0;
+	m_finished = false;
 }
 
 void TurnBar::OnTick()
@@ -29,6 +32,35 @@ void TurnBar::OnTick()
 	{
 		if (!m_abilities[i]->IsFinished())
 			return;
+	}
+
+	//if all enemies are dead
+	bool victory = true;
+	for (int i = 0; i < m_enemies.size(); i++)
+	{
+		if (!m_enemies[i]->GetComponent<Enemy>()->IsDead())
+			victory = false;
+	}
+	if (victory == true && m_finished == false)
+	{
+		m_bgm->StopLooping();
+		m_bgm->Stop();
+		m_victory->Play();
+		m_timer = 0;
+		m_waitTime = 4.0f;
+		m_finished = true;
+		return;
+	}
+	else if (m_finished == true)
+	{
+		//m_victory->StopLooping();
+		m_victory->Stop();
+		//go to the next scene
+		if(GetCore()->GetSceneNo() == 1)
+			GetCore()->SetScene(0);
+		else
+			GetCore()->SetScene(1);
+		return;
 	}
 
 	if (m_currentTurnOrder.empty())
@@ -262,22 +294,38 @@ void TurnBar::NextTurn()
 	m_timer = 0;
 }
 
+void TurnBar::PlayMusic(std::string _music)
+{
+	m_bgm = GetCore()->GetResources()->Load<Sound>(_music);//
+	m_bgm->PlayLoop();
+}
+
 void TurnBar::UpdateBar()
 {
-	if(!m_currentTurnOrder.empty())
-	for (int i = 0; i < m_currentTurnOrder.size(); i++)
+	if (!m_currentTurnOrder.empty())
 	{
-		if (m_currentTurnOrder[i] >= m_party.size())
+		for (int i = 0; i < m_currentTurnOrder.size(); i++)
 		{
-			//enemies
-				std::shared_ptr<Enemy> enemy = m_enemies[m_currentTurnOrder[i]- m_party.size()]->GetComponent<Enemy>();
+			if (m_currentTurnOrder[i] >= m_party.size())
+			{
+				//enemies
+				std::shared_ptr<Enemy> enemy = m_enemies[m_currentTurnOrder[i] - m_party.size()]->GetComponent<Enemy>();
 				if (enemy->IsBroken() || enemy->IsDead())
 				{
 					m_currentTurnOrder.erase(m_currentTurnOrder.begin() + i);
+				//	i--;
 				}
+			}
+			else
+			{
+				if (m_party[m_currentTurnOrder[i]]->GetComponent<Character>()->IsDead())
+				{
+					m_currentTurnOrder.erase(m_currentTurnOrder.begin() + i);
+				//	i--;
+				}
+			}
 		}
 	}
-
 	
 	if (!m_nextTurnOrder.empty())
 	for (int i = 0; i < m_nextTurnOrder.size(); i++)
@@ -292,6 +340,13 @@ void TurnBar::UpdateBar()
 				{
 					m_nextTurnOrder.erase(m_nextTurnOrder.begin() + i);
 				}
+			}
+		}
+		else
+		{
+			if (m_party[m_nextTurnOrder[i]]->GetComponent<Character>()->IsDead())
+			{
+				m_nextTurnOrder.erase(m_nextTurnOrder.begin() + i);
 			}
 		}
 	}

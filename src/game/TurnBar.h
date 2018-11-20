@@ -6,6 +6,7 @@
 #include <myengine/Core.h>
 #include "myengine/Resources.h"
 #include "myengine/Texture.h"
+#include "myengine/Sound.h"
 #include "ActionBar.h"
 #include "Ability.h"
 
@@ -17,6 +18,7 @@ public:
 	void OnGui();
 	void OnTick();
 
+	void PlayMusic(std::string _music);
 	void SetAB(std::shared_ptr<ActionBar> _actionBar) { m_actionBar = _actionBar; }
 	void SetAbilities(std::vector<std::shared_ptr<Ability>> _ab) { m_abilities = _ab; }
 	void SetCombatants(std::vector<std::shared_ptr<Entity>> _party, std::vector<std::shared_ptr<Entity>> _enemies);
@@ -29,6 +31,8 @@ private:
 
 	glm::vec4 m_pos;
 	//textures
+	std::shared_ptr<Sound> m_bgm;
+	std::shared_ptr<Sound> m_victory;
 	std::shared_ptr<Texture> m_nextTurn;
 	std::vector<std::shared_ptr<Texture>> m_icons;
 	std::vector<std::shared_ptr<Entity>> m_party;
@@ -39,6 +43,7 @@ private:
 	std::vector<int> m_currentTurnOrder;
 	std::vector<int> m_nextTurnOrder;
 
+	bool m_finished;
 	bool m_canClick;
 	float m_timer;
 	float m_waitTime;

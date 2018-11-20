@@ -14,6 +14,11 @@ Component::~Component()
 {
 }
 
+std::shared_ptr<Scene> Component::GetScene()
+{
+	return m_entity.lock()->GetCore()->GetScene();
+}
+
 std::shared_ptr<Entity> Component::GetEntity()
 {
 	return m_entity.lock();

@@ -18,13 +18,14 @@
 #include "TestScene.h"
 #include "BattleBackground.h"
 
-class BattleScene
+class BattleScene : public Scene
 {
 public:
 	BattleScene(std::shared_ptr<Core> _c);
+	void OnInit();
+	void OnDeInit();
 
 private:
-	std::shared_ptr<Scene> m_scene;
 	std::weak_ptr<Core> m_core;
 	std::shared_ptr<Mesh> m_mesh;
 	std::shared_ptr<Texture> m_grass;

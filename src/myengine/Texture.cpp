@@ -33,11 +33,11 @@ void Texture::LoadTexture(std::string filename)
 	m_width = image->w;
 
 	// Create OpenGL texture
-	unsigned int texName = 0;
-	glGenTextures(1, &texName);
+	m_texture = 0;
+	glGenTextures(1, &m_texture);
 
 
-	glBindTexture(GL_TEXTURE_2D, texName);
+	glBindTexture(GL_TEXTURE_2D, m_texture);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -62,5 +62,10 @@ void Texture::LoadTexture(std::string filename)
 	//glBindTexture(GL_TEXTURE_2D, 0);
 
 
-	m_texture = texName;
+	m_texture;
+}
+
+Texture::~Texture()
+{
+	glDeleteTextures(1, &m_texture);
 }

@@ -42,7 +42,9 @@ FrameBuffer::FrameBuffer()
 
 FrameBuffer::~FrameBuffer()
 {
-
+	glDeleteTextures(1, &m_texture);
+	glDeleteRenderbuffers(1, &m_depth);
+	glDeleteFramebuffers(1, &m_buffer);
 }
 
 void FrameBuffer::Update(int x, int y)

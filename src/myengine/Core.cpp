@@ -21,6 +21,9 @@ std::shared_ptr<Core> Core::init()
 	c->StartSDL(); 
 	c->m_resources = std::shared_ptr<Resources>(new Resources());
 	c->m_lastTime = 0;
+	c->m_scene = 10;
+	c->m_new = 10;
+	c->m_changeScene = false;
 
 	//audio
 	
@@ -118,6 +121,10 @@ void Core::Start()
 
 	while (m_running)
 	{
+		if (m_changeScene)
+		{
+			ChangeScene(m_new);
+		}
 		while (m_fbs.size() < m_cameras.size())
 		{
 			m_fbs.push_back(std::shared_ptr<FrameBuffer>(new FrameBuffer()));
@@ -134,8 +141,8 @@ void Core::Start()
 
 		m_resources->CleanUp(m_deltaTs);
 		
-		if (m_scene)
-			m_scene->Tick();
+		if (m_scenes.size() > m_scene)
+			m_scenes[m_scene]->Tick();
 
 		////
 		if (m_keyboard->Input(A_BUTTON))
@@ -173,6 +180,8 @@ void Core::Start()
 		// Start Drawing the Scene
 		int x, y;
 		SDL_GetWindowSize(m_window, &x, &y);
+		if (m_fbs.empty())
+			return;
 		for (int i = 0; i < m_fbs.size(); i++)
 		{
 			m_fbs[i]->Update(x, y);
@@ -189,8 +198,8 @@ void Core::Start()
 				_projMatrix = m_cameras[i]->GetComponent<Camera>()->GetProjMatrix();
 				glViewport(0, 0, x, y);
 
-				if (m_scene)
-					m_scene->Display();
+				if (m_scenes.size() > m_scene)
+					m_scenes[m_scene]->Display();
 			}
 
 		}
@@ -231,8 +240,8 @@ void Core::Start()
 			m_gui->Sprite(pos);
 		}
 		m_gui->Flip(false);
-		if (m_scene)
-			m_scene->Gui();
+		if (m_scenes.size() > m_scene)
+			m_scenes[m_scene]->Gui();
 
 		
 
@@ -241,3 +250,18 @@ void Core::Start()
 }
 
 glm::vec3 Core::GetCamera() { return m_cameras[m_currentCamera]->GetComponent<Camera>()->GetCameraPos(); }
+
+void Core::ChangeScene(int _scene) 
+{ 
+	int old = m_scene;  
+	m_scene = _scene; 
+	if (m_scenes.size() > m_scene) 
+	{ 
+		if(m_scenes.size() > old)
+			m_scenes[old]->OnDeInit(); 
+		m_cameras.clear();
+		m_fbs.clear();
+		m_scenes[m_scene]->OnInit(); 
+	} 
+	m_changeScene = false;
+}

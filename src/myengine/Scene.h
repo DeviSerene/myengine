@@ -18,6 +18,7 @@ public:
 	void Gui();
 
 	std::shared_ptr<Entity> AddEntity();
+	virtual void OnDeInit() {}
 
 	template <typename T>
 	std::vector<std::shared_ptr<T>> GetAllComponents()
@@ -33,7 +34,8 @@ public:
 		return ret;
 	}
 
-private:
+	virtual void OnInit() {}
+protected:
 	std::vector<std::shared_ptr<Entity>> m_entities;
 	std::weak_ptr<Core> m_core;
 

@@ -15,6 +15,7 @@ public:
 	void HealDamage(int _damage) { m_curHP += _damage; if (m_curHP >= m_maxHP) m_curHP = m_maxHP; SetStats();}
 	void ChangeSP(int _amount) { m_curMP += _amount; if (m_curMP < 0) { m_curMP = 0; }else if (m_curMP > m_maxMP) { m_curMP = m_maxMP; }SetStats();}
 	bool CanCast(int _amount) { if (m_curMP >= _amount) return true; else return false; }
+	void SetMHP(int _a) { m_maxHP = _a; m_curHP = _a; }
 
 private:
 

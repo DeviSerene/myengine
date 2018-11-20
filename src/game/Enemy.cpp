@@ -17,6 +17,8 @@ Enemy::Enemy(float x, float y, std::string _filepath)
 	m_pos.y = y;
 	//
 	m_filepath = _filepath;
+	m_BP = 1;
+	m_maxBP = 1;
 }
 
 void Enemy::OnInit()
@@ -24,6 +26,7 @@ void Enemy::OnInit()
 	m_sprite = GetCore()->GetResources()->Load<Texture>(m_filepath + ".png");
 	m_glow = GetCore()->GetResources()->Load<Texture>(m_filepath + "_glow.png");
 	m_brokenS = GetCore()->GetResources()->Load<Texture>(m_filepath + "_broken.png");
+	m_break = GetCore()->GetResources()->Load<Texture>("assets/characters/break_1.png");
 
 	float multiplier = (abs(m_pos.y) / 0.5f) *0.85;
 	m_pos.z = 0.01f * m_sprite->GetWidth() * multiplier;
@@ -78,6 +81,9 @@ void Enemy::OnGui()
 		{
 			GetCore()->GetGui()->Sprite(m_pos);
 		}
+		m_break = GetCore()->GetResources()->Load<Texture>("assets/characters/break_"+std::to_string(m_BP)+".png");
+		GetCore()->GetGui()->SetTexture(m_break->GetTexture());
+		GetCore()->GetGui()->Sprite(glm::vec4(m_pos.x - (0.075f), m_pos.y - 0.05f, 0.075f, 0.075f));
 		///The elements
 		for (int i = 0; i < m_weaknesses.size(); i++)
 		{
@@ -114,8 +120,12 @@ void Enemy::TakeDamage(int _damage, BATTLE_ELEMENT _element, int _bp)
 			if (m_weaknesses[i] == _element)
 			{
 				//break
-				m_broken = true;
-				m_recoverNextTurn = false;
+				m_BP--;
+				if (m_BP <= 0)
+				{
+					m_broken = true;
+					m_recoverNextTurn = false;
+				}
 				_damage += (float)(_damage)* 0.5f;
 				m_weakRevealed[i] = true;
 			}
@@ -141,6 +151,7 @@ void Enemy::TakeDamage(int _damage, BATTLE_ELEMENT _element, int _bp)
 	if (m_stats->TakeDamage(_damage))
 	{
 		m_dead = true;
+		GetCore()->GetResources()->Load<Sound>("assets/enemyDeath.ogg")->Play();
 	}
 
 }
@@ -155,5 +166,6 @@ void Enemy::NextTurn()
 	{ 
 		m_recoverNextTurn = false; 
 		m_broken = false; 
+		m_BP = m_maxBP;
 	} 
 }

@@ -126,7 +126,8 @@ void Sound::PlayLoop()
 
 void Sound::StopLooping()
 { 
-	alSourcei(imp->id, AL_LOOPING, 0); 
+	alSourcei(imp->id, AL_LOOPING, 0);
+	alSourceStop(imp->id);
 }
 
 

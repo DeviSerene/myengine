@@ -7,6 +7,7 @@
 #include "myengine/Resources.h"
 #include "myengine/Texture.h"
 #include "myengine/TextTexture.h"
+#include "myengine/Sound.h"
 #include "Stats.h"
 
 enum BATTLE_ELEMENT
@@ -24,12 +25,12 @@ public:
 
 	bool IsThis(std::string _name) { return (m_name == _name); }
 	void SetPos(float x, float y) { m_pos.x = x; m_pos.y = y;}
-	void Begin() { m_display = true; m_finished = false; }
+	void Begin() { PlaySound();  m_display = true; m_finished = false; }
 	bool IsFinished() { return m_finished; }
 	int GetDamage() { return m_damage + ((rand()%10) - 5); }
 	int GetCost() { return m_spCost; }
 	BATTLE_ELEMENT GetElement() { return m_element; }
-	void PlaySound() {}
+	void PlaySound() { GetCore()->GetResources()->Load<Sound>(m_filepath + ".ogg")->Play(); }
 
 private:
 	std::string m_name;

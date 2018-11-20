@@ -30,6 +30,7 @@ public:
 	void NextTurn();//
 	void TakeDamage(int _damage, BATTLE_ELEMENT _element, int _bp);
 	void AddWeakness(BATTLE_ELEMENT _weakness){m_weaknesses.push_back(_weakness); m_weakRevealed.push_back(false); }
+	void SetStats(int _hp, int _bpS, int _bpM) { m_stats->SetMHP(_hp); m_BP = _bpS; m_maxBP = _bpM; }
 private:
 	std::string m_filepath;
 	glm::vec4 m_pos;
@@ -37,6 +38,7 @@ private:
 	std::shared_ptr<Texture> m_sprite;
 	std::shared_ptr<Texture> m_glow;
 	std::shared_ptr<Texture> m_brokenS;
+	std::shared_ptr<Texture> m_break;
 	std::shared_ptr<TextTexture> m_damage;
 	std::shared_ptr<TextTexture> m_breakText;
 	std::shared_ptr < Stats> m_stats;
@@ -45,6 +47,8 @@ private:
 	bool m_clicked;
 	bool m_recoverNextTurn;
 	bool m_broken;
+	int m_BP;
+	int m_maxBP;
 	std::vector<BATTLE_ELEMENT> m_weaknesses;
 	std::vector<bool> m_weakRevealed;
 	std::vector < std::shared_ptr<Texture>> m_eleIcons;
