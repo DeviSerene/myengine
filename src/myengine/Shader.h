@@ -17,6 +17,11 @@ struct Uniform
 	std::string m_ID;
 };
 
+/*!
+A shader loads the code from a text file, and can then have uniforms created and set. This simplifies shaders and so not all objects need to have their own shader creation functions.
+Shaders are a resource, and the same shaders can be used by different objects, although they will have to set their uniforms.
+*/
+
 class Shader : public Resource
 {
 public:

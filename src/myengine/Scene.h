@@ -8,6 +8,12 @@
 class Core;
 class Entity;
 
+/*!
+A scene contains Entities. Multiple scenes can be stored in the Core, to enable quick switching between them.
+Tick, Display, etc, will tell all entities to do that action.
+The user can create new Scenes by inheriting from this class, and then adding the scene to core.
+*/
+
 class Scene : public std::enable_shared_from_this<Scene>
 {
 public:

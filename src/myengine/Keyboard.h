@@ -4,6 +4,13 @@
 #include <SDL2/SDL_gamecontroller.h>
 #define MAX_CONTROLLERS 1
 
+/*!
+Instead of any keyboard press, the user needs to set actions via INPUTACTION buttons.
+These map to a standard game controller, which can be used in this engine.
+Keys are initially bound, but cna be rebound during runtime by using the ReBind function for keyboard and ReBindButton for controllers.
+Currently, gamepads must be connected before the program starts.
+*/
+
 enum INPUTACTION
 {
 	A_BUTTON, B_BUTTON, X_BUTTON, Y_BUTTON, 

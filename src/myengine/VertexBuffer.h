@@ -3,6 +3,10 @@
 #include <vector>
 #include <glm/glm.hpp>
 
+/*!
+A VBO contains information that will be attached to a VAO. This can be something like the number of vertices and where they area in relation to each other, or UV information.
+*/
+
 class VertexBuffer
 {
 public:

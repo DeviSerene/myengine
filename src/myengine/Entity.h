@@ -2,7 +2,6 @@
 #include <memory>
 #include <vector>
 
-
 class Core;
 class Component;
 
@@ -12,6 +11,12 @@ rtn->SetEntity(shared_from_this()); \
 rtn->OnInit(); \
 return rtn; \
 
+/*!
+Entity is a class for GameObjects. By itself, it is not able to do much, however it can have Components attached to it.
+When certain commands are issued, like OnTick, it will cycle through each of its components and perform them.
+Entities can be parented, or have children. In this case, after the parent has performed its action, it will cycle through it's children.
+This is useful for certain components such as Transform, which will use the parents Transform to find their world space.
+*/
 
 class Entity : public std::enable_shared_from_this<Entity>
 {

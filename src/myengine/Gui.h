@@ -16,7 +16,9 @@
 class Core;
 
 /*!
-This handles the gui
+This handles the gui. Users are able to creat buttons and sprites to appear on screen.
+Buttons can change texture when highlighted on the mouse or when pressed. Buttons are pressed with the A Button.
+All gui images can be from spritesheets, which can be changed by modifying the FrameInfo: {[xCell wanted], [yCell wanted], [max X cells], [max Y cells]};
 */
 class Gui
 {

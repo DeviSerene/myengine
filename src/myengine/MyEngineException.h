@@ -2,6 +2,10 @@
 #include <exception>
 #include <iostream>
 
+/*!
+This class handles Exceptions that occur in the enginem and return a messagebox to the user.
+*/
+
 class MyEngineException : public std::exception
 {
 public:

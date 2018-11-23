@@ -7,6 +7,11 @@
 #include <GLM/gtc/matrix_transform.hpp>
 #include "Transform.h"
 
+/*!
+Collider is a Component that can be added to GameObjects (Entities).
+The Collider contains a size which is used with the object's Transform component and the Collisions class to check if two objects are colliding.
+*/
+
 class Collider : public Component
 {
 public:

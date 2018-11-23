@@ -8,6 +8,11 @@
 
 struct Sample;
 
+/*!
+Sounds are able to be played in 3D space with a player(where the sound is coming from) and a Listener (likely the camera).
+Background Music can be looped with the PlayLoop fuction.
+*/
+
 class Sound : public Resource 
 {
 public:

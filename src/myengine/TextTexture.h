@@ -7,6 +7,10 @@
 #include "Texture.h"
 #include <SDL2/SDL_ttf.h>
 
+/*!
+This resource takes in a string of characters, and then creates a texture. This texture can be applied on sprites on the gui to create words on screen.
+*/
+
 class TextTexture : public Resource
 {
 public:

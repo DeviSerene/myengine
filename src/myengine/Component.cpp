@@ -1,5 +1,4 @@
 #include "Component.h"
-#include "Environment.h"
 #include "Keyboard.h"
 #include "Core.h"
 #include "Entity.h"
@@ -32,11 +31,6 @@ std::shared_ptr<Core> Component::GetCore()
 std::shared_ptr<Keyboard> Component::GetKeyboard()
 {
 	return m_entity.lock()->GetCore()->GetKeyboard();
-}
-
-std::shared_ptr<Environment> Component::GetEnvironment()
-{
-	return nullptr;
 }
 
 void Component::OnInit()

@@ -25,7 +25,10 @@
 
 class Entity;
 class Resources;
-
+/*!
+Core is the heart of the engine. It contains the loaded scenes, is an access point to get to Resources, Gui, etc and holds the game loop.
+Loop: ChangeScenes, OnTick, OnDraw, OnPostProcess, OnGui
+*/
 class Core : public std::enable_shared_from_this<Core>
 {
 public:
@@ -36,6 +39,7 @@ public:
 	void Start();
 	void Stop();
 
+	///Getters
 	std::shared_ptr<Keyboard> GetKeyboard() { return m_keyboard; }
 	std::shared_ptr<Gui> GetGui() { return m_gui; }
 	std::shared_ptr<Resources> GetResources() { return m_resources; }
@@ -47,6 +51,7 @@ public:
 	glm::vec2 GetScreenSize() { int x, y; SDL_GetWindowSize(m_window, &x, &y); glm::vec2 ret; ret.x = x; ret.y = y; return ret; }
 	SDL_Window* GetWindow() { return m_window; }
 
+	///Add Cameras, Change Scenes etc
 	void AddCamera(std::shared_ptr<Entity> _camera) { m_cameras.push_back(_camera); }
 	void AddScene(std::shared_ptr<Scene> _scene) { m_scenes.push_back(_scene); }
 	void SetScene(int _scene) { m_new = _scene; m_changeScene = true; }
@@ -54,23 +59,24 @@ public:
 
 	float GetDeltaTime() { return m_deltaTs; }
 private:
-
-	void ChangeScene(int _scene);
+	bool m_running;
+	//SDL
 	void StartSDL();
+	SDL_Window* m_window;
+	//DeltaTime
 	float m_lastTime;
 	float m_deltaTs;
-	bool m_running;
-	//std::shared_ptr<FrameBuffer> m_fb;
+	//Features
 	std::shared_ptr<Gui> m_gui;
 	std::shared_ptr<Keyboard> m_keyboard;
 	std::shared_ptr<Resources> m_resources;
-	//std::shared_ptr<Compositor> m_compositor;
-	//std::vector<std::shared_ptr<Entity>> m_entities;
+	//Scenes
+	void ChangeScene(int _scene);
 	int m_scene;
 	int m_new;
 	bool m_changeScene;
 	std::vector<std::shared_ptr<Scene>> m_scenes;
-	SDL_Window* m_window;
+	//Audio
 	ALCdevice* device;
 	ALCcontext* context;
 
@@ -79,10 +85,10 @@ private:
 	// Position of the single point-light in the scene
 	glm::vec3 _lightPosition;
 
-	//std::shared_ptr<Entity> m_camera;
+	//Cameras
 	int m_currentCamera;
 	std::vector<std::shared_ptr<Entity>> m_cameras;
-	//std::vector<std::shared_ptr<FrameBuffer>> m_fbs;
+	//Current Matrices
 	glm::mat4 _viewMatrix;
 	glm::mat4 _projMatrix;
 

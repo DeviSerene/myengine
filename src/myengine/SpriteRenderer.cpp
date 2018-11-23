@@ -1,5 +1,4 @@
 #include "SpriteRenderer.h"
-#include "Environment.h"
 #include "Keyboard.h"
 #include "Core.h"
 #include "Resources.h"

@@ -9,6 +9,9 @@
 #include <vector>
 #include <memory>
 #include "Mesh.h"
+/*!
+A static class that returns true if two objects are colliding
+*/
 
 class Collisions
 {

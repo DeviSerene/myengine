@@ -9,6 +9,12 @@
 #include "FrameBuffer.h"
 #include "PostProcess.h"
 
+/*!
+Camera is a Component that can be added to GameObjects (Entities).
+The camera does not use the Transform component and instead has its own position data.
+The camera has a FrameBuffer, which is what it draws to.
+*/
+
 class Camera : public Component
 {
 public:

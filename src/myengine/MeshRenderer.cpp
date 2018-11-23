@@ -1,8 +1,6 @@
 #include "MeshRenderer.h"
-#include "ShaderProgram.h"
 #include "Material.h"
 #include "Mesh.h"
-#include "Environment.h"
 #include "Keyboard.h"
 #include "Core.h"
 #include "Resources.h"

@@ -9,6 +9,11 @@
 #include <iostream>
 #include <fstream>
 
+/*!
+A framebuffer is attached to a Camera and PostProcessing classes, and could be attached to any user's Components.
+It is able to contain a texture, which can be used for shaders.
+*/
+
 class FrameBuffer
 {
 public:

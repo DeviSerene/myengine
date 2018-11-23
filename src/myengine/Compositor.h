@@ -14,6 +14,10 @@
 
 class Core;
 
+/*!
+This is a debunked class used to composit two framebuffers together, however it didn't work well and PostProcess took its place.
+*/
+
 enum COMPOSITION_TYPE
 {
 	COMP_2_SPLIT_H

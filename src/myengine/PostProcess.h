@@ -8,6 +8,11 @@ class Core;
 class Shader;
 class VertexArray;
 
+/*!
+The PostProcess class can be attached to any Components that want to deal with PostProcessing situations, such as blur.
+The user will load the shaders, create and set the uniforms, draw, and will then be able to access the texture from the framebuffer.
+*/
+
 class PostProcess
 {
 public:

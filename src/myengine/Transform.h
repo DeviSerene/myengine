@@ -6,6 +6,11 @@
 #include <GL/glew.h>
 #include <GLM/gtc/matrix_transform.hpp>
 
+/*!
+Transform is a Component that can be added to GameObjects (Entities).
+It contains information about where the object is in world space.
+*/
+
 class Transform : public Component
 {
 public:

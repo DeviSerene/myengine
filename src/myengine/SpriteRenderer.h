@@ -9,6 +9,11 @@
 #include "Texture.h"
 #include "VertexArray.h"
 
+/*!
+SpriteRenderer is a Component that can be added to GameObjects (Entities).
+SpriteRenderer has a simple square which is then applied a 2D texture. This allows sprites to be set in 2D space, however they will need to be rotated to face the camera to be seen.
+*/
+
 class SpriteRenderer : public Component
 {
 public:

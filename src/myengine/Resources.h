@@ -5,6 +5,11 @@
 #include "Resource.h"
 
 //to go up a directory, use "../" !
+/*!
+If a user wishes to load a Resource, they need to go through Resources. With this factory system, they do not have to worry about memory management (too much).
+Resources will try to load the resource via its path, checking if it is already in memory, returning it if it is so, or creating a new one if it is not.
+If absolutely needed, Resources can also stop all sounds that are currently playing in memory.
+*/
 
 class Resources
 {

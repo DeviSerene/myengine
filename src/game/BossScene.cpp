@@ -13,7 +13,6 @@ BossScene::BossScene(std::shared_ptr<Core> _c)
 	:Scene(_c)
 {
 	m_core = _c;
-
 }
 
 void BossScene::OnDeInit()
