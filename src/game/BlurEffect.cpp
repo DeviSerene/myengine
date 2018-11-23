@@ -5,12 +5,12 @@
 
 void BlurEffect::OnInit()
 {
+	m_blurInfo = glm::vec3(1, 1, 1);
 	m_pp = std::shared_ptr<PostProcess>(new PostProcess());
 	m_pp->LoadShader(GetCore(), "Blur", "compVert.txt", "blurFrag.txt");
-	m_pp->AddEffect("in_Projection");
-	m_pp->AddEffect("in_Model");
 	m_pp->AddEffect("in_Texture");
 	m_pp->AddEffect("in_Screen");
+	m_pp->AddEffect("in_BlurInfo");
 	m_cam = GetEntity()->GetComponent<Camera>();
 }
 
@@ -34,18 +34,12 @@ void BlurEffect::OnTick()
 
 void BlurEffect::OnPostProcess()
 {
-	m_pp->SetEffect("in_Projection", GetCore()->GetPM());
-	glm::mat4 modelmat = glm::mat4(1.0f);
-	modelmat = glm::translate(modelmat, glm::vec3(-1, -1, 0));
-	modelmat = glm::scale(modelmat, glm::vec3(2, 2, 1));
-	m_pp->SetEffect("in_Model", modelmat);
 
 	m_pp->SetEffect("in_Screen", GetCore()->GetScreenSize());
-
-	m_pp->Draw(m_cam->GetTexture());
-
-	//m_cam->SetTexture(m_pp->GetTexture());
+	m_pp->SetEffect("in_BlurInfo", m_blurInfo);
 	
+	m_pp->Draw(m_cam->GetTexture());
+	m_cam->SetTexture(m_pp->GetTexture());
 }
 
 void BlurEffect::OnGui()

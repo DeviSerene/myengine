@@ -28,6 +28,7 @@ void BossScene::OnInit()
 	std::shared_ptr<Entity> m_camera = AddEntity();
 	m_camera->AddComponent<Camera>();
 	m_core.lock()->AddCamera(m_camera);
+	std::shared_ptr<BlurEffect> be = m_camera->AddComponent<BlurEffect>();
 
 	m_mesh = m_core.lock()->GetResources()->Load<Mesh>("assets/re_hall_bakedT.obj");
 	m_grass = m_core.lock()->GetResources()->Load<Texture>("assets/mansion.bmp");
@@ -47,6 +48,7 @@ void BossScene::OnInit()
 
 	std::shared_ptr<Entity> ophilia = AddEntity();
 	ophilia->AddComponent<Character>();
+	ophilia->GetComponent<Character>()->SetBlurEffect(be);
 	std::shared_ptr<ActionBar> oAB = ophilia->AddComponent<ActionBar>();
 	m_party.push_back(ophilia);
 

@@ -7,11 +7,13 @@
 #include "myengine/Resources.h"
 #include "myengine/Texture.h"
 #include "myengine/TextTexture.h"
+#include "BlurEffect.h"
 #include "Stats.h"
 
 class Character : public Component
 {
 public:
+	void SetBlurEffect(std::shared_ptr<BlurEffect> _be) { m_blur = _be; }
 	void OnInit(); //this will override the Components
 	void OnGui();
 	void OnTick();
@@ -43,6 +45,7 @@ private:
 	std::shared_ptr<Texture> m_spritesheet;
 	std::shared_ptr<Texture> m_glowSheet;
 	std::shared_ptr <Stats> m_stats;
+	std::shared_ptr<BlurEffect> m_blur;
 
 	glm::vec4 m_damagePos;
 	std::shared_ptr<TextTexture> m_damage;

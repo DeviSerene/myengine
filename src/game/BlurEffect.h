@@ -16,7 +16,9 @@ public:
 	void OnTick();
 	void OnGui();
 	void screenshot(char filename[160], int x, int y);
+	void SetBlurInfo(glm::vec3 _blurInfo) { m_blurInfo = _blurInfo; }
 private:
 	std::shared_ptr<PostProcess> m_pp;
 	std::shared_ptr<Camera> m_cam;
+	glm::vec3 m_blurInfo;
 };

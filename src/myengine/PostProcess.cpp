@@ -11,18 +11,18 @@ void PostProcess::LoadShader(std::shared_ptr<Core> _core, std::string _name, std
 	m_name = _name;
 	m_shader = _core->GetResources()->Load<Shader>(_name);
 	m_shader->LoadShaders(_vert, _frag);
-	m_fb = std::shared_ptr<FrameBuffer>(new FrameBuffer(false));
-	m_shape = _core->GetResources()->Load<VertexArray>("Square");
-	/*m_shape = _core->GetResources()->Load<VertexArray>("SquarePP");
+	m_fb = std::shared_ptr<FrameBuffer>(new FrameBuffer());
+	//m_shape = _core->GetResources()->Load<VertexArray>("Square");
+	m_shape = _core->GetResources()->Load<VertexArray>("SquarePP");
 
 	std::shared_ptr<VertexBuffer> positions = std::make_shared<VertexBuffer>();
-	positions->Add(glm::vec3(0.0f, 0.0f, 0.0f));
+	positions->Add(glm::vec3(-1.0f, -1.0f, 0.0f));
 	positions->Add(glm::vec3(1.0f, 1.0f, 0.0f));
-	positions->Add(glm::vec3(0.0f, 1.0f, 0.0f));
+	positions->Add(glm::vec3(-1.0f, 1.0f, 0.0f));
 
 	positions->Add(glm::vec3(1.0f, 1.0f, 0.0f));
-	positions->Add(glm::vec3(0.0f, 0.0f, 0.0f));
-	positions->Add(glm::vec3(1.0f, 0.0f, 0.0f));
+	positions->Add(glm::vec3(-1.0f, -1.0f, 0.0f));
+	positions->Add(glm::vec3(1.0f, -1.0f, 0.0f));
 
 	std::shared_ptr<VertexBuffer> uv = std::make_shared<VertexBuffer>();
 	uv->Add(glm::vec2(0.0f, 0.0f));
@@ -33,18 +33,23 @@ void PostProcess::LoadShader(std::shared_ptr<Core> _core, std::string _name, std
 	uv->Add(glm::vec2(1.0f, 0.0f));
 
 	std::shared_ptr<VertexBuffer> red = std::make_shared<VertexBuffer>();
-	red->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	red->Add(glm::vec2(0.0f, 0.0f));
+	red->Add(glm::vec2(1.0f, 1.0f));
+	red->Add(glm::vec2(0.0f, 1.0f));
+	red->Add(glm::vec2(1.0f, 1.0f));
+	red->Add(glm::vec2(0.0f, 0.0f));
+	red->Add(glm::vec2(1.0f, 0.0f));
+/*	red->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 	red->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 	red->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 
 	red->Add(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 	red->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 	red->Add(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-
+	*/
 	m_shape->SetBuffer(IN_POSITION, positions);
 	m_shape->SetBuffer(IN_COLOUR, red);
 	m_shape->SetBuffer(IN_UV, uv);
-	*/
 }
 
 void PostProcess::Draw(GLuint _oldTexture)
@@ -52,10 +57,13 @@ void PostProcess::Draw(GLuint _oldTexture)
 	SetTexture("in_Texture", _oldTexture, 0);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, m_fb->GetBuffer());
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClearColor(0.0f, 0.0f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glDisable(GL_DEPTH_TEST);
+
+	//std::cout << "Framebuffer status: " << glCheckFramebufferStatus(GL_FRAMEBUFFER) << std::endl;
 
 	glUseProgram(m_shader->GetShader());
 	glBindVertexArray(m_shape->GetId());

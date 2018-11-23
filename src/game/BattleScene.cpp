@@ -35,7 +35,7 @@ void BattleScene::OnInit()
 	std::shared_ptr<Entity> m_camera = AddEntity();
 	m_camera->AddComponent<Camera>();
 	_c->AddCamera(m_camera);
-	m_camera->AddComponent<BlurEffect>();
+	std::shared_ptr<BlurEffect> be = m_camera->AddComponent<BlurEffect>();
 
 	m_mesh = _c->GetResources()->Load<Mesh>("assets/Cube.obj");
 	m_grass = _c->GetResources()->Load<Texture>("assets/grass.bmp");
@@ -100,6 +100,7 @@ void BattleScene::OnInit()
 
 	std::shared_ptr<Entity> ophilia = AddEntity();
 	ophilia->AddComponent<Character>();
+	ophilia->GetComponent<Character>()->SetBlurEffect(be);
 	std::shared_ptr<ActionBar> oAB = ophilia->AddComponent<ActionBar>();
 	m_party.push_back(ophilia);
 

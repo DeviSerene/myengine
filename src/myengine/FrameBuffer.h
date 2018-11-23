@@ -27,6 +27,8 @@ public:
 	void Update(int x, int y);
 
 private:
+	void Create();
+
 	GLuint m_buffer;
 	GLuint m_texture;
 	GLuint m_depth;

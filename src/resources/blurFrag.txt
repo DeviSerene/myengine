@@ -4,6 +4,7 @@ in vec2 ex_texCoord;
 
 uniform sampler2D in_Texture;
 uniform vec2 in_Screen;
+uniform vec3 in_BlurInfo;
 
 void main()
 {
@@ -13,6 +14,8 @@ myCoords.y = -ex_texCoord.y;
 vec4 texColour = texture(in_Texture,myCoords);
 
 
+if(texColour.r > in_BlurInfo.r ||texColour.b > in_BlurInfo.b ||texColour.g > in_BlurInfo.g)
+{
 vec4 color = vec4(0.0f);
 
 vec2 blurHTextureCoords[11];
@@ -21,12 +24,12 @@ vec2 blurVTextureCoords[11];
 float pixelSize = 1.0 / in_Screen.x;
 for(int i = -5; i <=5;i++)
 {
-	blurHTextureCoords[i+5] = ex_texCoord+ vec2(pixelSize * i,0.0);
+	blurHTextureCoords[i+5] = myCoords+ vec2(pixelSize * i,0.0);
 }
 pixelSize = 1.0 / in_Screen.y;
 for(int i = -5; i <=5;i++)
 {
-	blurVTextureCoords[i+5] = ex_texCoord+ vec2(0.0, pixelSize * i);
+	blurVTextureCoords[i+5] = myCoords+ vec2(0.0, pixelSize * i);
 }
 
     	color += texture( in_Texture, blurHTextureCoords[0]) * 0.0093;
@@ -56,9 +59,10 @@ for(int i = -5; i <=5;i++)
    	 color += texture( in_Texture, blurVTextureCoords[10]) * 0.0093;
 
 texColour = color;
+}
 
-
-
-  gl_FragColor = texColour;
+ // gl_FragColor = vec4(1,0,0,1);
+//gl_FragColor = vec4(myCoords,0,1);
+gl_FragColor = texColour;
 }
 

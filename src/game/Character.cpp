@@ -109,7 +109,8 @@ void Character::IncBP()
 			GetCore()->GetResources()->Load<Sound>("assets/incBP.ogg")->Play();
 		}
 	}
-	GetCore()->GetGui()->SetBlurInfo(glm::vec3(0.75f - ((float)m_activeBP * 0.2f), 0.75f - ((float)m_activeBP * 0.2f), 0.75f - ((float)m_activeBP * 0.2f)));
+	//GetCore()->GetGui()->SetBlurInfo(glm::vec3(0.75f - ((float)m_activeBP * 0.2f), 0.75f - ((float)m_activeBP * 0.2f), 0.75f - ((float)m_activeBP * 0.2f)));
+	m_blur->SetBlurInfo(glm::vec3(0.75f - ((float)m_activeBP * 0.2f), 0.75f - ((float)m_activeBP * 0.2f), 0.75f - ((float)m_activeBP * 0.2f)));
 }
 
 
@@ -123,7 +124,8 @@ void Character::DecBP()
 	{
 		m_activeBP = 0;
 	}
-	GetCore()->GetGui()->SetBlurInfo(glm::vec3(0.75f - ((float)m_activeBP * 0.2f)));
+	//GetCore()->GetGui()->SetBlurInfo(glm::vec3(0.75f - ((float)m_activeBP * 0.2f)));
+	m_blur->SetBlurInfo(glm::vec3(0.75f - ((float)m_activeBP * 0.2f)));
 }
 void Character::RemoveBP(int _n) 
 { 
@@ -131,7 +133,8 @@ void Character::RemoveBP(int _n)
 	if (_n > 0)
 		m_recoverBP = false; 
 
-	GetCore()->GetGui()->SetBlurInfo(glm::vec3(0.75f, 0.75f, 0.75f)); 
+	//GetCore()->GetGui()->SetBlurInfo(glm::vec3(0.75f, 0.75f, 0.75f));
+	m_blur->SetBlurInfo(glm::vec3(0.75f, 0.75f, 0.75f));
 }
 
 void Character::HealDamage(int _damage, int _bp)

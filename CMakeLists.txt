@@ -32,16 +32,12 @@ add_library(engine
 	src/myengine/Entity.cpp
 	src/myengine/Component.h
 	src/myengine/Component.cpp
-	src/myengine/Environment.h
-	src/myengine/Environment.cpp
 	src/myengine/Keyboard.h
 	src/myengine/Keyboard.cpp
 	src/myengine/MeshRenderer.h
 	src/myengine/MeshRenderer.cpp
 	src/myengine/SpriteRenderer.h
 	src/myengine/SpriteRenderer.cpp
-	src/myengine/ShaderProgram.h
-	src/myengine/ShaderProgram.cpp
 	src/myengine/Shader.h
 	src/myengine/Shader.cpp
 	src/myengine/VertexArray.h

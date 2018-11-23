@@ -243,7 +243,7 @@ void Core::Start()
 		//{
 			m_gui->SetTexture(m_cameras[0]->GetComponent<Camera>()->GetTexture());
 			m_gui->SetFrameInfo(glm::vec4(1, 1, 1, 1));
-			m_gui->Sprite(pos);
+		//	m_gui->Sprite(pos);
 		//}
 		m_gui->Flip(false);
 		if (m_scenes.size() > m_scene)
