@@ -8,6 +8,9 @@
 #include <myengine/Mesh.h>
 #include <myengine/Resources.h>
 #include <myengine/Sound.h>
+#include <myengine/Collider.h>
+#include "BlurEffect.h"
+#include "CollisionChecker.h"
 
 BattleScene::BattleScene(std::shared_ptr<Core> _c)
 	:Scene(_c)
@@ -32,6 +35,7 @@ void BattleScene::OnInit()
 	std::shared_ptr<Entity> m_camera = AddEntity();
 	m_camera->AddComponent<Camera>();
 	_c->AddCamera(m_camera);
+	m_camera->AddComponent<BlurEffect>();
 
 	m_mesh = _c->GetResources()->Load<Mesh>("assets/Cube.obj");
 	m_grass = _c->GetResources()->Load<Texture>("assets/grass.bmp");
@@ -64,11 +68,15 @@ void BattleScene::OnInit()
 	std::shared_ptr<Entity> mount = AddEntity();
 	mount->AddComponent<Transform>(glm::vec3(3.50f, 0, -4.00f), glm::vec3(0, 140, 0), glm::vec3(1.25f, 1.25f, 1.25f));
 	mount->AddComponent<MeshRenderer>(m_mesh, _c->GetResources()->Load<Texture>("assets/cube.bmp"));
+	mount->AddComponent<Collider>();
 	m_environment.push_back(mount);
 
 	std::shared_ptr<Entity> mount2 = AddEntity();
 	mount2->AddComponent<Transform>(glm::vec3(3.00f, -0.25f, -4.50f), glm::vec3(0, 140, 0), glm::vec3(1.25f, 1.25f, 1.25f));
 	mount2->AddComponent<MeshRenderer>(m_mesh, _c->GetResources()->Load<Texture>("assets/cube.bmp"));
+	mount2->AddComponent<Collider>();
+	std::shared_ptr<CollisionChecker>ce = mount2->AddComponent<CollisionChecker>();
+	ce->SetEntity(m_environment[1]);
 	m_environment.push_back(mount2);
 
 	std::shared_ptr<Entity> mount3 = AddEntity();

@@ -16,6 +16,7 @@ public:
 	void Tick();
 	void Display();
 	void Gui();
+	void PostProcess();
 
 	std::shared_ptr<Entity> AddEntity();
 	virtual void OnDeInit() {}

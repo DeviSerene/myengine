@@ -6,6 +6,8 @@
 #include <GL/glew.h>
 #include <GLM/gtc/matrix_transform.hpp>
 #include "Transform.h"
+#include "FrameBuffer.h"
+#include "PostProcess.h"
 
 class Camera : public Component
 {
@@ -14,12 +16,14 @@ public:
 	~Camera();
 
 	void OnTick();
-
 	glm::mat4 GetViewMatrix();
 	glm::mat4 GetProjMatrix();
 	glm::vec3 GetCameraPos() {return cameraPos;}
 	void SetPos(glm::vec3 _cameraPos) { cameraPos = _cameraPos; }
-
+	std::shared_ptr<FrameBuffer> GetFrameBuffer() { return m_fb; }
+	void PostDraw() { m_displayTexture = m_fb->GetTexture(); }
+	GLuint GetTexture() { return m_displayTexture; }
+	void SetTexture(GLuint _tex) { m_displayTexture = _tex; }
 private:
 	// This matrix represents the camera's position and orientation
 	glm::mat4 _viewMatrix;
@@ -33,5 +37,7 @@ private:
 	glm::vec3 cameraDirection;
 	glm::vec3 cameraRight;
 	float pitch = 0, yaw = -60;
+	GLuint m_displayTexture;
+	std::shared_ptr<FrameBuffer> m_fb;
 };
 

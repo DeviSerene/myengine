@@ -17,6 +17,7 @@ Camera::Camera()
 
 	// Set up a projection matrix
 	_projMatrix = glm::perspective(glm::radians(45.0f), (float)640 / (float)480, 0.1f, 100.0f);
+	m_fb = std::shared_ptr<FrameBuffer>(new FrameBuffer());
 }
 
 
@@ -45,7 +46,7 @@ glm::mat4 Camera::GetProjMatrix()
 
 void Camera::OnTick()
 {
-
+	m_fb->Update(GetCore()->GetScreenSize().x, GetCore()->GetScreenSize().y);
 	std::shared_ptr<Keyboard> m_keyboard = GetKeyboard();
 
 	if (m_keyboard->Input(RLEFT_BUTTON))
@@ -102,6 +103,5 @@ void Camera::OnTick()
 	// Also re-calculate the Right and Up vector
 	cameraRight = glm::normalize(glm::cross(front, glm::vec3(0, 1, 0)));  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
 	cameraUp = glm::normalize(glm::cross(cameraRight, front));
-
 
 }

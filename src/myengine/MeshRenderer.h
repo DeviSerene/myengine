@@ -28,7 +28,7 @@ public:
 	void OnDisplay();
 	glm::mat4 GetModelMatrix() { return m_modelMatrix; }
 	void SetMesh(std::shared_ptr<Mesh> _mesh);
-
+	std::vector<glm::vec3> GetTriangles();
 private:
 
 	// The actual model geometry

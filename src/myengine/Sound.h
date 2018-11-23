@@ -2,6 +2,9 @@
 #include "Resource.h"
 #include <memory>
 #include <string>
+#include <AL/al.h>
+#include <vorbis/vorbisfile.h>
+#include "glm/glm.hpp"
 
 struct Sample;
 
@@ -9,8 +12,10 @@ class Sound : public Resource
 {
 public:
 	Sound();
+	~Sound();
 	Sound(std::string _path);
 	static std::shared_ptr<Sound> Load(std::string _path);
+	void Play(glm::vec3 _player, glm::vec3 _listener);
 	void Play();
 	void PlayLoop();
 	void StopLooping();
@@ -18,4 +23,5 @@ public:
 	void Play(float _volume, float _varMin, float _varMax);
 private:
 	std::shared_ptr<Sample> imp;
+	ALuint sid;
 };

@@ -47,7 +47,7 @@ void TurnBar::OnTick()
 		m_bgm->Stop();
 		m_victory->Play();
 		m_timer = 0;
-		m_waitTime = 4.0f;
+		m_waitTime = 3.5f;
 		m_finished = true;
 		return;
 	}
@@ -55,6 +55,7 @@ void TurnBar::OnTick()
 	{
 		//m_victory->StopLooping();
 		m_victory->Stop();
+		//GetCore()->GetResources()->StopAllSounds();
 		//go to the next scene
 		if(GetCore()->GetSceneNo() == 1)
 			GetCore()->SetScene(0);

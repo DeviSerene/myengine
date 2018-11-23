@@ -79,6 +79,12 @@ add_library(engine
 	src/myengine/Scene.cpp
 	src/myengine/Compositor.h
 	src/myengine/Compositor.cpp
+	src/myengine/PostProcess.h
+	src/myengine/PostProcess.cpp
+	src/myengine/Collisions.h
+	src/myengine/Collisions.cpp
+	src/myengine/Collider.h
+	src/myengine/Collider.cpp
 )
 
 add_executable(game
@@ -103,6 +109,10 @@ add_executable(game
 	src/game/TurnBar.h
 	src/game/Ability.cpp
 	src/game/Ability.h
+	src/game/BlurEffect.cpp
+	src/game/BlurEffect.h
+	src/game/CollisionChecker.cpp
+	src/game/CollisionChecker.h
 )
 
 target_link_libraries(game

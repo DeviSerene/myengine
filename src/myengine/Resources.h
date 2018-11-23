@@ -41,6 +41,8 @@ public:
 
 	void CleanUp(float& _deltaTime);
 
+	void StopAllSounds();
+
 private:
 	std::vector<std::shared_ptr<Resource>> m_resources;
 

@@ -21,6 +21,7 @@
 #include "Camera.h"
 #include "Scene.h"
 #include "Compositor.h"
+#include "Collisions.h"
 
 class Entity;
 class Resources;
@@ -63,7 +64,7 @@ private:
 	std::shared_ptr<Gui> m_gui;
 	std::shared_ptr<Keyboard> m_keyboard;
 	std::shared_ptr<Resources> m_resources;
-	std::shared_ptr<Compositor> m_compositor;
+	//std::shared_ptr<Compositor> m_compositor;
 	//std::vector<std::shared_ptr<Entity>> m_entities;
 	int m_scene;
 	int m_new;
@@ -81,7 +82,7 @@ private:
 	//std::shared_ptr<Entity> m_camera;
 	int m_currentCamera;
 	std::vector<std::shared_ptr<Entity>> m_cameras;
-	std::vector<std::shared_ptr<FrameBuffer>> m_fbs;
+	//std::vector<std::shared_ptr<FrameBuffer>> m_fbs;
 	glm::mat4 _viewMatrix;
 	glm::mat4 _projMatrix;
 

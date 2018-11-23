@@ -96,6 +96,7 @@ public:
 	void Tick();
 	void Display();
 	void Gui();
+	void PostProcess();
 	bool m_alive;
 	std::shared_ptr<Entity> m_parent;
 	std::vector<std::shared_ptr<Entity>> m_children;

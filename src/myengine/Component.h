@@ -22,11 +22,11 @@ public:
 	void SetEntity(std::shared_ptr<Entity> _e) { m_entity = _e; }
 
 	virtual void OnInit();
-
 	virtual void OnBegin();
 	virtual void OnTick();
 	virtual void OnDisplay();
 	virtual void OnGui();
+	virtual void OnPostProcess();
 
 	void HasBegun() { if (m_began == false) { OnBegin(); m_began = true; } }
 private:

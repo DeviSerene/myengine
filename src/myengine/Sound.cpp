@@ -1,6 +1,4 @@
 #include "Sound.h"
-#include <AL/al.h>
-#include <vorbis/vorbisfile.h>
 
 #include <iostream>
 #include <vector>
@@ -72,6 +70,11 @@ struct Sample
 
 Sound::Sound() { }
 
+Sound::~Sound()
+{
+	alDeleteSources(1, &sid);
+}
+
 Sound::Sound(std::string path)
 {
 	Load(path);
@@ -101,7 +104,9 @@ std::shared_ptr<Sound> Sound::Load(std::string path)
 void Sound::Play()
 {
 	std::cout << "Sound Played";
-	ALuint sid = 0;
+	if(sid)
+		alDeleteSources(1, &sid);
+	sid = 0;
 	alGenSources(1, &sid);
 	alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
 	alSource3f(sid, AL_POSITION, 0.0f, 0.0f, 0.0f);
@@ -111,11 +116,26 @@ void Sound::Play()
 	//audioSources.push_back(sid);
 }
 
+void Sound::Play(glm::vec3 _player, glm::vec3 _listener)
+{
+	std::cout << "Sound Played";
+	if (sid)
+		alDeleteSources(1, &sid);
+	sid = 0;
+	alGenSources(1, &sid);
+	alListener3f(AL_POSITION, _listener.x, _listener.y, _listener.z);
+	alSource3f(sid, AL_POSITION, _player.x, _player.y, _player.z);
+	alSourcei(sid, AL_BUFFER, imp->id);
+	alSourcePlay(sid);
+}
+
 void Sound::PlayLoop()
 {
 	alSourcei(imp->id, AL_LOOPING, 1);
 	std::cout << "Sound Played Loop";
-	ALuint sid = 0;
+	if (sid)
+		alDeleteSources(1, &sid);
+	sid = 0;
 	alGenSources(1, &sid);
 	alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
 	alSource3f(sid, AL_POSITION, 0.0f, 0.0f, 0.0f);
@@ -126,14 +146,18 @@ void Sound::PlayLoop()
 
 void Sound::StopLooping()
 { 
-	alSourcei(imp->id, AL_LOOPING, 0);
-	alSourceStop(imp->id);
+	if (sid)
+	{
+		alSourcei(imp->id, AL_LOOPING, 0);
+		alSourceStop(sid);
+	}
 }
 
 
 void Sound::Stop()
 {
-	alSourceStop(imp->id);
+	if (sid)
+		alSourceStop(sid);
 }
 
 void Sound::Play(float vol, float varMin, float varMax)
@@ -143,7 +167,9 @@ void Sound::Play(float vol, float varMin, float varMax)
 	varMax *= 1000.0f;
 	float variance = (std::rand() % ((int)varMin + 1 - (int)varMax) + (int)varMin) / 1000.0f;
 	//return std::rand() % (max + 1 - min) + min;
-	ALuint sid = 0;
+	if (sid)
+		alDeleteSources(1, &sid);
+	sid = 0;
 	alGenSources(1, &sid);
 	alListener3f(AL_POSITION, 0.0f, 0.0f, 0.0f);
 	alSource3f(sid, AL_POSITION, 0.0f, 0.0f, 0.0f);

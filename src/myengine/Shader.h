@@ -31,6 +31,7 @@ public:
 	void SetUniform(GLuint _location, glm::vec2 _set) { glUniform2fv(_location, 1, glm::value_ptr(_set)); }
 	void SetUniform(GLuint _location, glm::vec3 _set) { glUniform3fv(_location, 1, glm::value_ptr(_set)); }
 	void SetUniform(GLuint _location, bool _set) { glUniform1f(_location, _set); }
+	void SetTexture(std::string _uniform, GLuint _texture, int _textureNo){glActiveTexture(GL_TEXTURE0+ _textureNo); glUniform1i(GetUniformLocation(_uniform), 0); glBindTexture(GL_TEXTURE_2D, _texture);}
 
 
 	void SetMatrices(glm::mat4 modelMatrix, glm::mat4 invModelMatrix, glm::mat4 viewMatrix, glm::mat4 projMatrix);

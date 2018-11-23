@@ -91,3 +91,14 @@ void MeshRenderer::OnDisplay()
 	
 
 }
+
+std::vector<glm::vec3> MeshRenderer::GetTriangles()
+{
+	std::vector<glm::vec3> ret = m_mesh->GetPosData();
+
+	for (int i = 0; i < ret.size(); i++)
+	{
+		ret[i] = glm::vec4(ret[i],1) * m_modelMatrix;
+	}
+	return ret;
+}

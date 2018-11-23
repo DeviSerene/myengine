@@ -24,6 +24,9 @@ std::shared_ptr<Entity> Scene::AddEntity()
 
 void Scene::Tick()
 {
+	if (m_entities.empty())
+		return;
+
 	for (std::vector<std::shared_ptr<Entity> >::iterator it = m_entities.begin();
 		it != m_entities.end(); it++)
 	{
@@ -36,15 +39,13 @@ void Scene::Tick()
 			(*it)->m_alive = false;
 		}
 	}
-
-	for (std::vector<std::shared_ptr<Entity> >::iterator it = m_entities.begin();
-		it != m_entities.end(); it++)
+	for (int i = 0; i < m_entities.size(); i++)
 	{
-		if (!(*it)->m_alive)
+		if (!m_entities[i]->m_alive)
 		{
 			//if an error wants us to kill it, we should kill it
-			it = m_entities.erase(it);
-			it--;
+			m_entities.erase(m_entities.begin()+i);
+			i--;
 		}
 	}
 }
@@ -56,6 +57,16 @@ void Scene::Display()
 		it != m_entities.end(); it++)
 	{
 		(*it)->Display();
+	}
+}
+
+void Scene::PostProcess()
+{
+
+	for (std::vector<std::shared_ptr<Entity> >::iterator it = m_entities.begin();
+		it != m_entities.end(); it++)
+	{
+		(*it)->PostProcess();
 	}
 }
 

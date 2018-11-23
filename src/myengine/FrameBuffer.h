@@ -12,7 +12,7 @@
 class FrameBuffer
 {
 public:
-	FrameBuffer();
+	FrameBuffer(bool _depth = true);
 	~FrameBuffer();
 
 	GLuint GetBuffer() { return m_buffer; }
@@ -26,6 +26,7 @@ private:
 	GLuint m_texture;
 	GLuint m_depth;
 
+	bool m_useD;
 	int m_x;
 	int m_y;
 };

@@ -63,3 +63,8 @@ void Component::OnGui()
 {
 
 }
+
+void Component::OnPostProcess()
+{
+
+}

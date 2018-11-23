@@ -25,12 +25,12 @@ public:
 
 	bool IsThis(std::string _name) { return (m_name == _name); }
 	void SetPos(float x, float y) { m_pos.x = x; m_pos.y = y;}
-	void Begin() { PlaySound();  m_display = true; m_finished = false; }
+	void Begin() { APlaySound();  m_display = true; m_finished = false; }
 	bool IsFinished() { return m_finished; }
 	int GetDamage() { return m_damage + ((rand()%10) - 5); }
 	int GetCost() { return m_spCost; }
 	BATTLE_ELEMENT GetElement() { return m_element; }
-	void PlaySound() { GetCore()->GetResources()->Load<Sound>(m_filepath + ".ogg")->Play(); }
+	void APlaySound() { GetCore()->GetResources()->Load<Sound>(m_filepath + ".ogg")->Play(glm::vec3(m_pos),glm::vec3(0)); }
 
 private:
 	std::string m_name;

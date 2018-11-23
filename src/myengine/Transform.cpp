@@ -70,3 +70,8 @@ glm::vec3 Transform::GetScale()
 {
 	return m_scale; 
 }
+
+glm::vec3 Transform::GetPos()
+{
+	return m_position;
+}

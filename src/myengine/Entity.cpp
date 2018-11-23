@@ -52,6 +52,19 @@ void Entity::Gui()
 	}
 }
 
+void Entity::PostProcess()
+{
+	if (!m_components.empty())
+	{
+		for (int i = 0; i < m_components.size(); i++)
+		{
+			m_components[i]->OnPostProcess();
+		}
+		for each (std::shared_ptr<Entity> baby in m_children)
+			baby->PostProcess();
+	}
+}
+
 
 
 

@@ -22,6 +22,8 @@ public:
 	glm::vec3 GetUp() { return m_up; }
 	glm::vec3 GetRight() { return m_right; }
 
+	glm::vec3 GetPos();
+
 private:
 	glm::vec3 m_position;
 	glm::vec3 m_rotation;

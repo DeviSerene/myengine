@@ -1,5 +1,6 @@
 #include "Resources.h"
 #include <iostream>
+#include "Sound.h"
 
 void Resources::CleanUp(float& _deltaTime)
 {
@@ -21,6 +22,24 @@ void Resources::CleanUp(float& _deltaTime)
 			else
 			{
 				m_resources[i]->ResetTimer();
+			}
+		}
+	}
+}
+
+void Resources::StopAllSounds()
+{
+	if (!m_resources.empty())
+	{
+		for (int i = 0; i < m_resources.size(); i++)
+		{
+			if(m_resources[i]->GetPath().size() > 4)
+			{
+				if (m_resources[i]->GetPath().substr(m_resources[i]->GetPath().length() - 4) == ".ogg")
+				{
+					std::shared_ptr<Sound> rtn =  std::static_pointer_cast<Sound>(m_resources[i]);
+					rtn->Stop();
+				}
 			}
 		}
 	}
