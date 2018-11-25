@@ -12,7 +12,6 @@ Core::Core()
 {
 	// Position of the light, in world-space
 	_lightPosition = glm::vec3(0, 1, 0);
-	rebindA = false;
 }
 
 std::shared_ptr<Core> Core::init() 
@@ -108,70 +107,37 @@ void Core::StartSDL()
 
 void Core::Start()
 {
-	//m_camera = AddEntity();
-	//m_camera->AddComponent<Camera>();
-	//m_fb = std::shared_ptr<FrameBuffer>(new FrameBuffer());
 	m_running = true;
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glEnable(GL_DEPTH_TEST); 
 	glEnable(GL_BLEND);
+	//sprites use alpha values, so they need to blend
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	//glDisable(GL_BLEND);
 
 	while (m_running)
 	{
-		if (m_changeScene)
+		if (m_changeScene) //Is there a scene we need to switch to?
 		{
 			ChangeScene(m_new);
 		}
 
-		m_running = !m_keyboard->Quit();
-		//
+		// DELTA TIME
 		unsigned int current = SDL_GetTicks();
 		m_deltaTs = (float)(current - m_lastTime) / 1000.0f;
 		m_lastTime = current;
-		//
-		SDL_Event event = { 0 };
-		m_keyboard->Update();
 
+		//Handle Input
+		m_keyboard->Update();
+		m_running = !m_keyboard->Quit(); //Did the INPUT tell us to quit?
+		//Cleanse Resources
 		m_resources->CleanUp(m_deltaTs);
 		
-		if (m_scenes.size() > m_scene)
+		//If we have a scene, go through each entity and Tick them
+		if (m_scenes.size() > m_scene) 
 			m_scenes[m_scene]->Tick();
 
-		////
-		if (m_keyboard->Input(A_BUTTON))
-		{
-			std::cout << "A PRESSED" << std::endl;
-		}
-		if (m_keyboard->Input(B_BUTTON))
-		{
-			rebindA = true;
-			std::cout << "Press a key to rebind A: " << std::endl;
-		}
-		else if (rebindA)
-		{
-			if (m_keyboard->ReturnKeyCode())
-			{
-				if (m_keyboard->ReBind(A_BUTTON, m_keyboard->ReturnKeyCode()))
-				{
-					std::cout << "A has been REBOUND" << std::endl;
-					rebindA = false;
-				}
-				
-			}
-			else if (m_keyboard->ReBindButton(A_BUTTON, m_keyboard->ReturnButton()))
-			{
-				std::cout << "A has been REBOUND" << std::endl;
-				rebindA = false;
-			}
-		}
-		if (m_keyboard->Input(RT_BUTTON))
-		{
-			std::cout << "RIGHT TRIGGERD  ";
-			//_cameraPosition += glm::vec3(0.5f  *_cameraPosition.x * _cameraAngleX, 0.5f  *_cameraPosition.y * _cameraAngleY, 0.05);
-		}
+		
 
 		// Start Drawing the Scene
 		int x, y;
@@ -183,7 +149,7 @@ void Core::Start()
 			if (m_cameras[i])
 			{
 				glBindFramebuffer(GL_FRAMEBUFFER, m_cameras[i]->GetComponent<Camera>()->GetFrameBuffer()->GetBuffer());
-				glClearColor(0.0f, 0.0f, 0.3f, 1.0f);
+				glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 				glClear(GL_COLOR_BUFFER_BIT);
 				glClear(GL_DEPTH_BUFFER_BIT);
 				glEnable(GL_DEPTH_TEST);
@@ -212,7 +178,7 @@ void Core::Start()
 			}
 		}
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glClearColor(0.0f, 0.0f, 0.3f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_DEPTH_BUFFER_BIT);
 		// Draw GUI

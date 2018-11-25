@@ -14,13 +14,24 @@ void TurnBar::OnInit()
 	m_active = true;
 	m_nextTurn = GetCore()->GetResources()->Load<Texture>("assets/nextTurn.png");
 	m_victory = GetCore()->GetResources()->Load<Sound>("assets/BattleVictory.ogg");
+	m_defeat = GetCore()->GetResources()->Load<Sound>("assets/death.ogg");
 	m_timer = 0;
 	m_waitTime = 0;
 	m_finished = false;
+	m_blurinfo = glm::vec3(1, 1, 1);
+	m_darkinfo = glm::vec3(0, 0, 0);
 }
 
 void TurnBar::OnTick()
 {
+	if (m_finished)
+	{
+		m_blurinfo -= glm::vec3(0.3f*GetCore()->GetDeltaTime());
+		m_darkinfo += glm::vec3(0.1f*GetCore()->GetDeltaTime());
+		m_party[0]->GetComponent<Character>()->GetBlurEffect()->SetBlurInfo(m_blurinfo);
+		m_party[0]->GetComponent<Character>()->GetBlurEffect()->SetDarkInfo(m_darkinfo);
+	}
+
 	if (!m_active)
 		return;
 
@@ -51,19 +62,41 @@ void TurnBar::OnTick()
 		m_finished = true;
 		return;
 	}
-	else if (m_finished == true)
+	else if (victory == true && m_finished == true)
 	{
 		//m_victory->StopLooping();
 		m_victory->Stop();
 		//GetCore()->GetResources()->StopAllSounds();
 		//go to the next scene
 		if(GetCore()->GetSceneNo() == 1)
-			GetCore()->SetScene(0);
+			GetCore()->SetScene(2);
 		else
-			GetCore()->SetScene(1);
+			GetCore()->SetScene(0);
+		return;
+	}
+	bool defeat = true;
+	for (int i = 0; i < m_party.size(); i++)
+	{
+		if (!m_party[i]->GetComponent<Character>()->IsDead())
+			defeat = false;
+	}
+	if (defeat == true && m_finished == false)
+	{
+		m_bgm->StopLooping();
+		m_bgm->Stop();
+		m_defeat->Play();
+		m_timer = 0;
+		m_waitTime = 7.5f;
+		m_finished = true;
+		return;
+	}
+	else if (defeat == true && m_finished == true)
+	{
+		GetCore()->SetScene(3);
 		return;
 	}
 
+	///TURN ORDER GAMEPLAY
 	if (m_currentTurnOrder.empty())
 	{
 		NextTurn();

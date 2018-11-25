@@ -465,6 +465,8 @@ bool Keyboard::ReBind(INPUTACTION _type, SDL_Keycode _newKey)
 						{
 							if (m_inputs[u].m_mappedKeys[k] == _newKey)
 							{
+							//	m_inputs[u].m_mappedKeys.clear();
+							//	m_inputs[u].m_mappedKeys = oldKeys;
 								return false;
 							}
 						}

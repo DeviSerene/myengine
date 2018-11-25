@@ -8,7 +8,7 @@
 #include "myengine/Texture.h"
 #include "myengine/PostProcess.h"
 
-class BlurEffect : public Component
+class BloomEffect : public Component
 {
 public:
 	void OnInit();
@@ -16,12 +16,12 @@ public:
 	void OnTick();
 	void OnGui();
 	void screenshot(char filename[160], int x, int y);
-	void SetBlurInfo(glm::vec3 _blurInfo) { m_blurInfo = _blurInfo; }
-	void SetDarkInfo(glm::vec3 _darkInfo) { m_darkenInfo = _darkInfo; }
+	void SetColInfo(glm::vec3 _colourInfo) { m_colourInfo = _colourInfo; }
 private:
-	std::shared_ptr<PostProcess> m_pp;
-	std::shared_ptr<PostProcess> m_darken;
+	std::shared_ptr<PostProcess> m_lightKey;
+	std::shared_ptr<PostProcess> m_blur;
+	std::shared_ptr<PostProcess> m_pass;
+	std::shared_ptr<PostProcess> m_merge;
 	std::shared_ptr<Camera> m_cam;
-	glm::vec3 m_blurInfo;
-	glm::vec3 m_darkenInfo;
+	glm::vec3 m_colourInfo;
 };

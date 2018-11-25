@@ -133,6 +133,13 @@ void Enemy::TakeDamage(int _damage, BATTLE_ELEMENT _element, int _bp)
 	}
 	else
 	{
+		for (int i = 0; i < m_weaknesses.size(); i++)
+		{
+			if (m_weaknesses[i] == _element)
+			{
+				m_weakRevealed[i] = true;
+			}
+		}
 		_damage += _damage;
 	}
 	if (_bp)

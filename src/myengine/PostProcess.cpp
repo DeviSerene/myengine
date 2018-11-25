@@ -58,7 +58,7 @@ void PostProcess::Draw(GLuint _oldTexture)
 
 	glBindFramebuffer(GL_FRAMEBUFFER, m_fb->GetBuffer());
 	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glClearColor(0.0f, 0.0f, 0.3f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glDisable(GL_DEPTH_TEST);

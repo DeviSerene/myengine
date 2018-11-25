@@ -20,7 +20,6 @@
 #include "Transform.h"
 #include "Camera.h"
 #include "Scene.h"
-#include "Compositor.h"
 #include "Collisions.h"
 
 class Entity;
@@ -37,7 +36,7 @@ public:
 
 	static std::shared_ptr<Core> init();
 	void Start();
-	void Stop();
+	void Stop() { m_running = false; }
 
 	///Getters
 	std::shared_ptr<Keyboard> GetKeyboard() { return m_keyboard; }
@@ -80,7 +79,6 @@ private:
 	ALCdevice* device;
 	ALCcontext* context;
 
-	bool rebindA;
 
 	// Position of the single point-light in the scene
 	glm::vec3 _lightPosition;

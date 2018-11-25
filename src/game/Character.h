@@ -34,6 +34,7 @@ public:
 	void HealDamage(int _amount, int _bp);
 	void RemoveSP(int _amount) { m_stats->ChangeSP(-_amount); }
 	bool CanCast(int _amount) { return m_stats->CanCast(_amount); }
+	std::shared_ptr<BlurEffect> GetBlurEffect() { return m_blur; }
 
 private:
 	std::string m_spritePath;

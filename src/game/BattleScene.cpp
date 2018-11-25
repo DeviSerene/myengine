@@ -10,6 +10,7 @@
 #include <myengine/Sound.h>
 #include <myengine/Collider.h>
 #include "BlurEffect.h"
+#include "BloomEffect.h"
 #include "CollisionChecker.h"
 
 BattleScene::BattleScene(std::shared_ptr<Core> _c)
@@ -36,6 +37,7 @@ void BattleScene::OnInit()
 	m_camera->AddComponent<Camera>();
 	_c->AddCamera(m_camera);
 	std::shared_ptr<BlurEffect> be = m_camera->AddComponent<BlurEffect>();
+	//m_camera->AddComponent<BloomEffect>();
 
 	m_mesh = _c->GetResources()->Load<Mesh>("assets/Cube.obj");
 	m_grass = _c->GetResources()->Load<Texture>("assets/grass.bmp");
@@ -112,6 +114,7 @@ void BattleScene::OnInit()
 	std::shared_ptr<Entity> enemy2 = AddEntity();
 	enemy2->AddComponent<Enemy>(-0.95f, -0.55f, "assets/characters/enemy_02");
 	enemy2->GetComponent<Enemy>()->AddWeakness(BE_STAFF);
+	enemy2->GetComponent<Enemy>()->AddWeakness(BE_LIGHT);
 	m_enemies.push_back(enemy2);
 
 

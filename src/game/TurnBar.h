@@ -30,9 +30,12 @@ private:
 	bool m_active;
 
 	glm::vec4 m_pos;
+	glm::vec3 m_blurinfo;
+	glm::vec3 m_darkinfo;
 	//textures
 	std::shared_ptr<Sound> m_bgm;
 	std::shared_ptr<Sound> m_victory;
+	std::shared_ptr<Sound> m_defeat;
 	std::shared_ptr<Texture> m_nextTurn;
 	std::vector<std::shared_ptr<Texture>> m_icons;
 	std::vector<std::shared_ptr<Entity>> m_party;

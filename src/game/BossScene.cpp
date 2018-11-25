@@ -55,7 +55,7 @@ void BossScene::OnInit()
 	std::shared_ptr<Entity> enemy1 = AddEntity();
 	enemy1->AddComponent<Enemy>(-0.915f, -0.55f, "assets/characters/enemy_03");
 	enemy1->GetComponent<Enemy>()->SetStats(300, 1, 3);
-	enemy1->GetComponent<Enemy>()->AddWeakness(BE_LIGHT);
+	enemy1->GetComponent<Enemy>()->AddWeakness(BE_STAFF);
 	m_enemies.push_back(enemy1);
 
 

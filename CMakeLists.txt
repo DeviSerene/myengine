@@ -51,7 +51,6 @@ add_library(engine
 	src/myengine/TestResource.h
 	src/myengine/TestResource.cpp
 	src/myengine/Resource.h
-	src/myengine/Resource.cpp
 	src/myengine/Resources.h
 	src/myengine/Resources.cpp
 	src/myengine/Sound.h
@@ -63,8 +62,6 @@ add_library(engine
 	src/myengine/Gui.cpp
 	src/myengine/FrameBuffer.h
 	src/myengine/FrameBuffer.cpp
-	src/myengine/DepthBuffer.h
-	src/myengine/DepthBuffer.cpp
 	src/myengine/Texture.h
 	src/myengine/Texture.cpp
 	src/myengine/TextTexture.h
@@ -73,8 +70,6 @@ add_library(engine
 	src/myengine/Camera.cpp
 	src/myengine/Scene.h
 	src/myengine/Scene.cpp
-	src/myengine/Compositor.h
-	src/myengine/Compositor.cpp
 	src/myengine/PostProcess.h
 	src/myengine/PostProcess.cpp
 	src/myengine/Collisions.h
@@ -91,6 +86,14 @@ add_executable(game
 	src/game/BattleScene.h
 	src/game/BossScene.cpp
 	src/game/BossScene.h
+	src/game/TitleScene.cpp
+	src/game/TitleScene.h
+	src/game/TitleButtons.cpp
+	src/game/TitleButtons.h
+	src/game/GameOver.cpp
+	src/game/GameOver.h
+	src/game/DeathScene.cpp
+	src/game/DeathScene.h
 	src/game/BattleBackground.cpp
 	src/game/BattleBackground.h
 	src/game/Character.cpp
@@ -107,6 +110,8 @@ add_executable(game
 	src/game/Ability.h
 	src/game/BlurEffect.cpp
 	src/game/BlurEffect.h
+	src/game/BloomEffect.cpp
+	src/game/BloomEffect.h
 	src/game/CollisionChecker.cpp
 	src/game/CollisionChecker.h
 )
